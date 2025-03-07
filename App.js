@@ -1,19 +1,15 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from "./src/screens/LoginScreen";
-import BottomTabNavigator from "./src/navigations/BottomTabNavigator";
-import './global.css';
-
-const Stack = createStackNavigator();
+import "./global.css";
+import StackNavigator from "./src/navigations/StackNavigator";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
