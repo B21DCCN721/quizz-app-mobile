@@ -1,15 +1,17 @@
 import { Image, View } from "react-native";
 import DefaultLayot from "../../layouts/DefaultLayot";
 import Button from "../../components/Button";
+import ImgWelcome from "../../../assets/imgs/imgwelcome.svg"
 
 function WelcomeScreen({ navigation }) {
   return (
     <DefaultLayot>
       <View className="flex flex-1 justify-center items-center mt-20">
-        <Image
+        {/* <Image
           className="w-[293px] h-[236px]"
           source={require("../../../assets/imgs/imgwelcome.png")}
-        />
+        /> */}
+        <ImgWelcome style = {{width: "293px", height: "236px"}}/>
         <View className="flex flex-1 w-full items-center mt-5">
           <Button
             title="Đăng nhập"

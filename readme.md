@@ -9,3 +9,6 @@
 - **Lesson** - Trang bài thi
 - **Rank** - Trang xếp hạng
 - **Profile** - Trang profile
+
+- **Sử dụng ảnh SVG** : import và sử dụng như 1 component react; không hỗ trợ nativewind(tailwind) nên muốn set width, height thì dùng 2 prop width, height nhận giá trị là string ví dụ width="300px"
+- **Phông chữ** : xem chi tiết tên ứng với phông trong tailwind.config hoặc dùng stylesheet thì xem tên trong app.js ví dụ cách dùng với nativewind "text-interBold"

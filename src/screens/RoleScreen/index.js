@@ -2,6 +2,7 @@ import DefaultLayot from "../../layouts/DefaultLayot";
 import { View, Image, Text } from "react-native";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+import ImgRole from "../../../assets/imgs/imgrole.svg"
 
 function RoleScreen({ navigation, route }) {
   const { mode } = route.params || {};
@@ -9,10 +10,11 @@ function RoleScreen({ navigation, route }) {
     <DefaultLayot>
       <Header />
       <View className="flex flex-1 justify-center items-center mt-20">
-        <Image
+        {/* <Image
           className="w-[306px] h-[197px]"
           source={require("../../../assets/imgs/imgrole.png")}
-        />
+        /> */}
+        <ImgRole width= "306px" height= "197px"/>
         <Text className="font-interRegular text-2xl mt-5">
           Chọn vai trò của bạn
         </Text>

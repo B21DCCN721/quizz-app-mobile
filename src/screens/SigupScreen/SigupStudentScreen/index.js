@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import DropDownPicker from "react-native-dropdown-picker";
+import IconHideEye from "../../../../assets/icons/hideeye.svg";
 
 function SigupStudenScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -54,10 +55,7 @@ function SigupStudenScreen({ navigation }) {
                 {showPassword ? (
                   "🙈"
                 ) : (
-                  <Image
-                    className="w-[16px] h-[16px]"
-                    source={require("../../../../assets/icons/hideEye.png")}
-                  />
+                  <IconHideEye width = "16px" height = "16px"/>
                 )}
               </Text>
             </TouchableOpacity>
