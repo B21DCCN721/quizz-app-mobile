@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 function DefaultLayot({ children }) {
   return (
-    <SafeAreaView className="flex flex-1 bg-white">{children}</SafeAreaView>
+    <SafeAreaView className="flex flex-1 bg-white"><View className="flex flex-1 bg-white">{children}</View></SafeAreaView>
   );
 }
 

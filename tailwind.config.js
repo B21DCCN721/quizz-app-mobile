@@ -5,11 +5,22 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      //config tên màu
       colors: {
         red: "#F15D41",
-        gray: "#DFDFDF",
         yellow: "#FFCB7C",
-        blue: "#73DBD5"
+        blue: "#73DBD5",
+        "gray-input": "#F1F1F1",
+        "gray-border": "#DFDFDF"
+      },
+      //config phông chữ
+      fontFamily: {
+        interRegular: ["InterRegular"],
+        interBold: ["InterBold"],
+        interSemiBold: ["InterSemiBold"]
+      },
+      borderRadius: {
+        10: "10px",
       },
     },
   },

@@ -1,10 +1,11 @@
-Tên ứng với từng màn hình
-
-"Splash" - màn hình splash
-"Welcome" - màn hình welcome
-"Sigup" - màn hình đăng ký
-"Login" - màn hình login
-"Main" - toàn bộ các màn sau khi đăng nhập
-"Home" - trang chủ
-"History"
-"Profile" - trang profile
+- **Splash** - Màn hình splash
+- **Welcome** - Màn hình welcome
+- **Role** - Màn hình chọn role
+- **SignupTeacher** - Màn hình đăng ký giáo viên
+- **SignupStudent** - Màn hình đăng ký học sinhsinh
+- **Login** - Màn hình login
+- **Main** - Toàn bộ các màn sau khi đăng nhập
+- **Home** - Trang chủ
+- **Lesson** - Trang bài thi
+- **Rank** - Trang xếp hạng
+- **Profile** - Trang profile
