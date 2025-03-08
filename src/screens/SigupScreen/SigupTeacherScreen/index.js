@@ -4,7 +4,7 @@ import Header from "../../../components/Header";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
-import IconHideEye from "../../../../assets/icons/hideeye.svg";
+import IconHideEye from "../../../../assets/icons/hideEye.svg";
 
 function SigupTeacherScreen({ navigation }) {
   const [email, setEmail] = useState("");

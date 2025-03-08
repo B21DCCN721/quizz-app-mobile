@@ -5,7 +5,7 @@ import DefaultLayot from "../../layouts/DefaultLayot";
 import Input from "../../components/Input";
 import Header from "../../components/Header";
 import Checkbox from "../../components/Checkbox";
-import IconHideEye from "../../../assets/icons/hideeye.svg";
+import IconHideEye from "../../../assets/icons/hideEye.svg";
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");

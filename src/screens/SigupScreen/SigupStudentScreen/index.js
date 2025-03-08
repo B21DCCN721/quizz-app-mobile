@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import DropDownPicker from "react-native-dropdown-picker";
-import IconHideEye from "../../../../assets/icons/hideeye.svg";
+import IconHideEye from "../../../../assets/icons/hideEye.svg";
 
 function SigupStudenScreen({ navigation }) {
   const [email, setEmail] = useState("");
