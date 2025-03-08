@@ -1,5 +1,5 @@
 import React from "react";
-import { useFonts, Inter_400Regular, Inter_700Bold, Inter_600SemiBold } from "@expo-google-fonts/inter";
+import { useFonts, Inter_400Regular, Inter_700Bold, Inter_600SemiBold, Inter_300Light } from "@expo-google-fonts/inter";
 import { NavigationContainer } from "@react-navigation/native";
 import "./global.css";
 import StackNavigator from "./src/navigations/StackNavigator";
@@ -10,6 +10,7 @@ export default function App() {
     InterRegular: Inter_400Regular,
     InterBold: Inter_700Bold,
     InterSemiBold: Inter_600SemiBold,
+    InterLight: Inter_300Light,
   });
   return (
     <SafeAreaProvider>

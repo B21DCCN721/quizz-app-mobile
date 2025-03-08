@@ -10,6 +10,7 @@ module.exports = {
         red: "#F15D41",
         yellow: "#FFCB7C",
         blue: "#73DBD5",
+        pink: "#F9A0A0",
         "gray-input": "#F1F1F1",
         "gray-border": "#DFDFDF"
       },
@@ -17,7 +18,8 @@ module.exports = {
       fontFamily: {
         interRegular: ["InterRegular"],
         interBold: ["InterBold"],
-        interSemiBold: ["InterSemiBold"]
+        interSemiBold: ["InterSemiBold"],
+        interLight: ["InterLight"],
       },
       borderRadius: {
         10: "10px",
