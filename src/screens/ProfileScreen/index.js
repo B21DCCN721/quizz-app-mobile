@@ -28,36 +28,67 @@ export default function ProfileScreen({ navigation }) {
 
   const handleEditProfile = () => {
     setEditInp(true);
-  }
+  };
   const handleConfimEdit = () => {
     setEditInp(false);
-  }
+  };
   const handleLogout = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Welcome' }],
+      routes: [{ name: "Welcome" }],
     });
-  }
+  };
   return (
     <DefaultLayot>
-      <ScrollView className="flex">
+      <ScrollView className="px-5 mt-5">
         {/* avatar và các button chọn option */}
-        <View className="h-[180px] flex flex-row px-5 items-center mt-5">
+        <View className="h-[180px] flex flex-row items-center">
           <View className="mr-2">
             <Image
-            className="w-[120px] h-[120px] rounded-full border border-[5px] border-pink"
-            source={require("../../../assets/imgs/avatar.png")}
-          />
-          <Button title="Tải ảnh lên" sxButton="py-2 mt-2 mx-auto bg-pink border-0"/>
+              className="w-[120px] h-[120px] rounded-full border border-[5px] border-pink"
+              source={require("../../../assets/imgs/avatar.png")}
+            />
+
+            <Button
+              title="Tải ảnh lên"
+              sxButton="py-2 mt-2 mx-auto bg-pink shadow-lg"
+              style={{
+                shadowColor: "black", 
+                elevation: 20, 
+              }}
+            />
           </View>
-          <View className="bg-[#E5D0D0] h-full rounded-10 flex-1 flex justify-evenly">
-            <Button title="Xem lịch sử làm bài" sxButton="mx-2 bg-pink border-0 flex flex-row justify-between items-center" sxText="font-interRegular"><IconHistoryProfile/></Button>
-            <Button title="Chỉnh sửa thông tin" sxButton="mx-2 bg-pink border-0 flex flex-row justify-between items-center" sxText="font-interRegular" onClick={handleEditProfile}><IconEditInfo/></Button>
-            <Button title="Đăng xuất" sxButton="mx-2 bg-pink border-0 flex flex-row justify-between items-center" sxText="font-interRegular" onClick={handleLogout}><IconLogout/></Button>
+          <View
+            className="bg-[#E5D0D0] h-full rounded-10 flex-1 flex justify-evenly"
+            style={{ elevation: 20 }}
+          >
+            <Button
+              title="Xem lịch sử làm bài"
+              sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
+              sxText="font-interRegular"
+            >
+              <IconHistoryProfile />
+            </Button>
+            <Button
+              title="Chỉnh sửa thông tin"
+              sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
+              sxText="font-interRegular"
+              onClick={handleEditProfile}
+            >
+              <IconEditInfo />
+            </Button>
+            <Button
+              title="Đăng xuất"
+              sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
+              sxText="font-interRegular"
+              onClick={handleLogout}
+            >
+              <IconLogout />
+            </Button>
           </View>
         </View>
         {/* Các thẻ input hiển thị thông tin cá nhân */}
-        <View className="px-5">
+        <View>
           {/* Input Email */}
           <View className="mt-5">
             <Text className="text-bold font-semibold my-2">Email</Text>
@@ -124,7 +155,13 @@ export default function ProfileScreen({ navigation }) {
             />
           </View>
         </View>
-        {editInp && <Button onClick={handleConfimEdit} title="Xác nhận" sxButton="bg-pink border-0 w-[120px] m-auto"/>}
+        {editInp && (
+          <Button
+            onClick={handleConfimEdit}
+            title="Xác nhận"
+            sxButton="bg-pink w-[120px] m-auto"
+          />
+        )}
       </ScrollView>
     </DefaultLayot>
   );

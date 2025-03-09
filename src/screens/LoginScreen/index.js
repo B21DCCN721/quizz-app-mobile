@@ -70,7 +70,7 @@ export default function LoginScreen({ navigation }) {
         </View>
         <Button
           title="Đăng nhập"
-          sxButton="bg-red mt-5"
+          sxButton="bg-red mt-5 border border-b-[4px] border-b-[#343B6E]"
           sxText="text-white font-interBold"
           onClick={handleLogin}
         />

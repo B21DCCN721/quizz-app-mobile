@@ -21,7 +21,7 @@ function RoleScreen({ navigation, route }) {
         <View className="flex flex-1 w-full items-center mt-5">
           <Button
             title="Học sinh"
-            sxButton="bg-yellow w-[224px] rounded-[50px] mt-5 border-0"
+            sxButton="bg-yellow w-[224px] rounded-[50px] mt-5"
             onClick={() =>
               mode === "login"
                 ? navigation.navigate("Login")
@@ -30,7 +30,7 @@ function RoleScreen({ navigation, route }) {
           />
           <Button
             title="Giáo viên"
-            sxButton="bg-blue  w-[224px] rounded-[50px] mt-5 border-0"
+            sxButton="bg-blue  w-[224px] rounded-[50px] mt-5"
             onClick={() =>
               mode === "login"
                 ? navigation.navigate("Login")

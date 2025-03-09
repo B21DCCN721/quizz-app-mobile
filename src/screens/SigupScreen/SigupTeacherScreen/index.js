@@ -55,7 +55,7 @@ function SigupTeacherScreen({ navigation }) {
 
         <Button
           title="Đăng ký"
-          sxButton="bg-red mt-5"
+          sxButton="bg-red mt-5 border border-b-[4px] border-b-[#343B6E]"
           sxText="text-center text-white font-interBold"
           onClick={() => navigation.replace("Start")}
         />

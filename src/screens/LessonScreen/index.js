@@ -1,12 +1,13 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import DefaultLayot from "../../layouts/DefaultLayot";
+import { CardTest } from "../../components/Card";
 
 function LessonScreen({ navigation }) {
   return (
     <DefaultLayot>
-      <View className="flex flex-1 justify-center items-center">
-        <Text className="text-center">Bai thi</Text>
-      </View>
+      <ScrollView className="px-5 mt-5">
+        <CardTest info={{name:'abc'}}/>
+      </ScrollView>
     </DefaultLayot>
   );
 }

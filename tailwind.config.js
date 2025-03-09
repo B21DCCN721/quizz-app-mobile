@@ -9,10 +9,11 @@ module.exports = {
       colors: {
         red: "#F15D41",
         yellow: "#FFCB7C",
+        "yellow-2": "#FFEDC4",
         blue: "#73DBD5",
         pink: "#F9A0A0",
-        "gray-input": "#F1F1F1",
-        "gray-border": "#DFDFDF"
+        grayInput: "#F1F1F1",
+        grayBorder: "#DFDFDF"
       },
       //config phông chữ
       fontFamily: {
@@ -23,6 +24,7 @@ module.exports = {
       },
       borderRadius: {
         10: "10px",
+        20: "20px",
       },
     },
   },

@@ -15,12 +15,12 @@ function WelcomeScreen({ navigation }) {
         <View className="flex flex-1 w-full items-center mt-5">
           <Button
             title="Đăng nhập"
-            sxButton="bg-yellow border-0 w-[224px] rounded-[50px] mt-10"
+            sxButton="bg-yellow w-[224px] rounded-[50px] mt-10"
             onClick={() => navigation.navigate("Role", { mode: "login" })}
           />
           <Button
             title="Đăng ký"
-            sxButton="border-0 bg-blue  w-[224px] rounded-[50px] mt-5"
+            sxButton="bg-blue  w-[224px] rounded-[50px] mt-5"
             onClick={() => navigation.navigate("Role", { mode: "sigup" })}
           />
         </View>

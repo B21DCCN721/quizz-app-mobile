@@ -19,7 +19,7 @@ function StartScreen({ navigation }) {
           </View>
           <Button
             title="Bắt đầu"
-            sxButton="mb-5 bg-red"
+            sxButton="mb-5 bg-red border border-b-[4px] border-b-[#343B6E]"
             sxText="text-white text-base/[20px]"
             onClick={handleStart}
           />
