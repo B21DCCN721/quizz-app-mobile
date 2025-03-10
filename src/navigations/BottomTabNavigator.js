@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
+import HomeStackNavigator from "./HomeStackNavigator";
 import LessonScreen from "../screens/LessonScreen";
 import RankScreen from "../screens/RankScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -14,6 +14,9 @@ import IconRankingInActive from "../../assets/icons/rankingInActive.svg";
 import IconProfileActive from "../../assets/icons/profileActive.svg";
 import IconProfileInActive from "../../assets/icons/profileInActive.svg";
 
+/*
+thanh bottom tab điều hướng các tab
+*/
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +50,7 @@ export default function BottomTabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeStackNavigator} />
       <Tab.Screen name="Lesson" component={LessonScreen} />
       <Tab.Screen name="Rank" component={RankScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

@@ -1,5 +1,5 @@
 import { ImageBackground, Text, View } from "react-native";
-import DefaultLayot from "../../layouts/DefaultLayot";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 
 function StartScreen({ navigation }) {
@@ -7,12 +7,12 @@ function StartScreen({ navigation }) {
     navigation.replace("Main");
   };
   return (
-    <DefaultLayot>
+    <SafeAreaView className="flex flex-1 bg-white">
       <ImageBackground
         className="flex flex-1 bg-cover bg-[#FDF7E5]"
         source={require("../../../assets/imgs/start.png")}
       >
-        <View className="px-5 flex flex-1 justify-between">
+        <View className="flex flex-1 px-5 justify-between">
           <View className="flex flex-1 justify-center items-center">
             <Text className="font-semibold text-2xl">Chào mừng đến với</Text>
             <Text className="text-7xl mt-5">abc</Text>
@@ -25,7 +25,7 @@ function StartScreen({ navigation }) {
           />
         </View>
       </ImageBackground>
-    </DefaultLayot>
+    </SafeAreaView>
   );
 }
 

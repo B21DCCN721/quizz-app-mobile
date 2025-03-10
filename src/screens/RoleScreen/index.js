@@ -1,5 +1,5 @@
-import DefaultLayot from "../../layouts/DefaultLayot";
-import { View, Image, Text } from "react-native";
+import HeaderLayout from "../../layouts/HeaderLayout";
+import { View, Text } from "react-native";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import ImgRole from "../../../assets/imgs/imgrole.svg"
@@ -7,8 +7,7 @@ import ImgRole from "../../../assets/imgs/imgrole.svg"
 function RoleScreen({ navigation, route }) {
   const { mode } = route.params || {};
   return (
-    <DefaultLayot>
-      <Header />
+    <HeaderLayout>
       <View className="flex flex-1 justify-center items-center mt-20">
         {/* <Image
           className="w-[306px] h-[197px]"
@@ -39,7 +38,7 @@ function RoleScreen({ navigation, route }) {
           />
         </View>
       </View>
-    </DefaultLayot>
+    </HeaderLayout>
   );
 }
 

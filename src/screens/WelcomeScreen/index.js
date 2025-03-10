@@ -1,11 +1,11 @@
-import { Image, View } from "react-native";
-import DefaultLayot from "../../layouts/DefaultLayot";
+import { View } from "react-native";
+import DefaultLayout from "../../layouts/DefaultLayout";
 import Button from "../../components/Button";
 import ImgWelcome from "../../../assets/imgs/imgwelcome.svg"
 
 function WelcomeScreen({ navigation }) {
   return (
-    <DefaultLayot>
+    <DefaultLayout>
       <View className="flex flex-1 justify-center items-center mt-20">
         {/* <Image
           className="w-[293px] h-[236px]"
@@ -25,7 +25,7 @@ function WelcomeScreen({ navigation }) {
           />
         </View>
       </View>
-    </DefaultLayot>
+    </DefaultLayout>
   );
 }
 

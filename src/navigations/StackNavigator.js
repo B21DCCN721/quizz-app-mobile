@@ -8,6 +8,10 @@ import { SigupStudentScreen, SigupTeacherScreen } from "../screens/SigupScreen";
 import StartScreen from "../screens/StartScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 
+
+/*
+main stack của app
+*/
 const Stack = createStackNavigator();
 
 export default function StackNavigator() {

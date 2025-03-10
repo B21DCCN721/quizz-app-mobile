@@ -1,9 +1,9 @@
 import React from "react";
 import { View, ScrollView, Text, TouchableOpacity, Image } from "react-native";
-import DefaultLayot from "../../layouts/DefaultLayot";
+import DefaultLayout from "../../layouts/DefaultLayout";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import DropDownPicker from "react-native-dropdown-picker";
+import Select from "../../components/Select";
 import IconHideEye from "../../../assets/icons/hideEye.svg";
 import { useState } from "react";
 import IconLogout from "../../../assets/icons/logout.svg";
@@ -18,13 +18,12 @@ export default function ProfileScreen({ navigation }) {
   const [editInp, setEditInp] = useState(false);
 
   //xử lý dropdow
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("2");
-  const [items, setItems] = useState([
+  const [valueSelect, setValueSelect] = useState("2");
+  const itemsSelect = [
     { label: "1", value: "1" },
     { label: "2", value: "2" },
     { label: "3", value: "3" },
-  ]);
+  ];
 
   const handleEditProfile = () => {
     setEditInp(true);
@@ -39,8 +38,8 @@ export default function ProfileScreen({ navigation }) {
     });
   };
   return (
-    <DefaultLayot>
-      <ScrollView className="px-5 mt-5">
+    <DefaultLayout>
+      <ScrollView>
         {/* avatar và các button chọn option */}
         <View className="h-[180px] flex flex-row items-center">
           <View className="mr-2">
@@ -53,8 +52,8 @@ export default function ProfileScreen({ navigation }) {
               title="Tải ảnh lên"
               sxButton="py-2 mt-2 mx-auto bg-pink shadow-lg"
               style={{
-                shadowColor: "black", 
-                elevation: 20, 
+                shadowColor: "black",
+                elevation: 20,
               }}
             />
           </View>
@@ -125,35 +124,13 @@ export default function ProfileScreen({ navigation }) {
               </TouchableOpacity>
             </Input>
           </View>
-          <View className="my-5">
-            <Text className="text-bold font-semibold my-2">Chọn lớp</Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              disabled={!editInp}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder="Chọn lớp của bạn"
-              listMode="SCROLLVIEW"
-              style={{
-                backgroundColor: "#F1F1F1",
-                borderColor: "#DFDFDF",
-                borderWidth: 1,
-                paddingLeft: 16,
-              }}
-              placeholderStyle={{
-                fontFamily: "InterRegular",
-                color: "#707070",
-              }}
-              dropDownContainerStyle={{
-                borderColor: "#DFDFDF",
-                borderWidth: 1,
-                borderRadius: 8,
-              }}
-            />
-          </View>
+          <Select
+            label="Lớp của bạn"
+            items={itemsSelect}
+            value={valueSelect}
+            disabled={!editInp}
+            setValue={setValueSelect}
+          />
         </View>
         {editInp && (
           <Button
@@ -163,6 +140,6 @@ export default function ProfileScreen({ navigation }) {
           />
         )}
       </ScrollView>
-    </DefaultLayot>
+    </DefaultLayout>
   );
 }

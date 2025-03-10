@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import Button from "../../components/Button";
-import DefaultLayot from "../../layouts/DefaultLayot";
+import HeaderLayout from "../../layouts/HeaderLayout";
 import Input from "../../components/Input";
-import Header from "../../components/Header";
 import Checkbox from "../../components/Checkbox";
 import IconHideEye from "../../../assets/icons/hideEye.svg";
 
@@ -14,17 +13,15 @@ export default function LoginScreen({ navigation }) {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleLogin = () => {
-    if (username === "admin" && password === "123456") {
-      navigation.replace("Start");
-    } else {
-      alert("Sai tài khoản hoặc mật khẩu!");
-    }
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Start" }],
+    });
   };
 
   return (
-    <DefaultLayot>
-      <Header />
-      <View className="flex flex-1 px-5 mt-20">
+    <HeaderLayout>
+      <View className="flex flex-1">
         <Text className="text-5xl font-interSemiBold mx-auto my-20">
           Tên app
         </Text>
@@ -52,7 +49,7 @@ export default function LoginScreen({ navigation }) {
                 {showPassword ? (
                   "🙈"
                 ) : (
-                  <IconHideEye width = "16px" height = "16px"/>
+                  <IconHideEye width="16px" height="16px" />
                 )}
               </Text>
             </TouchableOpacity>
@@ -75,6 +72,6 @@ export default function LoginScreen({ navigation }) {
           onClick={handleLogin}
         />
       </View>
-    </DefaultLayot>
+    </HeaderLayout>
   );
 }

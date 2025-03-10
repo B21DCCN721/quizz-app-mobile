@@ -4,8 +4,10 @@
 - **SignupTeacher** - Màn hình đăng ký giáo viên
 - **SignupStudent** - Màn hình đăng ký học sinhsinh
 - **Login** - Màn hình login
-- **Main** - Toàn bộ các màn sau khi đăng nhập
-- **Home** - Trang chủ
+- **Start** - Màn hình bắt đầu
+- **Main** - Toàn bộ các màn sau khi đăng nhập, bottomtab
+- **Home** - Tất cả các screen thuộc tab trang chủ, stack home
+- **HomeMain** - Trang chủ
 - **Lesson** - Trang bài thi
 - **Rank** - Trang xếp hạng
 - **Profile** - Trang profile

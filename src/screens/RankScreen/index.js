@@ -1,13 +1,13 @@
-import DefaultLayot from "../../layouts/DefaultLayot";
+import DefaultLayout from "../../layouts/DefaultLayout";
 import { View, Text } from "react-native";
 
 function RankScreen({ navigation }) {
   return (
-    <DefaultLayot>
+    <DefaultLayout>
       <View className="flex flex-1 justify-center items-center">
         <Text className="text-center">Rank</Text>
       </View>
-    </DefaultLayot>
+    </DefaultLayout>
   );
 }
 

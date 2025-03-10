@@ -1,29 +1,26 @@
 import { useState } from "react";
-import DefaultLayot from "../../../layouts/DefaultLayot";
-import Header from "../../../components/Header";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
-import DropDownPicker from "react-native-dropdown-picker";
 import IconHideEye from "../../../../assets/icons/hideEye.svg";
+import Select from "../../../components/Select";
+import HeaderLayout from "../../../layouts/HeaderLayout";
 
 function SigupStudenScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
+  const [valueSelect, setValueSelect] = useState(null);
+  const itemsSelect = [
     { label: "1", value: "1" },
     { label: "2", value: "2" },
     { label: "3", value: "js" },
-  ]);
+  ];
 
   return (
-    <DefaultLayot>
-      <Header />
-      <View className="flex flex-1 px-5 mt-20">
+    <HeaderLayout>
+      <View className="flex flex-1">
         <Text className="text-2xl font-interSemiBold mx-auto my-5">
           Đăng ký tài khoản
         </Text>
@@ -55,45 +52,32 @@ function SigupStudenScreen({ navigation }) {
                 {showPassword ? (
                   "🙈"
                 ) : (
-                  <IconHideEye width = "16px" height = "16px"/>
+                  <IconHideEye width="16px" height="16px" />
                 )}
               </Text>
             </TouchableOpacity>
           </Input>
         </View>
-        <View className="my-5">
-          <Text className="text-bold font-semibold my-2">Chọn lớp</Text>
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            placeholder="Chọn lớp của bạn"
-            listMode="SCROLLVIEW"
-            style={{
-              backgroundColor: "#F1F1F1",
-              borderColor: "#DFDFDF",
-              borderWidth: 1,
-              paddingLeft: 16,
-            }}
-            placeholderStyle={{ fontFamily: "InterRegular", color: "#707070" }}
-            dropDownContainerStyle={{
-              borderColor: "#DFDFDF",
-              borderWidth: 1,
-              borderRadius: 8,
-            }}
-          />
-        </View>
+        <Select
+          label="Chọn lớp"
+          placeholder="Chọn lớp của bạn"
+          items={itemsSelect}
+          value={valueSelect}
+          setValue={setValueSelect}
+        />
         <Button
           title="Đăng ký"
           sxButton="bg-red mt-5 border border-b-[4px] border-b-[#343B6E]"
           sxText="text-center text-white"
-          onClick={() => navigation.replace("Start")}
+          onClick={() =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Start" }],
+            })
+          }
         />
       </View>
-    </DefaultLayot>
+    </HeaderLayout>
   );
 }
 

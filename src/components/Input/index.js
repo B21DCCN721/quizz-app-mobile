@@ -26,7 +26,7 @@ function Input({ value = '', placeholder = '', hide = false, edit = true, onChan
   );
 }
 Input.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   placeholder: PropTypes.string,
   hide: PropTypes.bool,
   edit: PropTypes.bool,
