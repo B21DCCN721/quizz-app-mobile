@@ -2,9 +2,10 @@ import { ImageBackground, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 
-function StartScreen({ navigation }) {
+function StartScreen({ navigation, route }) {
+  const {role} = route.params || {};
   const handleStart = () => {
-    navigation.replace("Main");
+    role ==="student"? navigation.replace("Main") : navigation.replace("MainTeacher")
   };
   return (
     <SafeAreaView className="flex flex-1 bg-white">
@@ -17,6 +18,7 @@ function StartScreen({ navigation }) {
             <Text className="font-semibold text-2xl">Chào mừng đến với</Text>
             <Text className="text-7xl mt-5">abc</Text>
           </View>
+          <Text>Tên app</Text>
           <Button
             title="Bắt đầu"
             sxButton="mb-5 bg-red border border-b-[4px] border-b-[#343B6E]"

@@ -6,24 +6,27 @@ import Input from "../../components/Input";
 import Checkbox from "../../components/Checkbox";
 import IconHideEye from "../../../assets/icons/hideEye.svg";
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, route }) {
+  const { role } = route.params || {};
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
   const handleLogin = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Start" }],
-    });
+    navigation.reset(
+      {
+        index: 0,
+        routes: [{ name: "Start", params: { role: role } }],
+      },
+    );
   };
 
   return (
     <HeaderLayout>
       <View className="flex flex-1">
         <Text className="text-5xl font-interSemiBold mx-auto my-20">
-          Tên app
+          {role}
         </Text>
         {/* Input Email */}
         <View className="mt-5">

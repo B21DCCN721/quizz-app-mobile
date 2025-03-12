@@ -7,6 +7,7 @@ import LoginScreen from "../screens/LoginScreen";
 import { SigupStudentScreen, SigupTeacherScreen } from "../screens/SigupScreen";
 import StartScreen from "../screens/StartScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
+import BottomTabNavigatorTeacher from "./teacher/BottomTabNavigatorTeacher";
 
 
 /*
@@ -55,6 +56,11 @@ export default function StackNavigator() {
         <Stack.Screen
           name="Main"
           component={BottomTabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MainTeacher"
+          component={BottomTabNavigatorTeacher}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -5,7 +5,7 @@
 - **SignupStudent** - Màn hình đăng ký học sinhsinh
 - **Login** - Màn hình login
 - **Start** - Màn hình bắt đầu
-- **Main** - Toàn bộ các màn sau khi đăng nhập, bottomtab
+- **Main** - Toàn bộ các màn sau khi đăng nhập, bottomtab của học sinh
 - **Home** - Tất cả các screen thuộc tab trang chủ, stack home
 - **HomeMain** - Trang chủ
 - **ListTest** - Danh sách bài thi
@@ -13,6 +13,9 @@
 - **Lesson** - Trang bài thi
 - **Rank** - Trang xếp hạng
 - **Profile** - Trang profile
+
+- **Lưu ý**: Đối với các màn hình teacher thì thêm Teacher cuối tên ứng với màn hình
+- **MainTeacher** Toàn bộ các màn  sau khi login của giáo viên
 
 - **Sử dụng ảnh SVG** : import và sử dụng như 1 component react; không hỗ trợ nativewind(tailwind) nên muốn set width, height thì dùng 2 prop width, height nhận giá trị là string ví dụ width="300px"
 - **Phông chữ** : xem chi tiết tên ứng với phông trong tailwind.config hoặc dùng stylesheet thì xem tên trong app.js ví dụ cách dùng với nativewind "font-interBold"

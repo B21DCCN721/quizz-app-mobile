@@ -5,7 +5,8 @@ import Button from "../../../components/Button";
 import IconHideEye from "../../../../assets/icons/hideEye.svg";
 import HeaderLayout from "../../../layouts/HeaderLayout";
 
-function SigupTeacherScreen({ navigation }) {
+function SigupTeacherScreen({ navigation, route }) {
+  const { role } = route.params || {};
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -56,10 +57,12 @@ function SigupTeacherScreen({ navigation }) {
           sxButton="bg-red mt-5 border border-b-[4px] border-b-[#343B6E]"
           sxText="text-center text-white font-interBold"
           onClick={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Start" }],
-            })
+            navigation.reset(
+              {
+                index: 0,
+                routes: [{ name: "Start", params: {role: role} }],
+              },
+            )
           }
         />
       </View>
