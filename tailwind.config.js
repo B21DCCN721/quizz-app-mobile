@@ -12,6 +12,7 @@ module.exports = {
         "yellow-2": "#FFEDC4",
         blue: "#73DBD5",
         pink: "#F9A0A0",
+        "pink-2": "#FFA5B8",
         grayInput: "#F1F1F1",
         grayBorder: "#DFDFDF"
       },

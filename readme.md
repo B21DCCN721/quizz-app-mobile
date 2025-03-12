@@ -8,6 +8,8 @@
 - **Main** - Toàn bộ các màn sau khi đăng nhập, bottomtab
 - **Home** - Tất cả các screen thuộc tab trang chủ, stack home
 - **HomeMain** - Trang chủ
+- **ListTest** - Danh sách bài thi
+- **DetailTest** - Chi tiết bài thi
 - **Lesson** - Trang bài thi
 - **Rank** - Trang xếp hạng
 - **Profile** - Trang profile

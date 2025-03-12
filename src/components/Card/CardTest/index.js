@@ -8,12 +8,12 @@ import PropTypes from "prop-types";
 //onClickEnterExam xử lý sự kiện click nút vào thi
 function CardTest({info, onClickDetail, onClickEnterExam }) {
     return ( 
-        <View className="h-[115px] bg-yellow-2 rounded rounded-20 mt-5 flex flex-row justify-between px-5"  style={{elevation:30}}>
+        <View className="h-[115px] bg-yellow-2 rounded rounded-20 mt-5 flex flex-row justify-between px-5"  style={{elevation:10}}>
             <View className="flex flex-1 justify-between h-full">
                 <Text className="font-interRegular">Tên: {info.name}</Text>
-                <Text className="font-interRegular">Mã bài: {info.name}</Text>
-                <Text className="font-interRegular">Số câu: {info.name}</Text>
-                <Text className="font-interRegular">Lớp: {info.name}</Text>
+                <Text className="font-interRegular">Mã bài: {info.code}</Text>
+                <Text className="font-interRegular">Số câu: {info.quantity}</Text>
+                <Text className="font-interRegular">Lớp: {info.grade}</Text>
             </View>
             <View className="flex justify-around h-full">
                 <Button title = "Chi tiết" sxButton="bg-red px-8 py-2" sxText="text-white font-interRegular" onClick={onClickDetail}/>

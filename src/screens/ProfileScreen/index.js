@@ -39,7 +39,7 @@ export default function ProfileScreen({ navigation }) {
   };
   return (
     <DefaultLayout>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         {/* avatar và các button chọn option */}
         <View className="h-[180px] flex flex-row items-center">
           <View className="mr-2">

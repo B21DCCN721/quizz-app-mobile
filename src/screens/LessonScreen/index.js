@@ -5,7 +5,7 @@ import { CardTest, CardDetail } from "../../components/Card";
 function LessonScreen({ navigation }) {
   return (
     <DefaultLayout>
-      <ScrollView className="px-5 mt-5">
+      <ScrollView>
         <CardTest info={{name:'abc'}}/>
         <CardDetail info={{name:'abc'}}/>
       </ScrollView>

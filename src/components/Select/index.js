@@ -11,13 +11,15 @@ placeholder mô tả cho thẻ
 value giá trị mặc định của thẻ
 setValue cập nhật giá trị value
 TRONG ĐÓ value và setValue LÀ VALUE VÀ SETTER CỦA USESTATEUSESTATE
+sxView để css view chứa select
+sxLabel css cho label
 */
 
-function Select({ label='', items, placeholder='', value, setValue, disabled=false }) {
+function Select({ label='', items, placeholder='', value, setValue, disabled=false, sxView, sxLabel }) {
   const [open, setOpen] = useState(false);
   return (
-    <View className="my-5">
-      <Text className="text-bold font-semibold my-2">{label}</Text>
+    <View className= {`my-5 ${sxView}`}>
+      <Text className={`text-bold font-semibold my-2 ${sxLabel}`}>{label}</Text>
       <DropDownPicker
         open={open}
         value={value}
@@ -51,6 +53,8 @@ Select.propTypes = {
     value: PropTypes.any,
     setValue: PropTypes.func,
     disabled: PropTypes.bool,
+    sxView: PropTypes.string,
+    sxLabel: PropTypes.string,
 }
 
 export default Select;

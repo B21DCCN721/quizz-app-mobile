@@ -5,12 +5,16 @@ import ImgHome from "../../../assets/imgs/imghome.svg";
 import AvatarHome from "../../../assets/imgs/avatarhome.svg";
 import { CardNameGame } from "../../components/Card";
 import IconCardGame1 from "../../../assets/icons/cardGame1.svg";
+import IconCardGame2 from "../../../assets/icons/cardGame2.svg";
+import IconCardGame3 from "../../../assets/icons/cardGame3.svg";
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
   return (
     <DefaultLayout>
       <ScrollView>
-        <ImgHome />
+        <View className="flex items-center">
+          <ImgHome />
+        </View>
         <View className="flex flex-row justify-between items-center">
           <View>
             <Text>abc</Text>
@@ -35,9 +39,26 @@ export default function HomeScreen({navigation}) {
           <AvatarHome width="36px" height="36px" />
         </View>
         <View>
-            <CardNameGame title="Trò chơi trắc nghiệm" onClick={() => navigation.navigate("ListTest", { mode: 1 })}><IconCardGame1/></CardNameGame>
-            <CardNameGame/>
-            <CardNameGame/>
+          <CardNameGame
+            title="Trò chơi trắc nghiệm"
+            onClick={() =>
+              navigation.navigate("ListTest", { mode: "tracnghiem" })
+            }
+          >
+            <IconCardGame1 />
+          </CardNameGame>
+          <CardNameGame
+            title="Trò chơi tô màu"
+            onClick={() => navigation.navigate("ListTest", { mode: "tomau" })}
+          >
+            <IconCardGame2 />
+          </CardNameGame>
+          <CardNameGame
+            title="Trò chơi đếm số"
+            onClick={() => navigation.navigate("ListTest", { mode: "demso" })}
+          >
+            <IconCardGame3 />
+          </CardNameGame>
         </View>
       </ScrollView>
     </DefaultLayout>

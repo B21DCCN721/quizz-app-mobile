@@ -50,7 +50,7 @@ export default function BottomTabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeStackNavigator} />
+      <Tab.Screen name="Home" component={HomeStackNavigator} options={{ popToTopOnBlur: true }} />
       <Tab.Screen name="Lesson" component={LessonScreen} />
       <Tab.Screen name="Rank" component={RankScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
