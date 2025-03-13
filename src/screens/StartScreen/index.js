@@ -1,6 +1,7 @@
 import { ImageBackground, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
+import NameApp from "../../../assets/imgs/nameapp.svg";
 
 function StartScreen({ navigation, route }) {
   const {role} = route.params || {};
@@ -15,10 +16,9 @@ function StartScreen({ navigation, route }) {
       >
         <View className="flex flex-1 px-5 justify-between">
           <View className="flex flex-1 justify-center items-center">
-            <Text className="font-semibold text-2xl">Chào mừng đến với</Text>
-            <Text className="text-7xl mt-5">abc</Text>
+            <Text className="font-semibold text-2xl mb-4">Chào mừng đến với</Text>
+            <NameApp/>
           </View>
-          <Text>Tên app</Text>
           <Button
             title="Bắt đầu"
             sxButton="mb-5 bg-red border border-b-[4px] border-b-[#343B6E]"

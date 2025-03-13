@@ -1,8 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigatorTeacher from "./HomeStackNavigatorTeacher";
-import NoticeScreen from "../../screens/teacher/NoticeScreen";
-import ProfileScreen from "../../screens/teacher/Profile";
+import CreateTestScreenTeacher from "../../screens/teacher/CreateTestScreenTeacher";
+import NoticeScreenTeacher from "../../screens/teacher/NoticeScreenTeacher";
+import ProfileStackNavigatorTeacher from "./ProfileStackNavigatorTeacher";
 import { Text } from "react-native";
 import IconHouseActive from "../../../assets/icons/houseActive.svg";
 import IconHouseInActive from "../../../assets/icons/houseInActive.svg";
@@ -10,6 +11,8 @@ import IconLessonActive from "../../../assets/icons/lessonActive.svg";
 import IconLessonInActive from "../../../assets/icons/lessonInActive.svg";
 import IconProfileActive from "../../../assets/icons/profileActive.svg";
 import IconProfileInActive from "../../../assets/icons/profileInActive.svg";
+import IconNoticeActive from "../../../assets/icons/noticeActive.svg";
+import IconNoticeInActive from "../../../assets/icons/noticeInActive.svg";
 
 /*
 thanh bottom tab điều hướng các tab
@@ -25,8 +28,10 @@ export default function BottomTabNavigatorTeacher() {
         tabBarIcon: ({ size, focused }) => {
           if (route.name === "HomeTeacher") {
             return focused ? <IconHouseActive width={size} height={size} /> : <IconHouseInActive width={size} height={size} />;
-          } else if (route.name === "NoticeTeacher") {
+          } else if (route.name === "CreateTestTeacher") {
             return focused ? <IconLessonActive width={size} height={size} /> : <IconLessonInActive width={size} height={size} />;
+          }else if (route.name === "NoticeTeacher") {
+            return focused ? <IconNoticeActive width={size} height={size} /> : <IconNoticeInActive width={size} height={size} />;
           } else if (route.name === "ProfileTeacher") {
             return focused ? <IconProfileActive width={size} height={size} /> : <IconProfileInActive width={size} height={size} />;
           }
@@ -36,6 +41,7 @@ export default function BottomTabNavigatorTeacher() {
         tabBarLabel: () => {
           // Set tab label text
           if (route.name === "HomeTeacher") return <Text style={{ fontFamily: "Inter-Regular" }}>Trang chủ</Text>;
+          if (route.name === "CreateTestTeacher") return <Text style={{ fontFamily: "Inter-Regular" }}>Tạo mới</Text>;
           if (route.name === "NoticeTeacher") return <Text style={{ fontFamily: "Inter-Regular" }}>Thông báo</Text>;
           if (route.name === "ProfileTeacher") return <Text style={{ fontFamily: "Inter-Regular" }}>Hồ sơ</Text>;
         },
@@ -45,8 +51,9 @@ export default function BottomTabNavigatorTeacher() {
       })}
     >
       <Tab.Screen name="HomeTeacher" component={HomeStackNavigatorTeacher} options={{ popToTopOnBlur: true }} />
-      <Tab.Screen name="NoticeTeacher" component={NoticeScreen} />
-      <Tab.Screen name="ProfileTeacher" component={ProfileScreen} />
+      <Tab.Screen name="CreateTestTeacher" component={CreateTestScreenTeacher} />
+      <Tab.Screen name="NoticeTeacher" component={NoticeScreenTeacher} />
+      <Tab.Screen name="ProfileTeacher" component={ProfileStackNavigatorTeacher} options={{ popToTopOnBlur: true }} />
     </Tab.Navigator>
   );
 }

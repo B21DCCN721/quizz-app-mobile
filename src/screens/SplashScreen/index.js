@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SplashSvg from "../../../assets/imgs/splash.svg"; // Import SVG
+import SplashSvg from "../../../assets/imgs/splash.svg";
+import NameApp from "../../../assets/imgs/nameapp.svg";
 
 const SplashScreen = ({ navigation }) => {
   useEffect(() => {
@@ -19,7 +20,7 @@ const SplashScreen = ({ navigation }) => {
   
           {/* Nội dung */}
           <View className="flex flex-1 justify-center items-center">
-            <Text className="text-cyan-500 text-[48px]">My App</Text>
+            <NameApp/>
           </View>
         </View>
       </View>

@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import DefaultLayout from "../../layouts/DefaultLayout";
 import { CardTest, CardDetail } from "../../components/Card";
 
-function LessonScreen({ navigation }) {
+function NoticeScreen({ navigation }) {
   return (
     <DefaultLayout>
       <ScrollView>
@@ -13,4 +13,4 @@ function LessonScreen({ navigation }) {
   );
 }
 
-export default LessonScreen;
+export default NoticeScreen;

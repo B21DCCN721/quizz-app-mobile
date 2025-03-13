@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 //info nhận vào 1 obj chứa thông tin bài thi
 //onClickDetail xử lý sự kiện click nút chi tiết
 //onClickEnterExam xử lý sự kiện click nút vào thi
-function CardTest({info, onClickDetail, onClickEnterExam }) {
+function CardTest({info, onClickButton_1, onClickButton_2, title_1, title_2 }) {
     return ( 
         <View className="h-[115px] bg-yellow-2 rounded rounded-20 mt-5 flex flex-row justify-between px-5"  style={{elevation:10}}>
             <View className="flex flex-1 justify-between h-full">
@@ -16,8 +16,8 @@ function CardTest({info, onClickDetail, onClickEnterExam }) {
                 <Text className="font-interRegular">Lớp: {info.grade}</Text>
             </View>
             <View className="flex justify-around h-full">
-                <Button title = "Chi tiết" sxButton="bg-red px-8 py-2" sxText="text-white font-interRegular" onClick={onClickDetail}/>
-                <Button title = "Vào thi" sxButton="bg-red px-8 py-2" sxText="text-white font-interRegular" onClick={onClickEnterExam}/>
+                <Button title = {title_1} sxButton="bg-red px-8 py-2" sxText="text-white font-interRegular" onClick={onClickButton_1}/>
+                <Button title = {title_2} sxButton="bg-red px-8 py-2" sxText="text-white font-interRegular" onClick={onClickButton_2}/>
             </View>
         </View>
      );
@@ -25,8 +25,10 @@ function CardTest({info, onClickDetail, onClickEnterExam }) {
 
 CardTest.propTypes = {
     info: PropTypes.object,
-    onClickDetail: PropTypes.func,
-    onClickEnterExam: PropTypes.func,
+    onClickButton_1: PropTypes.func,
+    onClickButton_2: PropTypes.func,
+    title_1: PropTypes.string,
+    title_2: PropTypes.string,
 }
 
 export default CardTest;

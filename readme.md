@@ -7,15 +7,21 @@
 - **Start** - Màn hình bắt đầu
 - **Main** - Toàn bộ các màn sau khi đăng nhập, bottomtab của học sinh
 - **Home** - Tất cả các screen thuộc tab trang chủ, stack home
-- **HomeMain** - Trang chủ
+- **HomeMain** - Trang chủ học sinh, màn hình đầu trong stack home
 - **ListTest** - Danh sách bài thi
 - **DetailTest** - Chi tiết bài thi
-- **Lesson** - Trang bài thi
+- **Notice** - Trang thông báo
 - **Rank** - Trang xếp hạng
 - **Profile** - Trang profile
 
 - **Lưu ý**: Đối với các màn hình teacher thì thêm Teacher cuối tên ứng với màn hình
 - **MainTeacher** Toàn bộ các màn  sau khi login của giáo viên
+- **HomeMainTeacher** - Trang chủ giáo viên
+- **CreateTestTeacher** Màn hình tạo mới bài thi
+- **NoticeTeacher** Màn hình thông báo  teacher
+- **ProfileTeacher** Màn hình profile teacher
+- **ProfileTeacher** Màn hình đầu trong stack profile giáo viênviên
+- **EditProfileTeacher** Màn hình edit profile giáo viênviên
 
 - **Sử dụng ảnh SVG** : import và sử dụng như 1 component react; không hỗ trợ nativewind(tailwind) nên muốn set width, height thì dùng 2 prop width, height nhận giá trị là string ví dụ width="300px"
 - **Phông chữ** : xem chi tiết tên ứng với phông trong tailwind.config hoặc dùng stylesheet thì xem tên trong app.js ví dụ cách dùng với nativewind "font-interBold"

@@ -5,6 +5,7 @@ import HeaderLayout from "../../layouts/HeaderLayout";
 import Input from "../../components/Input";
 import Checkbox from "../../components/Checkbox";
 import IconHideEye from "../../../assets/icons/hideEye.svg";
+import NameApp from "../../../assets/imgs/nameapp.svg";
 
 export default function LoginScreen({ navigation, route }) {
   const { role } = route.params || {};
@@ -25,9 +26,9 @@ export default function LoginScreen({ navigation, route }) {
   return (
     <HeaderLayout>
       <View className="flex flex-1">
-        <Text className="text-5xl font-interSemiBold mx-auto my-20">
-          {role}
-        </Text>
+        <View className="mx-auto my-20">
+          <NameApp/>
+        </View>
         {/* Input Email */}
         <View className="mt-5">
           <Text className="text-bold font-semibold my-2">Email</Text>

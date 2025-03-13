@@ -1,9 +1,9 @@
 import DefaultLayout from "../../../layouts/DefaultLayout";
 
-function NoticeScreen() {
+function NoticeScreenTeacher() {
     return (  
         <DefaultLayout/>
     );
 }
 
-export default NoticeScreen;
+export default NoticeScreenTeacher;

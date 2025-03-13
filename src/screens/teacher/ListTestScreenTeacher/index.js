@@ -1,10 +1,10 @@
-import { CardTest } from "../../components/Card";
-import HeaderLayout from "../../layouts/HeaderLayout";
+import { CardTest } from "../../../components/Card";
+import HeaderLayout from "../../../layouts/HeaderLayout";
 import { ScrollView, Text } from "react-native";
-import Search from "../../components/Search";
+import Search from "../../../components/Search";
 import { useState } from "react";
 
-function ListTestScreen({ route, navigation }) {
+function ListTestScreenTeacher({ route }) {
   const info = [
     {
       id: 1,
@@ -53,9 +53,6 @@ function ListTestScreen({ route, navigation }) {
     default:
       break;
   }
-  const handleClickDetail = (id, mode) => {
-    navigation.navigate("DetailTest", { mode: mode, id: id });
-  };
   return (
     <HeaderLayout>
       <ScrollView
@@ -71,17 +68,11 @@ function ListTestScreen({ route, navigation }) {
         />
         <Text className="font-interBold text-xl my-3">{heading}</Text>
         {info.map((item, index) => (
-          <CardTest
-            key={index}
-            info={item}
-            title_1="Chi tiết"
-            title_2="Vào thi"
-            onClickButton_1={() => handleClickDetail(item.id, mode)}
-          />
+          <CardTest key={index} info={item} title_1="Chỉnh sửa" title_2="Xóa" />
         ))}
       </ScrollView>
     </HeaderLayout>
   );
 }
 
-export default ListTestScreen;
+export default ListTestScreenTeacher;
