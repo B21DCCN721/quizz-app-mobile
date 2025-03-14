@@ -1,13 +1,11 @@
 import { ScrollView } from "react-native";
 import DefaultLayout from "../../layouts/DefaultLayout";
-import { CardTest, CardDetail } from "../../components/Card";
 
 function NoticeScreen({ navigation }) {
   return (
     <DefaultLayout>
       <ScrollView>
-        <CardTest info={{name:'abc'}}/>
-        <CardDetail info={{name:'abc'}}/>
+
       </ScrollView>
     </DefaultLayout>
   );

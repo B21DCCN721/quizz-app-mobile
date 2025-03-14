@@ -45,7 +45,7 @@ function ListTestScreen({ route, navigation }) {
       heading = "Danh sách bài thi trắc nghiệm";
       break;
     case "tomau":
-      heading = "Danh sách bài thi tô màu";
+      heading = "Danh sách bài thi đoán màu";
       break;
     case "demso":
       heading = "Danh sách bài thi đếm số";
@@ -56,6 +56,9 @@ function ListTestScreen({ route, navigation }) {
   const handleClickDetail = (id, mode) => {
     navigation.navigate("DetailTest", { mode: mode, id: id });
   };
+  const handleClickStart = (id, mode) => {
+    navigation.navigate("MultipleChoice", { mode: mode, id: id });
+  }
   return (
     <HeaderLayout>
       <ScrollView
@@ -77,6 +80,7 @@ function ListTestScreen({ route, navigation }) {
             title_1="Chi tiết"
             title_2="Vào thi"
             onClickButton_1={() => handleClickDetail(item.id, mode)}
+            onClickButton_2={() => handleClickStart(item.id, mode)}
           />
         ))}
       </ScrollView>

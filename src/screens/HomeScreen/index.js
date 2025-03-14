@@ -15,28 +15,18 @@ export default function HomeScreen({ navigation }) {
         <View className="flex items-center">
           <ImgHome />
         </View>
-        <View className="flex flex-row justify-between items-center">
+        <View className="flex flex-row justify-end items-center">
           <View>
-            <Text>abc</Text>
-          </View>
-          <View className="flex flex-row items-center">
-            <View>
-              <Text className="font-interSemiBold text-right">
-                ✋Xin chào, abc
-              </Text>
-              <Text className="font-interLight text-right">
-                Học sinh khối 5
-              </Text>
-            </View>
-            <AvatarHome width="36px" height="36px" />
-          </View>
-        </View>
-        <View className="flex flex-row justify-between items-center">
-          <View>
-            <Text className="font-interBold text-2xl">Bài học</Text>
-            <Text className="font-interRegular">Chọn trò chơi</Text>
+            <Text className="font-interSemiBold text-right">
+              ✋Xin chào, abc
+            </Text>
+            <Text className="font-interLight text-right">Học sinh khối 5</Text>
           </View>
           <AvatarHome width="36px" height="36px" />
+        </View>
+        <View>
+          <Text className="font-interBold text-2xl">Bài học</Text>
+          <Text className="font-interRegular">Chọn trò chơi</Text>
         </View>
         <View>
           <CardNameGame

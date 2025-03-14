@@ -13,6 +13,8 @@
 - **Notice** - Trang thông báo
 - **Rank** - Trang xếp hạng
 - **Profile** - Trang profile
+- **MultipleChoice** - Màn hình làm bài thi trắc nghiệm
+- **Result** - Màn hình kết quả làm bài
 
 - **Lưu ý**: Đối với các màn hình teacher thì thêm Teacher cuối tên ứng với màn hình
 - **MainTeacher** Toàn bộ các màn  sau khi login của giáo viên
@@ -21,6 +23,7 @@
 - **NoticeTeacher** Màn hình thông báo  teacher
 - **ProfileTeacher** Màn hình profile teacher
 - **ProfileTeacher** Màn hình đầu trong stack profile giáo viênviên
+- **DetailProfileTeacher** Màn hình chi tiết profile
 - **EditProfileTeacher** Màn hình edit profile giáo viênviên
 
 - **Sử dụng ảnh SVG** : import và sử dụng như 1 component react; không hỗ trợ nativewind(tailwind) nên muốn set width, height thì dùng 2 prop width, height nhận giá trị là string ví dụ width="300px"

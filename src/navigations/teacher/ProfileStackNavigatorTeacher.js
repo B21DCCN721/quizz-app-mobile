@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreenTeacher from "../../screens/teacher/ProfileScreenTeacher";
+import StatisticalScreenTeacher from "../../screens/teacher/StatisticalScreenTeacher";
 import EditProfileScreenTeacher from "../../screens/teacher/EditProfileScreenTeacher";
 
 const Stack = createStackNavigator();
@@ -12,7 +13,12 @@ function ProfileStackNavigatorTeacher() {
         component={ProfileScreenTeacher}
         options={{ headerShown: false }}
       />
-        <Stack.Screen
+      <Stack.Screen
+        name="StatisticalTeacher"
+        component={StatisticalScreenTeacher}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="EditProfileTeacher"
         component={EditProfileScreenTeacher}
         options={{ headerShown: false }}
