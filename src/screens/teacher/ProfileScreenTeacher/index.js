@@ -1,4 +1,4 @@
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, Alert } from "react-native";
 import IconSetting from "../../../../assets/icons/setting.svg";
 import AvatarTeacher from "../../../../assets/imgs/avatarteacher.svg";
 import Button from "../../../components/Button";
@@ -18,10 +18,17 @@ function ProfileScreenTeacher({ navigation }) {
   const [help, setHelp] = useState(false);
   const [contact, setContact] = useState(false);
   const handleLogout = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Welcome" }],
-    });
+    Alert.alert("Thông báo", "Xác nhận đăng xuất.", [
+      { text: "Đóng", style: "cancel" },
+      {
+        text: "ok",
+        onPress: () =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Welcome" }],
+          }),
+      },
+    ]);
   };
   const handleEditProfile = () => {
     navigation.navigate("EditProfileTeacher");
@@ -79,7 +86,11 @@ function ProfileScreenTeacher({ navigation }) {
               sxButton="flex flex-row justify-between items-center flex-1"
               onClick={() => setAbout((prev) => !prev)}
             >
-              {about ? <IconChevronBottom height="30px" /> : <IconChevronRight height="30px" />}
+              {about ? (
+                <IconChevronBottom height="30px" />
+              ) : (
+                <IconChevronRight height="30px" />
+              )}
             </Button>
           </View>
 
@@ -98,7 +109,11 @@ function ProfileScreenTeacher({ navigation }) {
               sxButton="flex flex-row justify-between flex-1"
               onClick={() => setHelp((prev) => !prev)}
             >
-              {help ? <IconChevronBottom height="30px" /> : <IconChevronRight height="30px" />}
+              {help ? (
+                <IconChevronBottom height="30px" />
+              ) : (
+                <IconChevronRight height="30px" />
+              )}
             </Button>
           </View>
           {help && (
@@ -119,13 +134,15 @@ function ProfileScreenTeacher({ navigation }) {
               sxButton="flex flex-row justify-between items-center flex-1"
               onClick={() => setContact((prev) => !prev)}
             >
-              {contact ? <IconChevronBottom height="30px" /> : <IconChevronRight height="30px" />}
+              {contact ? (
+                <IconChevronBottom height="30px" />
+              ) : (
+                <IconChevronRight height="30px" />
+              )}
             </Button>
           </View>
           {contact && (
-            <Text className="ml-5 mb-2 font-interRegular">
-              Thiên Vận Tinh
-            </Text>
+            <Text className="ml-5 mb-2 font-interRegular">Thiên Vận Tinh</Text>
           )}
         </View>
         <View className="flex flex-row items-center border-b border-grayBorder">

@@ -1,5 +1,12 @@
 import React from "react";
-import { View, ScrollView, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import DefaultLayout from "../../layouts/DefaultLayout";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -32,14 +39,28 @@ export default function ProfileScreen({ navigation }) {
     setEditInp(false);
   };
   const handleLogout = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Welcome" }],
-    });
+    Alert.alert(
+      "Thông báo",
+      "Xác nhận đăng xuất.",
+      [
+        { text: "Đóng", style: "cancel" },
+        {
+          text: "ok",
+          onPress: () =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Welcome" }],
+            }),
+        }
+      ]
+    );
   };
   return (
     <DefaultLayout>
-      <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         {/* avatar và các button chọn option */}
         <View className="h-[180px] flex flex-row items-center">
           <View className="mr-2">
