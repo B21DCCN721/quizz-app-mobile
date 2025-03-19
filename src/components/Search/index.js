@@ -28,4 +28,12 @@ function Search({ valueInput = "", onChange, valueSelect, itemsSelect, setValueS
   );
 }
 
+Search.propTypes = {
+  valueInput: PropTypes.string,
+  onChange: PropTypes.func,
+  valueSelect: PropTypes.string,
+  itemsSelect: PropTypes.array,
+  setValueSelect: PropTypes.func,
+}
+
 export default Search;

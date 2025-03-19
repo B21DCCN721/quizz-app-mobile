@@ -9,6 +9,7 @@ import StartScreen from "../screens/StartScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 import BottomTabNavigatorTeacher from "./teacher/BottomTabNavigatorTeacher";
 import MultipleChoiceTestScreen from "../screens/MultipleChoiceTestScreen";
+import ResultScreen from "../screens/ResultScreen";
 
 
 /*
@@ -67,6 +68,11 @@ export default function StackNavigator() {
         <Stack.Screen
           name="MultipleChoice"
           component={MultipleChoiceTestScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Result"
+          component={ResultScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

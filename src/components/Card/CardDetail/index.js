@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import Button from "../../Button";
+import PropTypes from "prop-types";
 function CardDetail({info, onClickEnterExam}) {
   return (
     <View
@@ -18,6 +19,11 @@ function CardDetail({info, onClickEnterExam}) {
         />
     </View>
   );
+}
+
+CardDetail.propTypes = {
+  info: PropTypes.object,
+  onClickEnterExam: PropTypes.func,
 }
 
 export default CardDetail;

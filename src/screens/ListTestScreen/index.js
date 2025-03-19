@@ -4,6 +4,10 @@ import { ScrollView, Text } from "react-native";
 import Search from "../../components/Search";
 import { useState } from "react";
 
+/*
+dựa vào từng case trong handleClickStart để chuyển hướng đến bài test tương ứng với trò chơi, dựa vào id và mode để xác định id và thể loại
+*/
+
 function ListTestScreen({ route, navigation }) {
   const info = [
     {
@@ -56,8 +60,21 @@ function ListTestScreen({ route, navigation }) {
   const handleClickDetail = (id, mode) => {
     navigation.navigate("DetailTest", { mode: mode, id: id });
   };
+
   const handleClickStart = (id, mode) => {
-    navigation.navigate("MultipleChoice", { mode: mode, id: id });
+    switch (mode) {
+      case "tracnghiem":
+        navigation.navigate("MultipleChoice", { mode: mode, id: id });
+        break;
+      case "tomau":
+
+        break;
+      case "demso":
+        
+      break;
+      default:
+        break;
+    }
   }
   return (
     <HeaderLayout>
