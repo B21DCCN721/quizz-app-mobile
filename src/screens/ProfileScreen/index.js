@@ -17,12 +17,16 @@ import IconLogout from "../../../assets/icons/logout.svg";
 import IconEditInfo from "../../../assets/icons/editInfo.svg";
 import IconHistoryProfile from "../../../assets/icons/historyProfile.svg";
 
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/slices/authSlice";
+
 export default function ProfileScreen({ navigation }) {
   const [email, setEmail] = useState("abc@gmail.com");
   const [name, setName] = useState("VoCucThienTon");
   const [password, setPassword] = useState("123456");
   const [showPassword, setShowPassword] = useState(false);
   const [editInp, setEditInp] = useState(false);
+  const dispatch = useDispatch();
 
   //xử lý dropdow
   const [valueSelect, setValueSelect] = useState("2");
@@ -47,10 +51,11 @@ export default function ProfileScreen({ navigation }) {
         {
           text: "ok",
           onPress: () =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Welcome" }],
-            }),
+            // navigation.reset({
+            //   index: 0,
+            //   routes: [{ name: "Welcome" }],
+            // }),
+            dispatch(logout())
         }
       ]
     );

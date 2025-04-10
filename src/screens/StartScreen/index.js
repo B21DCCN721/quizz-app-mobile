@@ -2,9 +2,10 @@ import { ImageBackground, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/Button";
 import NameApp from "../../../assets/imgs/nameapp.svg";
+import { useSelector } from "react-redux";
 
 function StartScreen({ navigation, route }) {
-  const {role} = route.params || {};
+  const role = useSelector((state) => state.auth.role);
   const handleStart = () => {
     role ==="student"? navigation.replace("Main") : navigation.replace("MainTeacher")
   };
