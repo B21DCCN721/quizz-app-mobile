@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../store/slices/authSlice";
 
 export default function ProfileScreen({ navigation }) {
+
   const [email, setEmail] = useState("abc@gmail.com");
   const [name, setName] = useState("VoCucThienTon");
   const [password, setPassword] = useState("123456");
@@ -91,9 +92,14 @@ export default function ProfileScreen({ navigation }) {
               title="Xem lịch sử làm bài"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
               sxText="font-interRegular"
+              onClick={() => {
+                  navigation.navigate("History");
+                
+              }}
             >
               <IconHistoryProfile />
             </Button>
+            
             <Button
               title="Chỉnh sửa thông tin"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"

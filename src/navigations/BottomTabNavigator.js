@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigator from "./HomeStackNavigator";
 import NoticeScreen from "../screens/NoticeScreen";
 import RankScreen from "../screens/RankScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileStackNavigator from "./ProfileStackNavigator";
 import { Text } from "react-native";
 import IconHouseActive from "../../assets/icons/houseActive.svg";
 import IconHouseInActive from "../../assets/icons/houseInActive.svg";
@@ -53,7 +53,7 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Home" component={HomeStackNavigator} options={{ popToTopOnBlur: true }} />
       <Tab.Screen name="Notice" component={NoticeScreen} />
       <Tab.Screen name="Rank" component={RankScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileStackNavigator} options={{ popToTopOnBlur: true }}/>
     </Tab.Navigator>
   );
 }
