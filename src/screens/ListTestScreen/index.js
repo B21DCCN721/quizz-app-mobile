@@ -2,56 +2,36 @@ import { CardTest } from "../../components/Card";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import { ScrollView, Text } from "react-native";
 import Search from "../../components/Search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axiosClient from "../../configs/axiosClient";
 
 /*
 dựa vào từng case trong handleClickStart để chuyển hướng đến bài test tương ứng với trò chơi, dựa vào id và mode để xác định id và thể loại
 */
 
 function ListTestScreen({ route, navigation }) {
-  const info = [
-    {
-      id: 1,
-      name: "abc",
-      code: "ABC",
-      quantity: 10,
-      grade: 5,
-      category: "trắc nghiệm",
-    },
-    {
-      id: 2,
-      name: "abc",
-      code: "ABC",
-      quantity: 10,
-      grade: 44,
-      category: "trắc nghiệm",
-    },
-    {
-      id: 3,
-      name: "abc",
-      code: "ABC",
-      quantity: 10,
-      grade: 1,
-      category: "trắc nghiệm",
-    },
-  ];
-  const [valueSelect, setValueSelect] = useState(null);
+  const [listTest, setListTest] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [valueSelect, setValueSelect] = useState('');
   const itemsSelect = [
     { label: "1", value: "1" },
     { label: "2", value: "2" },
-    { label: "3", value: "js" },
+    { label: "3", value: "3" },
+    { label: "4", value: "4" },
+    { label: "5", value: "5" },
   ];
   const [valueInput, setValueInput] = useState("");
   const { mode } = route.params || {};
   let heading = "";
   switch (mode) {
-    case "tracnghiem":
+    case "1":
       heading = "Danh sách bài thi trắc nghiệm";
       break;
-    case "tomau":
+    case "2":
       heading = "Danh sách bài thi đoán màu";
       break;
-    case "demso":
+    case "3":
       heading = "Danh sách bài thi đếm số";
       break;
     default:
@@ -63,19 +43,35 @@ function ListTestScreen({ route, navigation }) {
 
   const handleClickStart = (id, mode) => {
     switch (mode) {
-      case "tracnghiem":
+      case "1":
         navigation.navigate("MultipleChoice", { mode: mode, id: id });
         break;
-      case "tomau":
+      case "2":
 
         break;
-      case "demso":
+      case "3":
         
       break;
       default:
         break;
     }
   }
+  // call api
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axiosClient.get(`/btl_mad/api/v1/exercise/search?exercise-type=${mode}&grade=${valueSelect}`);
+        if (response.status === 200) {
+          setListTest(response.data.result);
+          setLoading(false);
+        }
+      } catch (err) {
+        setError(err.response ? err.response.data : "Something went wrong");
+      }
+    };
+    getData();
+  }, [mode, valueSelect]);
+  
   return (
     <HeaderLayout>
       <ScrollView
@@ -90,7 +86,7 @@ function ListTestScreen({ route, navigation }) {
           onChange={setValueInput}
         />
         <Text className="font-interBold text-xl my-3">{heading}</Text>
-        {info.map((item, index) => (
+        {listTest.map((item, index) => (
           <CardTest
             key={index}
             info={item}

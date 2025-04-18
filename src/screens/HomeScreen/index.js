@@ -7,11 +7,13 @@ import { CardNameGame } from "../../components/Card";
 import IconCardGame1 from "../../../assets/icons/cardGame1.svg";
 import IconCardGame2 from "../../../assets/icons/cardGame2.svg";
 import IconCardGame3 from "../../../assets/icons/cardGame3.svg";
+import { useSelector } from "react-redux";
 
 export default function HomeScreen({ navigation }) {
   return (
     <DefaultLayout>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} 
+      showsHorizontalScrollIndicator={false}>
         <View className="flex items-center">
           <ImgHome />
         </View>
@@ -32,20 +34,20 @@ export default function HomeScreen({ navigation }) {
           <CardNameGame
             title="Trò chơi trắc nghiệm"
             onClick={() =>
-              navigation.navigate("ListTest", { mode: "tracnghiem" })
+              navigation.navigate("ListTest", { mode: "1" })
             }
           >
             <IconCardGame1 />
           </CardNameGame>
           <CardNameGame
             title="Trò chơi đoán màu"
-            onClick={() => navigation.navigate("ListTest", { mode: "tomau" })}
+            onClick={() => navigation.navigate("ListTest", { mode: "2" })}
           >
             <IconCardGame2 />
           </CardNameGame>
           <CardNameGame
             title="Trò chơi đếm số"
-            onClick={() => navigation.navigate("ListTest", { mode: "demso" })}
+            onClick={() => navigation.navigate("ListTest", { mode: "3" })}
           >
             <IconCardGame3 />
           </CardNameGame>
