@@ -12,21 +12,29 @@ import IconContact from "../../../../assets/icons/contact.svg";
 import IconThongKe from "../../../../assets/icons/thongKe.svg";
 import { useState } from "react";
 import DefaultLayout from "../../../layouts/DefaultLayout";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { logout } from "../../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 function ProfileScreenTeacher({ navigation }) {
   const [about, setAbout] = useState(false);
   const [help, setHelp] = useState(false);
   const [contact, setContact] = useState(false);
+  const dispatch = useDispatch();
   const handleLogout = () => {
     Alert.alert("Thông báo", "Xác nhận đăng xuất.", [
       { text: "Đóng", style: "cancel" },
       {
         text: "ok",
-        onPress: () =>
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Welcome" }],
-          }),
+        onPress: async () => {
+          try {
+            await AsyncStorage.removeItem('user');
+            await AsyncStorage.removeItem('role');
+            dispatch(logout());
+          } catch (error) {
+            console.error("Lỗi khi xoá dữ liệu async store:", error);
+          }
+        }
       },
     ]);
   };

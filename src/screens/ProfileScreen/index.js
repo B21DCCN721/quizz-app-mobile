@@ -16,15 +16,20 @@ import { useState } from "react";
 import IconLogout from "../../../assets/icons/logout.svg";
 import IconEditInfo from "../../../assets/icons/editInfo.svg";
 import IconHistoryProfile from "../../../assets/icons/historyProfile.svg";
+import * as ImagePicker from 'expo-image-picker';
 
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/slices/authSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen({ navigation }) {
   const [email, setEmail] = useState("abc@gmail.com");
   const [name, setName] = useState("VoCucThienTon");
   const [password, setPassword] = useState("123456");
   const [showPassword, setShowPassword] = useState(false);
+  const [avatarUri, setAvatarUri] = useState(
+    require("../../../assets/imgs/avatar.png")
+  );
   const [editInp, setEditInp] = useState(false);
   const dispatch = useDispatch();
 
@@ -43,23 +48,42 @@ export default function ProfileScreen({ navigation }) {
     setEditInp(false);
   };
   const handleLogout = () => {
-    Alert.alert(
-      "Thông báo",
-      "Xác nhận đăng xuất.",
-      [
-        { text: "Đóng", style: "cancel" },
-        {
-          text: "ok",
-          onPress: () =>
-            // navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: "Welcome" }],
-            // }),
-            dispatch(logout())
-        }
-      ]
-    );
+    Alert.alert("Thông báo", "Xác nhận đăng xuất.", [
+      { text: "Đóng", style: "cancel" },
+      {
+        text: "ok",
+        onPress: async () => {
+          try {
+            await AsyncStorage.removeItem("user");
+            await AsyncStorage.removeItem("role");
+            dispatch(logout());
+          } catch (error) {
+            console.error("Lỗi khi xoá token:", error);
+          }
+        },
+      },
+    ]);
   };
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Thông báo", "Bạn cần cấp quyền truy cập ảnh.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setAvatarUri({ uri: result.assets[0].uri });
+    }
+  };
+  console.log(avatarUri);
+  
   return (
     <DefaultLayout>
       <ScrollView
@@ -70,12 +94,13 @@ export default function ProfileScreen({ navigation }) {
         <View className="h-[180px] flex flex-row items-center">
           <View className="mr-2">
             <Image
-              className="w-[120px] h-[120px] rounded-full border border-[5px] border-pink"
-              source={require("../../../assets/imgs/avatar.png")}
+              className="w-[120px] h-[120px] rounded-full border-[5px] border-pink"
+              source={avatarUri}
             />
 
             <Button
               title="Tải ảnh lên"
+              onClick={pickImage}
               sxButton="py-2 mt-2 mx-auto bg-pink shadow-lg"
               style={{
                 shadowColor: "black",
