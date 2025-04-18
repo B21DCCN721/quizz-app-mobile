@@ -14,33 +14,25 @@ import { loginSuccess } from "../../store/slices/authSlice";
 
 export default function LoginScreen({ navigation, route }) {
   const { role } = route.params || {};
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
+  const handleLogin = async () => { 
     try {
-      const response = await axiosClient.post("", {
-        username,
+      const response = await axiosClient.post("/btl_mad/api/v1/auth/login", {
+        email,
         password,
       });
   
-      const { token } = response.data;
-  
-      // Lưu token vào AsyncStorage
-      await AsyncStorage.setItem("authToken", token);
-  
+      // Lưu roll, user vào AsyncStorage
+      await AsyncStorage.setItem("role", role);
+      await AsyncStorage.setItem("user", JSON.stringify(response.data.result));
       // Cập nhật redux state
-      dispatch(loginSuccess({ token, role }));
-  
-      // Điều hướng tới màn hình Start (nếu muốn)
-      // navigation.reset({
-      //   index: 0,
-      //   routes: [{ name: "Start", params: { role: role } }],
-      // });
+      dispatch(loginSuccess({ role }));
     } catch (error) {
       console.log("Login error:", error);
     }
@@ -56,9 +48,9 @@ export default function LoginScreen({ navigation, route }) {
         <View className="mt-5">
           <Text className="text-bold font-semibold my-2">Email</Text>
           <Input
-            value={username}
+            value={email}
             placeholder="abc@gmail.com"
-            onChange={setUsername}
+            onChange={setEmail}
           />
         </View>
 

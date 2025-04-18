@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useFonts,
   Inter_400Regular,
@@ -13,6 +13,8 @@ import StackNavigator from "./src/navigations/StackNavigator";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import store from "./src/store";
+import { restoreToken } from "./src/store/slices/authSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -22,6 +24,22 @@ export default function App() {
     InterLight: Inter_300Light,
     InterMedium: Inter_500Medium,
   });
+  // useEffect(() => {
+  //   const loadToken = async () => {
+  //     try {
+  //       const token = await AsyncStorage.getItem('token');
+  //       const role = await AsyncStorage.getItem('role');
+
+  //       if (token) {
+  //         store.dispatch(restoreToken({ token, role }));
+  //       }
+  //     } catch (err) {
+  //       console.error('Lỗi lấy token:', err);
+  //     }
+  //   };
+
+  //   loadToken();
+  // },[])
   return (
     <Provider store={store}>
       <SafeAreaProvider>
