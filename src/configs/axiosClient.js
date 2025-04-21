@@ -1,30 +1,21 @@
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IP_ADDRESS, PORT_API } from "@env";
+import store from "../store"; // đường dẫn tới file store của bạn
 
 const axiosClient = axios.create({
-  baseURL: `http://${IP_ADDRESS}:${PORT_API}`,
+  baseURL: `http://192.168.43.22:${PORT_API}`,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 // Interceptor để tự động thêm token
-// axiosClient.interceptors.request.use(
-//   async (config) => {
-//     try {
-//       const token = await AsyncStorage.getItem("token");
-//       if (token) {
-//         config.headers.Authorization = `Bearer ${token}`;
-//       }
-//     } catch (error) {
-//       console.error("Lỗi khi lấy token từ AsyncStorage:", error);
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+axiosClient.interceptors.request.use((config) => {
+  const token = store.getState().auth.token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default axiosClient;

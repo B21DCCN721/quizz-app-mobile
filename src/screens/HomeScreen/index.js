@@ -10,6 +10,7 @@ import IconCardGame3 from "../../../assets/icons/cardGame3.svg";
 import { useSelector } from "react-redux";
 
 export default function HomeScreen({ navigation }) {
+  const user = useSelector((state) => state.auth.user);
   return (
     <DefaultLayout>
       <ScrollView showsVerticalScrollIndicator={false} 
@@ -20,9 +21,9 @@ export default function HomeScreen({ navigation }) {
         <View className="flex flex-row justify-end items-center">
           <View>
             <Text className="font-interSemiBold text-right">
-              ✋Xin chào, abc
+              ✋Xin chào, {user.name}
             </Text>
-            <Text className="font-interLight text-right">Học sinh khối 5</Text>
+            <Text className="font-interLight text-right">Học sinh khối {user.grade}</Text>
           </View>
           <AvatarHome width="36px" height="36px" />
         </View>
