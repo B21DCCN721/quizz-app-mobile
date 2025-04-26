@@ -27,6 +27,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function ProfileScreen({ navigation }) {
   const [email, setEmail] = useState("abc@gmail.com");
   const [name, setName] = useState("VoCucThienTon");
+  const [score, setScore] = useState(0);
   const [avatarUri, setAvatarUri] = useState(
     require("../../../assets/imgs/avatar.png")
   );
@@ -41,6 +42,8 @@ export default function ProfileScreen({ navigation }) {
     { label: "1", value: "1" },
     { label: "2", value: "2" },
     { label: "3", value: "3" },
+    { label: "4", value: "4" },
+    { label: "5", value: "5" },
   ];
 
   const handleEditProfile = () => {
@@ -121,7 +124,7 @@ export default function ProfileScreen({ navigation }) {
         if (response.status === 200) {
           setEmail(response.data.user.email);
           setName(response.data.user.name);
-  
+          setScore(response.data.user.score);
           const avatarFromServer = response.data.user.avatar;
           if (avatarFromServer !== null) {
             setAvatarUri({ uri: avatarFromServer }); // 👉 base64 URI từ backend
@@ -174,7 +177,7 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <View
             className="bg-[#E5D0D0] h-full rounded-10 flex-1 flex justify-evenly"
-            style={{ elevation: 20 }}
+            // style={{ elevation: 20 }}
           >
             <Button
               title="Xem lịch sử làm bài"
@@ -184,10 +187,9 @@ export default function ProfileScreen({ navigation }) {
               <IconHistoryProfile />
             </Button>
             <Button
-              title="Chỉnh sửa thông tin"
+              title="Đổi mật khẩu"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
               sxText="font-interRegular"
-              onClick={handleEditProfile}
             >
               <IconEditInfo />
             </Button>
@@ -203,6 +205,8 @@ export default function ProfileScreen({ navigation }) {
         </View>
         {/* Các thẻ input hiển thị thông tin cá nhân */}
         <View>
+          <Text className="text-xl font-semibold mt-5 mx-auto">Thông tin cá nhân</Text>
+          <Text>Tổng số điểm: {score}</Text>
           {/* Input Email */}
           <View className="mt-5">
             <Text className="text-bold font-semibold my-2">Email</Text>
@@ -226,6 +230,13 @@ export default function ProfileScreen({ navigation }) {
             setValue={setValueSelect}
           />
         </View>
+        {!editInp && <Button
+              title="Chỉnh sửa thông tin"
+              sxButton="mx-2 w-[160px] bg-pink flex flex-row justify-between items-center mx-auto"
+              sxText="font-interRegular"
+              onClick={handleEditProfile}
+            >
+            </Button>}
         {editInp && (
           <Button
             onClick={handleConfimEdit}

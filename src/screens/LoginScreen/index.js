@@ -36,14 +36,19 @@ export default function LoginScreen({ navigation, route }) {
       await AsyncStorage.setItem("token", response.data.token);
       await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
       // Cập nhật redux state
-      dispatch(loginSuccess({ role, token:response.data.token, user: response.data.user }));
+      dispatch(
+        loginSuccess({
+          role,
+          token: response.data.token,
+          user: response.data.user,
+        })
+      );
     } catch (error) {
       if (error.response && error.response.status === 400) {
         Alert.alert("Thông báo", error.response.data.message);
       } else {
         Alert.alert("Lỗi", "Có lỗi xảy ra, vui lòng thử lại.");
       }
-    
       console.log("Login error:", error);
     }
   };
@@ -94,7 +99,14 @@ export default function LoginScreen({ navigation, route }) {
             color="black"
             label="Ghi nhớ"
           />
-          <Text className="font-interRegular underline">Quên mật khẩu?</Text>
+          <Text
+            className="font-interRegular underline"
+            onPress={() => {
+              navigation.navigate("ForgotPassword", { role: role });
+            }}
+          >
+            Quên mật khẩu?
+          </Text>
         </View>
         <Button
           title="Đăng nhập"

@@ -29,10 +29,10 @@ function ListTestScreen({ route, navigation }) {
       heading = "Danh sách bài thi trắc nghiệm";
       break;
     case "2":
-      heading = "Danh sách bài thi đoán màu";
+      heading = "Danh sách bài thi đếm số";
       break;
     case "3":
-      heading = "Danh sách bài thi đếm số";
+      heading = "Danh sách bài thi đoán màu";
       break;
     default:
       break;
@@ -64,7 +64,7 @@ function ListTestScreen({ route, navigation }) {
           setLoading(false);
         }
       } catch (err) {
-        setError(err.response ? err.response.data : "Something went wrong");
+        setError(err.response ? err.response.data : "Something went wrong at list test screen");
       }
     };
     getData();

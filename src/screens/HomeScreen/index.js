@@ -42,13 +42,13 @@ export default function HomeScreen({ navigation }) {
           </CardNameGame>
           <CardNameGame
             title="Trò chơi đoán màu"
-            onClick={() => navigation.navigate("ListTest", { mode: "2" })}
+            onClick={() => navigation.navigate("ListTest", { mode: "3" })}
           >
             <IconCardGame2 />
           </CardNameGame>
           <CardNameGame
             title="Trò chơi đếm số"
-            onClick={() => navigation.navigate("ListTest", { mode: "3" })}
+            onClick={() => navigation.navigate("ListTest", { mode: "2" })}
           >
             <IconCardGame3 />
           </CardNameGame>

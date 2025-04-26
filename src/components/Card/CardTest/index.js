@@ -13,7 +13,6 @@ function CardTest({info, onClickButton_1, onClickButton_2, title_1, title_2 }) {
             <View className="flex flex-1 justify-between h-full">
                 <Text className="font-interRegular mt-2">Tên: {info.title}</Text>
                 <Text className="font-interRegular">Mã bài: {generateCodeTest(info.id)}</Text>
-                <Text className="font-interRegular">Số câu: 10</Text>
                 <Text className="font-interRegular mb-2">Lớp: {info.grade}</Text>
             </View>
             <View className="flex justify-around h-full ms-2">
