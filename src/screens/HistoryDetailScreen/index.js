@@ -1,34 +1,96 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import IconTrue from "../../../assets/icons/true.svg";
 import IconFalse from "../../../assets/icons/false.svg";
+import axiosClient from "../../configs/axiosClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const examTitle = "Tên bài thi";
+function HistoryDetailScreen({ route }) {
+  const { examId, exerciseType } = route.params; // Nhận examId và exerciseType từ route.params
+  const [historyData, setHistoryData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  console.log("exerciseType:", exerciseType);
+  console.log("examId:", examId);
+  useEffect(() => {
+    const fetchHistoryDetail = async () => {
+      try {
+        setLoading(true);
+        let apiUrl = "";
+  
+        // Xác định API dựa trên exerciseType
+        if (exerciseType === 1) {
+          apiUrl = `/api/history/result/multiple-choice/${examId}`;
+        }else if (exerciseType === 2) {
+          apiUrl = `/api/history/result/counting/${examId}`;
+        } else if (exerciseType === 3) {
+          apiUrl = `/api/history/result/color/${examId}`;
+        } 
+  
+        // Lấy token từ AsyncStorage
+        const token = await AsyncStorage.getItem("token");
+        if (!token) {
+          throw new Error("Token không tồn tại. Vui lòng đăng nhập lại.");
+        }
+  
+        // Gửi yêu cầu API với token
+        const response = await axiosClient.get(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Thêm token vào header
+          },
+        });
+  
+        setHistoryData(response.data.data); // Lưu dữ liệu từ API
+      } catch (error) {
+        console.error("Lỗi khi lấy chi tiết bài thi:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchHistoryDetail();
+  }, [examId, exerciseType]);
+  if (loading) {
+    return (
+      <HeaderLayout>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </HeaderLayout>
+    );
+  }
 
-const historyData = [
-  { id: "1", question: "Câu 1: Đâu là thủ đô của Việt Nam?", userAnswer: "A. Hà Nội", correctAnswer: "A. Hà Nội", isCorrect: true },
-  { id: "2", question: "Câu 2: 2 + 2 bằng mấy?", userAnswer: "B. 4", correctAnswer: "B. 4", isCorrect: true },
-  { id: "3", question: "Câu 3: Mặt trời mọc ở hướng nào?", userAnswer: "C. Tây", correctAnswer: "A. Đông", isCorrect: false },
-];
-
-function HistoryDetailScreen() {
   return (
     <HeaderLayout>
       <ScrollView style={styles.container}>
         <Text style={styles.title}>Chi tiết kết quả</Text>
-        <Text style={styles.examTitle}>{examTitle}</Text>
 
-        {historyData.map((item) => (
-          <View key={item.id} style={styles.questionItem}>
-            <Text style={styles.question}>{item.question}</Text>
-            <View style={styles.answerRow}>
-              {item.isCorrect ? <IconTrue width={20} height={20} /> : <IconFalse width={20} height={20} />}
-              <Text style={[styles.answer, item.isCorrect ? styles.correct : styles.wrong]}>
-                Đáp án của bạn: {item.userAnswer}
-              </Text>
-            </View>
-            <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
+        {historyData.map((item, index) => (
+          <View key={index} style={styles.questionItem}>
+            <Text style={styles.question}>Câu: {item.order}</Text>
+
+            {/* Hiển thị dữ liệu dựa trên loại bài kiểm tra */}
+            {exerciseType === 1 && (
+              <>
+                <Text style={styles.question}>Câu hỏi: {item.questionText}</Text>
+                <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
+                <Text style={styles.userAnswer}>Đáp án của bạn: {item.userAnswer}</Text>
+              </>
+            )}
+
+            {exerciseType === 2 && (
+              <>
+              <Text style={styles.question}>Vật đếm: {item.objectName}</Text>
+                <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
+                <Text style={styles.userAnswer}>Đáp án của bạn: {item.userAnswer}</Text>
+              </>
+            )}
+
+            {exerciseType === 3 && (
+              <>
+                
+                <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
+                <Text style={styles.userAnswer}>Đáp án của bạn: {item.userAnswer}</Text>
+              </>
+            )}
           </View>
         ))}
       </ScrollView>

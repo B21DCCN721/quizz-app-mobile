@@ -1,16 +1,41 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
+import axiosClient from "../../configs/axiosClient";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import ArrowRight from "../../../assets/icons/arrowRight.svg";
 import PaginationTest from "../../components/Pagination/PaginationTest";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const HistoryScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("Trắc nghiệm");
   const [currentPage, setCurrentPage] = useState(1);
-  const totalScreen = 10;
-
-  const tabs = ["Trắc nghiệm", "Tô màu", "Đếm số"];
-  const data = Array(6).fill({ name: "abc", score: 96 });
-
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const fetchHistory = async () => {
+    setLoading(true);
+    try {
+      const token = await AsyncStorage.getItem("token"); // Lấy token từ AsyncStorage
+      const response = await axiosClient.get("/api/history", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Thêm token vào header
+        },
+        params: {
+          page: currentPage,
+          limit: 10,
+          exercise_type: activeTab === "Trắc nghiệm" ? 1 : activeTab === "Đếm" ? 2 : 3,
+        },
+      });
+      setData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching history:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchHistory();
+  }, [activeTab, currentPage]);
+  const tabs = ["Trắc nghiệm", "Đếm", "Tô màu"];
   return (
     <HeaderLayout>
       <View style={styles.container}>
@@ -40,28 +65,32 @@ const HistoryScreen = ({ navigation }) => {
         </View>
 
         {/* Danh sách */}
-        <FlatList
-          data={data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.row}>
-              <View style={[styles.cell, styles.cellName]}>
-                <Text style={styles.examName}>{item.name}</Text>
+        {loading ? (
+          <Text>Đang tải...</Text>
+        ) : (
+          <FlatList
+            data={data}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.row}>
+                <View style={[styles.cell, styles.cellName]}>
+                  <Text style={styles.examName}>{item.name}</Text>
+                </View>
+                <View style={[styles.cell, styles.cellScore]}>
+                  <Text style={styles.score}>{item.score}</Text>
+                </View>
+                <View style={[styles.cell, styles.cellRetry]}>
+                  <TouchableOpacity onPress={() => navigation.navigate("HistoryResult",{ examId: item.id,exerciseType: item.exercise_type })}>
+                    <ArrowRight width={24} height={24} />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={[styles.cell, styles.cellScore]}>
-                <Text style={styles.score}>{item.score}</Text>
-              </View>
-              <View style={[styles.cell, styles.cellRetry]}>
-                <TouchableOpacity onPress={() => navigation.navigate("HistoryResult")}>
-                  <ArrowRight width={24} height={24} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-        />
+            )}
+          />
+        )}
 
-        {/* Phân trang */}
-        <PaginationTest totalScreen={totalScreen} onChangeScreen={setCurrentPage} />
+       {/* Phân trang */}
+       <PaginationTest totalScreen={10} onChangeScreen={setCurrentPage} />
       </View>
     </HeaderLayout>
   );
