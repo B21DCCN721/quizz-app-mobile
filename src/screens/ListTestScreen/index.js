@@ -1,6 +1,6 @@
 import { CardTest } from "../../components/Card";
 import HeaderLayout from "../../layouts/HeaderLayout";
-import { ScrollView, Text } from "react-native";
+import { ScrollView, Text,TouchableOpacity } from "react-native";
 import Search from "../../components/Search";
 import { useEffect, useState } from "react";
 import axiosClient from "../../configs/axiosClient";
@@ -86,6 +86,13 @@ function ListTestScreen({ route, navigation }) {
           onChange={setValueInput}
         />
         <Text className="font-interBold text-xl my-3">{heading}</Text>
+        
+        <TouchableOpacity
+          onPress={() => navigation.navigate("DetailTest", { mode: mode, id: "1" })}
+        >
+          <Text >Chi tiết</Text>
+        </TouchableOpacity>
+
         {listTest.map((item, index) => (
           <CardTest
             key={index}
