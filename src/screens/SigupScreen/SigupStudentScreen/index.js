@@ -117,4 +117,4 @@ function SigupStudenScreen({ navigation, route }) {
   );
 }
 
-export default SigupStudenScreen;
+export default SigupStudenScreen;  

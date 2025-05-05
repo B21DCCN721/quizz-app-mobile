@@ -26,6 +26,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from '@react-navigation/native';
 
 export default function ProfileScreen({ navigation }) {
+
   const [email, setEmail] = useState("abc@gmail.com");
   const [name, setName] = useState("VoCucThienTon");
   const [score, setScore] = useState(0);
@@ -195,9 +196,14 @@ export default function ProfileScreen({ navigation }) {
               title="Xem lịch sử làm bài"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
               sxText="font-interRegular"
+              onClick={() => {
+                navigation.navigate("ProfileStack", { screen: "History" });
+                
+              }}
             >
               <IconHistoryProfile />
             </Button>
+            
             <Button
               title="Đổi mật khẩu"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"

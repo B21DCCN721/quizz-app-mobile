@@ -12,7 +12,9 @@
 - **DetailTest** - Chi tiết bài thi
 - **Notice** - Trang thông báo
 - **Rank** - Trang xếp hạng
+- **ProfileMain** - Trang chu profile
 - **Profile** - Trang profile
+- **History** - Trang lich su
 - **MultipleChoice** - Màn hình làm bài thi trắc nghiệm
 - **Result** - Màn hình kết quả làm bài
 - **ForgotPassword** - Màn hình lấy lại mật khẩu
