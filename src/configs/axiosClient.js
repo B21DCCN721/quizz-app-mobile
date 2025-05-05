@@ -5,7 +5,7 @@ import store from "../store"; // đường dẫn tới file store của bạn
 const axiosClient = axios.create({
   baseURL: `http://192.168.43.22:${PORT_API}`,
   headers: {
-    "Content-Type": "application/json",
+    "content-Type": "application/json",
   },
 });
 

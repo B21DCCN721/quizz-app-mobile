@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreenTeacher from "../../screens/teacher/ProfileScreenTeacher";
 import StatisticalScreenTeacher from "../../screens/teacher/StatisticalScreenTeacher";
 import EditProfileScreenTeacher from "../../screens/teacher/EditProfileScreenTeacher";
+import ChangePasswordScreenTeacher from "../../screens/teacher/ChangePasswordScreenTeacher";
 
 const Stack = createStackNavigator();
 function ProfileStackNavigatorTeacher() {
@@ -21,6 +22,11 @@ function ProfileStackNavigatorTeacher() {
       <Stack.Screen
         name="EditProfileTeacher"
         component={EditProfileScreenTeacher}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChangePasswordTeacher"
+        component={ChangePasswordScreenTeacher}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
