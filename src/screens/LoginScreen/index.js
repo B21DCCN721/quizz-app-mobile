@@ -23,7 +23,7 @@ export default function LoginScreen({ navigation, route }) {
 
   const handleLogin = async () => { 
     try {
-      const response = await axiosClient.post("/btl_mad/api/v1/auth/login", {
+      const response = await axiosClient.post(`/btl_mad/api/v1/auth/login?role=${role}`, {
         email,
         password,
       });
@@ -82,7 +82,10 @@ export default function LoginScreen({ navigation, route }) {
             color="black"
             label="Ghi nhớ"
           />
-          <Text className="font-interRegular underline">Quên mật khẩu?</Text>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+            <Text style={{ color: 'blue' }}>Quên mật khẩu?</Text>
+          </TouchableOpacity> */}
+
         </View>
         <Button
           title="Đăng nhập"
