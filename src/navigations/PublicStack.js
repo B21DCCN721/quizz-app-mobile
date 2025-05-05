@@ -5,6 +5,7 @@ import WelcomeScreen from "../screens/WelcomeScreen";
 import RoleScreen from "../screens/RoleScreen";
 import LoginScreen from "../screens/LoginScreen";
 import { SigupStudentScreen, SigupTeacherScreen } from "../screens/SigupScreen";
+import ForgotPassword from "../screens/ForgotPassword";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function PublicStack() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SigupTeacher" component={SigupTeacherScreen} />
       <Stack.Screen name="SigupStudent" component={SigupStudentScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     </Stack.Navigator>
   );
 }

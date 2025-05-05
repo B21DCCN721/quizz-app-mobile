@@ -17,6 +17,7 @@
 - **History** - Trang lich su
 - **MultipleChoice** - Màn hình làm bài thi trắc nghiệm
 - **Result** - Màn hình kết quả làm bài
+- **ForgotPassword** - Màn hình lấy lại mật khẩu
 
 - **Lưu ý**: Đối với các màn hình teacher thì thêm Teacher cuối tên ứng với màn hình
 - **MainTeacher** Toàn bộ các màn  sau khi login của giáo viên
