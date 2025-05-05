@@ -10,7 +10,7 @@ onChange nhận vào 1 fun để lấy value của input
 children thêm children cho thẻ input để thể input có thể bọc thêm element khác
 */
 
-function Input({ value = '', placeholder = '', hide = false, edit = true, onChange, children }) {
+function Input({ value = '', placeholder = '', hide = false, edit = true, keyboardType = 'default', onChange, children }) {
   return (
     <View className='flex flex-row items-center bg-grayInput  border border-grayBorder rounded-10 px-4 h-[48px]'>
       <TextInput
@@ -19,6 +19,7 @@ function Input({ value = '', placeholder = '', hide = false, edit = true, onChan
         value={value}
         secureTextEntry={hide}
         editable={edit}
+        keyboardType={keyboardType}
         onChangeText={(text) => onChange(text)}
       />
       {children}
@@ -30,6 +31,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   hide: PropTypes.bool,
   edit: PropTypes.bool,
+  keyboardType: PropTypes.string,
   onChange: PropTypes.func,
   children: PropTypes.node,
 }

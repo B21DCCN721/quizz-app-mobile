@@ -24,22 +24,23 @@ export default function App() {
     InterLight: Inter_300Light,
     InterMedium: Inter_500Medium,
   });
-  // useEffect(() => {
-  //   const loadToken = async () => {
-  //     try {
-  //       const token = await AsyncStorage.getItem('token');
-  //       const role = await AsyncStorage.getItem('role');
+  useEffect(() => {
+    const loadToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        const role = await AsyncStorage.getItem("role");
+        const user = await AsyncStorage.getItem("user");
 
-  //       if (token) {
-  //         store.dispatch(restoreToken({ token, role }));
-  //       }
-  //     } catch (err) {
-  //       console.error('Lỗi lấy token:', err);
-  //     }
-  //   };
+        if (token) {
+          store.dispatch(restoreToken({ token, role, user: JSON.parse(user) }));
+        }
+      } catch (err) {
+        console.error("Lỗi lấy token:", err);
+      }
+    };
 
-  //   loadToken();
-  // },[])
+    loadToken();
+  }, []);
   return (
     <Provider store={store}>
       <SafeAreaProvider>

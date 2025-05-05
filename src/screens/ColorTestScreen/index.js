@@ -1,28 +1,77 @@
-import { useEffect, useRef, useState } from "react";
-import { Alert, ScrollView, View, TextInput, Image } from "react-native";
+import { useEffect, useState, useRef } from "react";
+import { Alert, ScrollView, View, ActivityIndicator, TextInput } from "react-native";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import { Text } from "react-native";
 import Button from "../../components/Button";
 import { PaginationTest } from "../../components/Pagination";
+import axiosClient from "../../configs/axiosClient";
+import { setDataResult } from "../../store/slices/dataResultTestSlice";
+import { useDispatch } from "react-redux";
 
-function ColorIdentifyInputScreen({ route, navigation }) {
-  const { id } = route.params || {};
+function ColorTestScreen({ route, navigation }) {
+  const { id, mode } = route.params || {};
+  const [prevScreen, setPrevScreen] = useState(false);
+  const [nextScreen, setNextScreen] = useState(false);
   const [endTest, setEndTest] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [changeQuestion, setChangeQuestion] = useState(false);
   const beforeRemoveListener = useRef(null);
+  const [infoTest, setInfoTest] = useState({});
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    beforeRemoveListener.current = navigation.addListener("beforeRemove", (e) => {
-      e.preventDefault();
-      Alert.alert(
-        "Thông báo",
-        "Thoát sẽ không lưu kết quả bài thi, bạn có chắc chắn muốn thoát?",
-        [
-          { text: "Hủy", style: "cancel" },
-          { text: "OK", onPress: () => navigation.dispatch(e.data.action) },
-        ]
+  // phân trang
+  const PageSize = 1;
+  const [currentPage, setCurrentPage] = useState(1);
+  const currentItem = infoTest?.ColorQuestions?.slice(
+    (currentPage - 1) * PageSize,
+    currentPage * PageSize
+  );
+  const totalPages = Math.ceil(infoTest?.ColorQuestions?.length / PageSize) || 0;
+
+  // state lưu trả lời câu hỏi
+  const [answers, setAnswers] = useState([]);
+
+  const handleInputAnswer = (text) => {
+    const currentQuestionId = currentItem[0]?.id;
+    setAnswers((prevAnswers) => {
+      const existingAnswer = prevAnswers.find(
+        (ans) => ans.questionId === currentQuestionId
       );
+
+      if (existingAnswer) {
+        return prevAnswers.map((ans) =>
+          ans.questionId === currentQuestionId
+            ? { ...ans, answer: text }
+            : ans
+        );
+      } else {
+        return [
+          ...prevAnswers,
+          {
+            questionId: currentQuestionId,
+            answer: text,
+          },
+        ];
+      }
     });
+  };
+
+  // Thông báo khi thoát làm bài
+  useEffect(() => {
+    beforeRemoveListener.current = navigation.addListener(
+      "beforeRemove",
+      (e) => {
+        e.preventDefault();
+        Alert.alert(
+          "Thông báo",
+          "Thoát sẽ không lưu kết quả bài thi, bạn có chắc chắn muốn thoát?",
+          [
+            { text: "Hủy", style: "cancel" },
+            { text: "OK", onPress: () => navigation.dispatch(e.data.action) },
+          ]
+        );
+      }
+    );
 
     return () => {
       if (beforeRemoveListener.current) {
@@ -31,8 +80,53 @@ function ColorIdentifyInputScreen({ route, navigation }) {
     };
   }, [navigation]);
 
+  // call api get info test
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axiosClient.get(
+          `/api/exercises/${id}?type=${mode}`
+        );
+        if (response.status === 200) {
+          setInfoTest(response.data.exercise);
+          setLoading(false);
+        }
+      } catch (error) {
+        setError(
+          err.response
+            ? err.response.data
+            : "Something went wrong at detail test screen"
+        );
+      }
+    };
+    getData();
+  }, []);
+
+  // call api nộp bài thi
+  const handleSubmitTest = async () => {
+    if(answers.length === 0) {
+      Alert.alert("Thông báo", "Bạn chưa trả lời câu hỏi nào")
+      return;
+    }
+    try {
+      const response = await axiosClient.post(`/api/student/submit/color`,{
+        exerciseId: id,
+        answers
+      })
+      if(response.status === 200) {
+        dispatch(setDataResult(response.data.result));
+        Alert.alert("Thông báo", "Nộp bài thành công", [
+          { text: "OK", onPress: () => navigation.replace("Result") },
+        ]);
+      }
+    } catch (error) {
+      console.error("Lỗi khi nộp bài thi:", error);
+      Alert.alert("Lỗi", "Không thể nộp bài thi.");
+    }
+  };
+
   const handleEndTest = () => {
-    Alert.alert("Thông báo", `Bạn đã chọn ô số: ${inputValue}\nXác nhận nộp bài?`, [
+    Alert.alert("Thông báo", "Xác nhận nộp bài?", [
       { text: "Hủy", style: "cancel" },
       {
         text: "OK",
@@ -40,52 +134,76 @@ function ColorIdentifyInputScreen({ route, navigation }) {
           if (beforeRemoveListener.current) {
             beforeRemoveListener.current();
           }
-          navigation.replace("Result");
+          handleSubmitTest();
         },
       },
     ]);
   };
 
+  if (loading) {
+    return (
+      <HeaderLayout>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </HeaderLayout>
+    );
+  }
+
   return (
     <HeaderLayout>
       <ScrollView>
-        <Text className="font-interBold text-2xl my-5">
-          Chọn hình có màu khác với những hình còn lại
-        </Text>
-
+        <Text className="font-interBold text-2xl my-5">{infoTest.title}</Text>
         <PaginationTest
-          onChangeScreen={(screen) => setEndTest(screen === 10)}
-          prevScreen={false}
-          nextScreen={false}
-          changeQuestion={false}
-        />
-
-        {/* Hình ảnh bài tập */}
-        <Image
-          source={require("../../assets/images/different-color-box.png")} // hoặc dùng { uri: '...' }
-          className="w-[200px] h-[350px] mx-auto my-6"
-          resizeMode="contain"
-        />
-
-        {/* Input nhập số thứ tự */}
-        <TextInput
-          className="border border-gray-400 rounded-xl text-center text-4xl font-interBold mx-auto w-[100px] h-[60px]"
-          keyboardType="numeric"
-          maxLength={1}
-          value={inputValue}
-          onChangeText={(text) => {
-            const value = text.replace(/[^1-9]/g, ""); // Chỉ cho phép số từ 1-9
-            setInputValue(value);
+          onChangeScreen={(screen) => {
+            screen === totalPages ? setEndTest(true) : setEndTest(false);
+            setCurrentPage(screen);
           }}
+          prevScreen={prevScreen}
+          nextScreen={nextScreen}
+          changeQuestion={changeQuestion}
+          totalScreen={totalPages}
         />
+        <View className="min-h-[270px] rounded-20 border-b-2 border-grayBorder p-5">
+          <Text className="font-interSemiBold text-xl">
+            Câu hỏi: {currentItem[0]?.question}
+          </Text>
+          <TextInput
+            className="border-2 border-gray-300 rounded-lg p-2 mt-4"
+            placeholder="Nhập đáp án của bạn"
+            value={answers.find(a => a.questionId === currentItem[0]?.id)?.answer || ''}
+            onChangeText={handleInputAnswer}
+          />
+        </View>
 
-        {endTest && (
+        {endTest ? (
           <Button
-            title="Hoàn thành"
-            sxButton="bg-pink w-[140px] rounded-20 mx-auto mt-10"
+            title="Kết thúc"
+            sxButton="bg-pink w-[140px] rounded-20 mx-auto"
             sxText="text-2xl"
             onClick={handleEndTest}
           />
+        ) : (
+          <View className="flex-row justify-around mt-5">
+            <Button
+              title="Câu trước"
+              sxButton="w-[120px] border border-grayBorder"
+              sxText="text-[#343B6E]"
+              onClick={() => {
+                setChangeQuestion(true);
+                setPrevScreen((prev) => !prev);
+              }}
+            />
+            <Button
+              title="Câu tiếp theo"
+              sxButton="w-[120px] border border-grayBorder"
+              sxText="text-[#343B6E]"
+              onClick={() => {
+                setChangeQuestion(true);
+                setNextScreen((prev) => !prev);
+              }}
+            />
+          </View>
         )}
       </ScrollView>
     </HeaderLayout>

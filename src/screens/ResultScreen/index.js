@@ -5,25 +5,24 @@ import IconTrue from "../../../assets/icons/true.svg";
 import IconFalse from "../../../assets/icons/false.svg";
 import IconStar from "../../../assets/icons/star.svg";
 import Button from "../../components/Button";
+import { useSelector } from "react-redux";
 
 function ResultScreen({ navigation }) {
+  const  dataResult  = useSelector((state) => state.dataResultTest);
   return (
     <DefaultLayout>
       <ImgResult width="100%" />
-      <Text className="font-interBold text-[#9ED832] text-6xl text-center my-5">
-        Tên bài thi
-      </Text>
       <View className="rounded-40 bg-[#FFF2E4] p-5 rounded-10">
-        <View className="flex-row items-center">
-          <Text className="flex-1 font-interBold text-3xl">Số câu đúng: 9</Text>
+        <View className="flex-row items-center mt-5">
+          <Text className="flex-1 font-interBold text-3xl">Số câu đúng: {dataResult?.correctAnswers}</Text>
           <IconTrue />
         </View>
         <View className="flex-row items-center">
-          <Text className="flex-1 font-interBold text-3xl">Số câu đúng: 1</Text>
+          <Text className="flex-1 font-interBold text-3xl">Số câu sai: {dataResult?.totalQuestions - dataResult?.correctAnswers}</Text>
           <IconFalse />
         </View>
         <View className="flex-row items-center">
-          <Text className="flex-1 font-interBold text-3xl">Điểm: 90</Text>
+          <Text className="flex-1 font-interBold text-3xl">Điểm: {dataResult?.submissionScore}</Text>
           <IconStar />
         </View>
       </View>

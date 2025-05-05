@@ -1,6 +1,6 @@
 import { CardTest } from "../../components/Card";
 import HeaderLayout from "../../layouts/HeaderLayout";
-import { ScrollView, Text } from "react-native";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import Search from "../../components/Search";
 import { useEffect, useState } from "react";
 import axiosClient from "../../configs/axiosClient";
@@ -13,7 +13,7 @@ function ListTestScreen({ route, navigation }) {
   const [listTest, setListTest] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [valueSelect, setValueSelect] = useState('');
+  const [valueSelect, setValueSelect] = useState("");
   const itemsSelect = [
     { label: "1", value: "1" },
     { label: "2", value: "2" },
@@ -29,10 +29,10 @@ function ListTestScreen({ route, navigation }) {
       heading = "Danh sách bài thi trắc nghiệm";
       break;
     case "2":
-      heading = "Danh sách bài thi đoán màu";
+      heading = "Danh sách bài thi đếm số";
       break;
     case "3":
-      heading = "Danh sách bài thi đếm số";
+      heading = "Danh sách bài thi đoán màu";
       break;
     default:
       break;
@@ -47,31 +47,37 @@ function ListTestScreen({ route, navigation }) {
         navigation.navigate("MultipleChoice", { mode: mode, id: id });
         break;
       case "2":
-
         break;
       case "3":
-        
-      break;
+        break;
       default:
         break;
     }
-  }
+  };
   // call api
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosClient.get(`/btl_mad/api/v1/exercise/search?exercise-type=${mode}&grade=${valueSelect}`);
+        const response = await axiosClient.get(`/api/exercises?type=${mode}&grade=${valueSelect}&search=${valueInput}`);
         if (response.status === 200) {
-          setListTest(response.data.result);
+          setListTest(response.data.exercises);
           setLoading(false);
         }
       } catch (err) {
-        setError(err.response ? err.response.data : "Something went wrong");
+        setError(err.response ? err.response.data : "Something went wrong at list test screen");
       }
     };
     getData();
-  }, [mode, valueSelect]);
-  
+  }, [mode, valueSelect, valueInput]);
+  if (loading) {
+    return (
+      <HeaderLayout>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </HeaderLayout>
+    );
+  }
   return (
     <HeaderLayout>
       <ScrollView

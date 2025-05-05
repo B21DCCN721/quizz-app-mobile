@@ -1,121 +1,138 @@
 import { useEffect, useState } from "react";
-import DefaultLayout from "../../layouts/DefaultLayout";
-import {
-  View,
-  Text,
-  TextInput,
-  FlatList,
-  ActivityIndicator,
-  Picker,
-  Platform,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, ScrollView, ActivityIndicator, Image } from "react-native";
+import { Text } from "react-native";
+import HeaderLayout from "../../layouts/HeaderLayout";
+import axiosClient from "../../configs/axiosClient";
 
-function RankScreen({ navigation }) {
-  const [rankingData, setRankingData] = useState([]);
+
+function RankingScreen() {
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedGrade, setSelectedGrade] = useState("all");
+  const [rankings, setRankings] = useState([]);
+  const [error, setError] = useState(null);
 
-  const fetchRankingData = async (grade = "all") => {
-    try {
-      setLoading(true);
-      const url =
-        grade === "all"
-          ? "http://localhost:8080/btl_mad/api/v1/student/leaderboard"
-          : `http://localhost:8080/btl_mad/api/v1/student/leaderboard/grade/${grade}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      const mappedData = data.map((item, index) => ({
-        id: item.id,
-        name: item.name,
-        grade: item.grade,
-        score: item.score,
-        rank: index + 1,
-      }));
-      setRankingData(mappedData);
-    } catch (error) {
-      console.error("Error fetching leaderboard:", error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    const fetchRankings = async () => {
+      try {
+        const response = await axiosClient.get("/api/student/rankings");
+        if (response.status === 200) {
+          setRankings(response.data.rankings);
+          setLoading(false);
+        }
+      } catch (err) {
+        setError(
+          err.response
+            ? err.response.data
+            : "Something went wrong while fetching rankings"
+        );
+        setLoading(false);
+      }
+    };
+
+    fetchRankings();
+  }, []);
+
+  const getRankBadge = (rank) => {
+    switch (rank) {
+      case 1:
+        return {
+          badge: require("D:/MobileApp_KidLearn/assets/imgs/goldmedal.svg"),
+          color: '#FFD700',
+          label: 'Hạng nhất'
+        };
+      case 2:
+        return {
+          badge: require("D:/MobileApp_KidLearn/assets/imgs/silvermedal.svg"),
+          color: '#C0C0C0',
+          label: 'Hạng nhì'
+        };
+      case 3:
+        return {
+          badge: require("D:/MobileApp_KidLearn/assets/imgs/bronzemedal.svg"),
+          color: '#CD7F32',
+          label: 'Hạng ba'
+        };
+      default:
+        return {
+          badge: null,
+          color: '#9E9E9E',
+          label: `Hạng ${rank}`
+        };
     }
   };
 
-  useEffect(() => {
-    fetchRankingData();
-  }, []);
+  if (loading) {
+    return (
+      <HeaderLayout>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </HeaderLayout>
+    );
+  }
 
-  useEffect(() => {
-    fetchRankingData(selectedGrade);
-  }, [selectedGrade]);
-
-  const filteredData = rankingData.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const renderRankItem = ({ item }) => (
-    <View className="flex-row items-center bg-teal-100 rounded-lg p-3 m-2">
-      <Text className="w-10 text-center text-lg font-bold">{item.rank}</Text>
-      <View className="flex-1">
-        <Text className="text-lg">{item.name}</Text>
-        <Text className="text-sm text-gray-600">Lớp: {item.grade}</Text>
-      </View>
-      <Text className="text-lg font-bold">{item.score}</Text>
-    </View>
-  );
+  if (error) {
+    return (
+      <HeaderLayout>
+        <View className="flex-1 justify-center items-center">
+          <Text className="text-red-500 text-lg">{error}</Text>
+        </View>
+      </HeaderLayout>
+    );
+  }
 
   return (
-    <DefaultLayout>
-      <View className="flex-1 p-4">
-        {/* Title */}
-        <Text className="text-2xl font-bold text-center mb-4">
-          Bảng xếp hạng học sinh
+    <HeaderLayout>
+      <View className="flex-1 bg-white">
+        <Text className="font-interBold text-2xl text-center my-5">
+          Bảng Xếp Hạng
         </Text>
 
-        {/* Filter by grade */}
-        <View className="mb-4">
-          <Text className="mb-1 text-lg font-medium">Chọn lớp:</Text>
-          <View className="bg-gray-200 rounded-lg">
-            <Picker
-              selectedValue={selectedGrade}
-              onValueChange={(value) => setSelectedGrade(value)}
-              style={Platform.OS === "ios" ? { height: 150 } : {}}
+        <ScrollView className="flex-1">
+          {rankings.map((item, index) => (
+            <View
+              key={item.id}
+              className={`flex-row items-center justify-between p-4 mx-4 my-2 rounded-lg ${
+                index < 3 ? "bg-yellow-50" : "bg-gray-50"
+              }`}
             >
-              <Picker.Item label="Tất cả lớp" value="all" />
-              <Picker.Item label="Lớp 1" value="1" />
-              <Picker.Item label="Lớp 2" value="2" />
-              <Picker.Item label="Lớp 3" value="3" />
-              <Picker.Item label="Lớp 4" value="4" />
-              <Picker.Item label="Lớp 5" value="5" />
-            </Picker>
-          </View>
-        </View>
+              <View className="flex-row items-center flex-1">
+                <View className="w-8 h-8 justify-center items-center mr-3">
+                  {index < 3 ? (
+                    <Image
+                      source={getRankBadge(index + 1)}
+                      className="w-6 h-6"
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Text className="font-interBold text-lg text-gray-600">
+                      {index + 1}
+                    </Text>
+                  )}
+                </View>
 
-        {/* Search Bar */}
-        <View className="flex-row items-center bg-gray-200 rounded-lg p-2 mb-4">
-          <TextInput
-            className="flex-1 text-lg"
-            placeholder="Cần tìm bạn nào?"
-            placeholderTextColor="#888"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-          <Ionicons name="search" size={24} color="#888" />
-        </View>
+                <View className="flex-1">
+                  <Text className="font-interSemiBold text-base">
+                    {item.name}
+                  </Text>
+                  <Text className="font-interRegular text-sm text-gray-500">
+                    Lớp: {item.grade}
+                  </Text>
+                </View>
 
-        {/* Loading or Ranking List */}
-        {loading ? (
-          <ActivityIndicator size="large" color="#00bcd4" />
-        ) : (
-          <FlatList
-            data={filteredData}
-            renderItem={renderRankItem}
-            keyExtractor={(item) => item.id}
-            showsVerticalScrollIndicator={false}
-          />
-        )}
+                <View className="items-end">
+                  <Text className="font-interBold text-lg text-blue-600">
+                    {item.score} điểm
+                  </Text>
+                  {/* <Text className="font-interRegular text-sm text-gray-500">
+                    Hoàn thành: {item.completedExercises} bài
+                  </Text> */}
+                </View>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
       </View>
-    </DefaultLayout>
+    </HeaderLayout>
   );
 }
 

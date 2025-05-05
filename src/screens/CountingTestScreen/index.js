@@ -1,30 +1,77 @@
-import { useEffect, useRef, useState } from "react";
-import { Alert, ScrollView, View, TextInput } from "react-native";
+import { useEffect, useState, useRef } from "react";
+import { Alert, ScrollView, View, ActivityIndicator, TextInput } from "react-native";
 import HeaderLayout from "../../layouts/HeaderLayout";
-import { Text, Image } from "react-native";
+import { Text } from "react-native";
 import Button from "../../components/Button";
 import { PaginationTest } from "../../components/Pagination";
+import axiosClient from "../../configs/axiosClient";
+import { setDataResult } from "../../store/slices/dataResultTestSlice";
+import { useDispatch } from "react-redux";
 
-function CountAnimalsTestScreen({ route, navigation }) {
-  const { id } = route.params || {};
-  const [endTest, setEndTest] = useState(false);
+function CountingTestScreen({ route, navigation }) {
+  const { id, mode } = route.params || {};
   const [prevScreen, setPrevScreen] = useState(false);
   const [nextScreen, setNextScreen] = useState(false);
+  const [endTest, setEndTest] = useState(false);
   const [changeQuestion, setChangeQuestion] = useState(false);
   const beforeRemoveListener = useRef(null);
+  const [infoTest, setInfoTest] = useState({});
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    beforeRemoveListener.current = navigation.addListener("beforeRemove", (e) => {
-      e.preventDefault();
-      Alert.alert(
-        "Thông báo",
-        "Thoát sẽ không lưu kết quả bài thi, bạn có chắc chắn muốn thoát?",
-        [
-          { text: "Hủy", style: "cancel" },
-          { text: "OK", onPress: () => navigation.dispatch(e.data.action) },
-        ]
+  // phân trang
+  const PageSize = 1;
+  const [currentPage, setCurrentPage] = useState(1);
+  const currentItem = infoTest?.CountingQuestions?.slice(
+    (currentPage - 1) * PageSize,
+    currentPage * PageSize
+  );
+  const totalPages = Math.ceil(infoTest?.CountingQuestions?.length / PageSize) || 0;
+
+  // state lưu trả lời câu hỏi
+  const [answers, setAnswers] = useState([]);
+
+  const handleInputAnswer = (text) => {
+    const currentQuestionId = currentItem[0]?.id;
+    setAnswers((prevAnswers) => {
+      const existingAnswer = prevAnswers.find(
+        (ans) => ans.questionId === currentQuestionId
       );
+
+      if (existingAnswer) {
+        return prevAnswers.map((ans) =>
+          ans.questionId === currentQuestionId
+            ? { ...ans, answer: text }
+            : ans
+        );
+      } else {
+        return [
+          ...prevAnswers,
+          {
+            questionId: currentQuestionId,
+            answer: text,
+          },
+        ];
+      }
     });
+  };
+
+  // Thông báo khi thoát làm bài
+  useEffect(() => {
+    beforeRemoveListener.current = navigation.addListener(
+      "beforeRemove",
+      (e) => {
+        e.preventDefault();
+        Alert.alert(
+          "Thông báo",
+          "Thoát sẽ không lưu kết quả bài thi, bạn có chắc chắn muốn thoát?",
+          [
+            { text: "Hủy", style: "cancel" },
+            { text: "OK", onPress: () => navigation.dispatch(e.data.action) },
+          ]
+        );
+      }
+    );
 
     return () => {
       if (beforeRemoveListener.current) {
@@ -32,6 +79,51 @@ function CountAnimalsTestScreen({ route, navigation }) {
       }
     };
   }, [navigation]);
+
+  // call api get info test
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axiosClient.get(
+          `/api/exercises/${id}?type=${mode}`
+        );
+        if (response.status === 200) {
+          setInfoTest(response.data.exercise);
+          setLoading(false);
+        }
+      } catch (error) {
+        setError(
+          err.response
+            ? err.response.data
+            : "Something went wrong at detail test screen"
+        );
+      }
+    };
+    getData();
+  }, []);
+
+  // call api nộp bài thi
+  const handleSubmitTest = async () => {
+    if(answers.length === 0) {
+      Alert.alert("Thông báo", "Bạn chưa trả lời câu hỏi nào")
+      return;
+    }
+    try {
+      const response = await axiosClient.post(`/api/student/submit/counting`,{
+        exerciseId: id,
+        answers
+      })
+      if(response.status === 200) {
+        dispatch(setDataResult(response.data.result));
+        Alert.alert("Thông báo", "Nộp bài thành công", [
+          { text: "OK", onPress: () => navigation.replace("Result") },
+        ]);
+      }
+    } catch (error) {
+      console.error("Lỗi khi nộp bài thi:", error);
+      Alert.alert("Lỗi", "Không thể nộp bài thi.");
+    }
+  };
 
   const handleEndTest = () => {
     Alert.alert("Thông báo", "Xác nhận nộp bài?", [
@@ -42,60 +134,70 @@ function CountAnimalsTestScreen({ route, navigation }) {
           if (beforeRemoveListener.current) {
             beforeRemoveListener.current();
           }
-          navigation.replace("Result");
+          handleSubmitTest();
         },
       },
     ]);
   };
 
+  if (loading) {
+    return (
+      <HeaderLayout>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </HeaderLayout>
+    );
+  }
+
   return (
     <HeaderLayout>
       <ScrollView>
-        <Text className="font-interBold text-2xl my-5">Điền tổng số lượng con vật có trong hình ảnh</Text>
-        
+        <Text className="font-interBold text-2xl my-5">{infoTest.title}</Text>
         <PaginationTest
-          onChangeScreen={(screen) => (screen === 10 ? setEndTest(true) : setEndTest(false))}
+          onChangeScreen={(screen) => {
+            screen === totalPages ? setEndTest(true) : setEndTest(false);
+            setCurrentPage(screen);
+          }}
           prevScreen={prevScreen}
           nextScreen={nextScreen}
           changeQuestion={changeQuestion}
+          totalScreen={totalPages}
         />
-
-        {/* Hình ảnh động vật */}
-        <View className="flex-row justify-around my-5">
-          <Image source={require("../../assets/animal1.png")} className="w-[70px] h-[70px]" />
-          <Image source={require("../../assets/animal2.png")} className="w-[70px] h-[70px]" />
-          <Image source={require("../../assets/animal3.png")} className="w-[70px] h-[70px]" />
-        </View>
-
-        {/* Input điền kết quả */}
-        <View className="items-center">
+        <View className="min-h-[270px] rounded-20 border-b-2 border-grayBorder p-5">
+          <Text className="font-interSemiBold text-xl">
+            Câu hỏi: {currentItem[0]?.question}
+          </Text>
           <TextInput
-            className="text-6xl font-interBold text-center border border-gray-300 w-[150px] h-[100px] rounded-20"
+            className="border-2 border-gray-300 rounded-lg p-2 mt-4"
+            placeholder="Nhập đáp án của bạn"
+            value={answers.find(a => a.questionId === currentItem[0]?.id)?.answer || ''}
+            onChangeText={handleInputAnswer}
             keyboardType="numeric"
-            value="3" // bạn có thể thay bằng state nếu cần input thực tế
-            editable={false} // đổi thành true nếu muốn người dùng nhập
           />
         </View>
 
-        {/* Nút điều khiển */}
         {endTest ? (
           <Button
-            title="Hoàn thành"
-            sxButton="bg-pink w-[140px] rounded-20 mx-auto mt-5"
+            title="Kết thúc"
+            sxButton="bg-pink w-[140px] rounded-20 mx-auto"
             sxText="text-2xl"
             onClick={handleEndTest}
           />
         ) : (
-          <View className="flex-row justify-around mt-10">
+          <View className="flex-row justify-around mt-5">
             <Button
-              title="Thoát trò chơi"
-              sxButton="w-[140px] border border-grayBorder"
+              title="Câu trước"
+              sxButton="w-[120px] border border-grayBorder"
               sxText="text-[#343B6E]"
-              onClick={() => navigation.goBack()}
+              onClick={() => {
+                setChangeQuestion(true);
+                setPrevScreen((prev) => !prev);
+              }}
             />
             <Button
               title="Câu tiếp theo"
-              sxButton="w-[140px] border border-grayBorder"
+              sxButton="w-[120px] border border-grayBorder"
               sxText="text-[#343B6E]"
               onClick={() => {
                 setChangeQuestion(true);

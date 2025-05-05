@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import IconHideEye from "../../../../assets/icons/hideEye.svg";
 import HeaderLayout from "../../../layouts/HeaderLayout";
+import axiosClient from "../../../configs/axiosClient";
 
 function SigupTeacherScreen({ navigation, route }) {
   const { role } = route.params || {};
@@ -11,12 +12,49 @@ function SigupTeacherScreen({ navigation, route }) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const handelResgister = async () => {
+    if (!email || !name || !password || email.length < 6) {
+      Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin.");
+      return;
+    }
+    try {
+      const response = await axiosClient.post("/api/auth/register", {
+        email: email,
+        password: password,
+        name: name,
+        role: role,
+      });
+      if (response.status === 201) {
+        Alert.alert("Thông báo", "Đăng ký thành công", [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Login", params: { role: role } }],
+                // routes: [{ name: "Login"}],
+              });
+            },
+          },
+        ]);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        Alert.alert("Thông báo", error.response.data.message);
+      } else {
+        Alert.alert("Lỗi", "Có lỗi xảy ra, vui lòng thử lại.");
+      }
+
+      console.log("Register teacher error:", error);
+    }
+  };
   return (
     <HeaderLayout>
       <View className="flex flex-1">
         <Text className="text-2xl font-interSemiBold my-5">
           Đăng ký tài khoản
         </Text>
+        <Text>{role}</Text>
         {/* Input Email */}
         <View className="mt-5">
           <Text className="font-interSemiBold my-2">Email</Text>
@@ -56,14 +94,7 @@ function SigupTeacherScreen({ navigation, route }) {
           title="Đăng ký"
           sxButton="bg-red mt-5 border border-b-[4px] border-b-[#343B6E]"
           sxText="text-center text-white font-interBold"
-          onClick={() =>
-            navigation.reset(
-              {
-                index: 0,
-                routes: [{ name: "Start", params: {role: role} }],
-              },
-            )
-          }
+          onClick={handelResgister}
         />
       </View>
     </HeaderLayout>

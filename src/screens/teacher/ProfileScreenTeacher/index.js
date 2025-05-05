@@ -28,6 +28,7 @@ function ProfileScreenTeacher({ navigation }) {
         text: "ok",
         onPress: async () => {
           try {
+            await AsyncStorage.removeItem('token');
             await AsyncStorage.removeItem('user');
             await AsyncStorage.removeItem('role');
             dispatch(logout());

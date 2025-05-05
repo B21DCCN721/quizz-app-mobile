@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import Button from "../../components/Button";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import Input from "../../components/Input";
@@ -7,7 +7,7 @@ import Checkbox from "../../components/Checkbox";
 import IconHideEye from "../../../assets/icons/hideEye.svg";
 import NameApp from "../../../assets/imgs/nameapp.svg";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import axiosClient from "../../configs/axiosClient";
 import { loginSuccess } from "../../store/slices/authSlice";
@@ -21,28 +21,43 @@ export default function LoginScreen({ navigation, route }) {
 
   const dispatch = useDispatch();
 
-  const handleLogin = async () => { 
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Thông báo", "Vui lòng nhập đầy đủ email và mật khẩu.");
+      return;
+    }
     try {
-      const response = await axiosClient.post(`/btl_mad/api/v1/auth/login?role=${role}`, {
+      const response = await axiosClient.post("/api/auth/login", {
         email,
         password,
       });
-  
       // Lưu roll, user vào AsyncStorage
       await AsyncStorage.setItem("role", role);
-      await AsyncStorage.setItem("user", JSON.stringify(response.data.result));
+      await AsyncStorage.setItem("token", response.data.token);
+      await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
       // Cập nhật redux state
-      dispatch(loginSuccess({ role }));
+      dispatch(
+        loginSuccess({
+          role,
+          token: response.data.token,
+          user: response.data.user,
+        })
+      );
     } catch (error) {
+      if (error.response && error.response.status === 400) {
+        Alert.alert("Thông báo", error.response.data.message);
+      } else {
+        Alert.alert("Lỗi", "Có lỗi xảy ra, vui lòng thử lại.");
+      }
       console.log("Login error:", error);
     }
   };
-  
+
   return (
     <HeaderLayout>
       <ScrollView className="flex flex-1">
         <View className="mx-auto my-20">
-          <NameApp/>
+          <NameApp />
         </View>
         {/* Input Email */}
         <View className="mt-5">
@@ -51,6 +66,7 @@ export default function LoginScreen({ navigation, route }) {
             value={email}
             placeholder="abc@gmail.com"
             onChange={setEmail}
+            keyboardType="email-address"
           />
         </View>
 
@@ -62,6 +78,7 @@ export default function LoginScreen({ navigation, route }) {
             value={password}
             onChange={setPassword}
             hide={!showPassword}
+            secureTextEntry={true}
           >
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Text>
@@ -82,10 +99,14 @@ export default function LoginScreen({ navigation, route }) {
             color="black"
             label="Ghi nhớ"
           />
-          {/* <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
-            <Text style={{ color: 'blue' }}>Quên mật khẩu?</Text>
-          </TouchableOpacity> */}
-
+          <Text
+            className="font-interRegular underline"
+            onPress={() => {
+              navigation.navigate("ForgotPassword", { role: role });
+            }}
+          >
+            Quên mật khẩu?
+          </Text>
         </View>
         <Button
           title="Đăng nhập"
