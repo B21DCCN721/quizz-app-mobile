@@ -17,7 +17,6 @@ function StatisticalScreenTeacher() {
           <Text className="font-interSemiBold text-2xl text-orange">
             Tài khoản
           </Text>
-          <IconSetting />
         </View>
         <View className="my-5 flex flex-row items-center">
           <AvatarTeacher width="120px" height="120px" />

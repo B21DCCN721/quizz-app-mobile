@@ -144,7 +144,6 @@ function MultipleChoiceTestScreen({ route, navigation }) {
       </HeaderLayout>
     );
   }
-  console.log(answers);
   return (
     <HeaderLayout>
       <ScrollView>
@@ -183,7 +182,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[0]?.id
-                ? "border"
+                ? "bg-yellow/40"
                 : "bg-yellow"
             }`}
             sxText="text-2xl"
@@ -197,7 +196,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[1]?.id
-                ? "border"
+                ? "bg-pink/40"
                 : "bg-pink"
             }`}
             sxText="text-2xl"
@@ -213,7 +212,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[2]?.id
-                ? "border"
+                ? "bg-blue/40"
                 : "bg-blue"
             }`}
             sxText="text-2xl"
@@ -227,7 +226,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[3]?.id
-                ? "border"
+                ? "bg-yellow/40"
                 : "bg-yellow"
             }`}
             sxText="text-2xl"

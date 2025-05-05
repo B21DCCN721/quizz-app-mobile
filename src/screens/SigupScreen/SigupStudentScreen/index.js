@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import IconHideEye from "../../../../assets/icons/hideEye.svg";
+import IconEye from "../../../../assets/icons/eye.svg";
 import Select from "../../../components/Select";
 import HeaderLayout from "../../../layouts/HeaderLayout";
 import axiosClient from "../../../configs/axiosClient";
@@ -22,8 +23,8 @@ function SigupStudenScreen({ navigation, route }) {
     { label: "5", value: "5" },
   ];
   const handelResgister = async () => {
-    if (!email || !name || !password || !valueSelect || email.length < 6) {
-      Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin.");
+    if (!email || !name || !password || !valueSelect || password.length < 6) {
+      Alert.alert("Thông báo", "Vui lòng điền đầy đủ và đúng thông tin.");
       return;
     }
     try {
@@ -31,7 +32,7 @@ function SigupStudenScreen({ navigation, route }) {
         email: email,
         password: password,
         name: name,
-        grade: valueSelect,
+        grade: parseInt(valueSelect),
         role: role,
       });
       if (response.status === 201) {
@@ -76,7 +77,7 @@ function SigupStudenScreen({ navigation, route }) {
         {/* Input name */}
         <View className="mt-5">
           <Text className="text-bold font-semibold my-2">Họ và tên</Text>
-          <Input value={name} onChange={setName} />
+          <Input value={name} onChange={setName} placeholder="Nguyễn Văn A" />
         </View>
         {/* Input password*/}
         <View className="mt-5">
@@ -90,7 +91,7 @@ function SigupStudenScreen({ navigation, route }) {
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Text>
                 {showPassword ? (
-                  "🙈"
+                  <IconEye width="16px" height="16px" />
                 ) : (
                   <IconHideEye width="16px" height="16px" />
                 )}
@@ -116,4 +117,4 @@ function SigupStudenScreen({ navigation, route }) {
   );
 }
 
-export default SigupStudenScreen;
+export default SigupStudenScreen;  

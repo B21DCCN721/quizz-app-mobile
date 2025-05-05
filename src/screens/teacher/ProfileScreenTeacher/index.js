@@ -9,18 +9,24 @@ import IconLogoutTeacher from "../../../../assets/icons/logoutTeacher.svg";
 import IconAbout from "../../../../assets/icons/about.svg";
 import IconHelp from "../../../../assets/icons/help.svg";
 import IconContact from "../../../../assets/icons/contact.svg";
-import IconThongKe from "../../../../assets/icons/thongKe.svg";
-import { useState } from "react";
+import IconPassword from "../../../../assets/icons/password.svg";
+import { useState} from "react";
+import { Image } from "react-native";
 import DefaultLayout from "../../../layouts/DefaultLayout";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { logout } from "../../../store/slices/authSlice";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../store/slices/authSlice'; // Import action logout từ authSlice
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ProfileScreenTeacher({ navigation }) {
+  const user = useSelector((state) => state.auth.user);
+  const [image, setImage] = useState(user.avatar || ""); // Đường dẫn đến ảnh đại diện
+  console.log("user", user);
   const [about, setAbout] = useState(false);
   const [help, setHelp] = useState(false);
   const [contact, setContact] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // Khởi tạo dispatch từ useDispatch
+
   const handleLogout = () => {
     Alert.alert("Thông báo", "Xác nhận đăng xuất.", [
       { text: "Đóng", style: "cancel" },
@@ -28,17 +34,18 @@ function ProfileScreenTeacher({ navigation }) {
         text: "ok",
         onPress: async () => {
           try {
-            await AsyncStorage.removeItem('token');
-            await AsyncStorage.removeItem('user');
-            await AsyncStorage.removeItem('role');
+            await AsyncStorage.removeItem("token");
+            await AsyncStorage.removeItem("user");
+            await AsyncStorage.removeItem("role");
             dispatch(logout());
           } catch (error) {
-            console.error("Lỗi khi xoá dữ liệu async store:", error);
+            console.error("Lỗi khi xoá token:", error);
           }
-        }
+        },
       },
     ]);
   };
+
   const handleEditProfile = () => {
     navigation.navigate("EditProfileTeacher");
   };
@@ -49,17 +56,29 @@ function ProfileScreenTeacher({ navigation }) {
         showsHorizontalScrollIndicator={false}
       >
         <View className="flex flex-row justify-between">
-          <Text className="font-interSemiBold text-2xl text-orange">
+          <Text style={{
+              fontSize: 24,
+              fontWeight: 'bold',
+              marginBottom: 20,
+              color: '#E7784C',
+            }}>
             Tài khoản
           </Text>
           <IconSetting />
         </View>
         <View className="my-5 flex flex-row items-center">
-          <AvatarTeacher width="120px" height="120px" />
+          {image ? (
+            <Image source={{ uri: image }} 
+            style={{ width: 120, height: 120, borderRadius: 60 }}
+            className="rounded-full"
+            resizeMode="contain"/>
+          ) : (
+            <AvatarTeacher width="120px" height="120px"/>
+          )}
           <View className="ms-20">
-            <Text className="font-interSemiBold text-xl">Cơ vô Cực</Text>
+            <Text className="font-interSemiBold text-xl">{user.name}</Text>
             <Text className="font-interRegular text-sm text-gray-500">
-              Chu Tước Tử
+              Giáo viên
             </Text>
           </View>
         </View>
@@ -76,12 +95,12 @@ function ProfileScreenTeacher({ navigation }) {
           </Button>
         </View>
         <View className="flex flex-row items-center border-b border-grayBorder">
-          <IconThongKe width="30px" height="30px" />
+          <IconPassword width="30px" height="30px" />
           <Button
-            title="Thống kê"
+            title="Đổi mật khẩu"
             sxText="font-interSemiBold"
             sxButton="flex flex-row justify-between flex-1"
-            onClick={() => navigation.navigate("StatisticalTeacher")}
+            onClick={() => navigation.navigate("ChangePasswordTeacher")}
           >
             <IconChevronRight />
           </Button>

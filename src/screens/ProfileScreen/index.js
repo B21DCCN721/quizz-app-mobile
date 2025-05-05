@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import DefaultLayout from "../../layouts/DefaultLayout";
 import Input from "../../components/Input";
@@ -17,14 +17,16 @@ import { useState } from "react";
 import IconLogout from "../../../assets/icons/logout.svg";
 import IconEditInfo from "../../../assets/icons/editInfo.svg";
 import IconHistoryProfile from "../../../assets/icons/historyProfile.svg";
-import * as ImagePicker from 'expo-image-picker';
-import * as ImageManipulator from 'expo-image-manipulator';
+import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 import axiosClient from "../../configs/axiosClient";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from '@react-navigation/native';
 
 export default function ProfileScreen({ navigation }) {
+
   const [email, setEmail] = useState("abc@gmail.com");
   const [name, setName] = useState("VoCucThienTon");
   const [score, setScore] = useState(0);
@@ -35,6 +37,7 @@ export default function ProfileScreen({ navigation }) {
   const [editInp, setEditInp] = useState(false);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   //xử lý dropdow
   const [valueSelect, setValueSelect] = useState("1");
@@ -54,22 +57,28 @@ export default function ProfileScreen({ navigation }) {
       const payload = {
         email,
         name,
-        grade: valueSelect,
+        grade: parseInt(valueSelect),
         avatar: avatarBase64 ? `data:image/jpeg;base64,${avatarBase64}` : null,
       };
-  
-      const response = await axiosClient.put("/api/auth/change-profile", payload);
-  
+
+      const response = await axiosClient.put(
+        "/api/auth/change-profile",
+        payload
+      );
+
       if (response.status === 200) {
         Alert.alert("Thành công", "Thông tin đã được cập nhật.");
         setEditInp(false);
       }
     } catch (error) {
-      console.error("Lỗi cập nhật thông tin:", error);
-      Alert.alert("Lỗi", "Không thể cập nhật thông tin.");
+      if (error.response && error.response.status === 400) {
+        Alert.alert("Thông báo", error.response.data.message);
+      } else {
+        Alert.alert("Lỗi", "Có lỗi xảy ra, vui lòng thử lại.");
+      }
     }
   };
-  
+
   const handleLogout = () => {
     Alert.alert("Thông báo", "Xác nhận đăng xuất.", [
       { text: "Đóng", style: "cancel" },
@@ -95,7 +104,7 @@ export default function ProfileScreen({ navigation }) {
       Alert.alert("Thông báo", "Bạn cần cấp quyền truy cập ảnh.");
       return;
     }
-  
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -103,20 +112,24 @@ export default function ProfileScreen({ navigation }) {
       aspect: [1, 1],
       quality: 1,
     });
-  
+
     if (!result.canceled) {
       const manipResult = await ImageManipulator.manipulateAsync(
         result.assets[0].uri,
         [{ resize: { width: 300 } }], // resize ảnh nhỏ lại
-        { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG, base64: true } // nén và lấy base64
+        {
+          compress: 0.7,
+          format: ImageManipulator.SaveFormat.JPEG,
+          base64: true,
+        } // nén và lấy base64
       );
-  
+
       setAvatarUri({ uri: manipResult.uri });
       setAvatarBase64(manipResult.base64);
     }
   };
 
-  // call api get profile 
+  // call api get profile
   useEffect(() => {
     const getData = async () => {
       try {
@@ -131,7 +144,7 @@ export default function ProfileScreen({ navigation }) {
           } else {
             setAvatarUri(require("../../../assets/imgs/avatar.png")); // fallback ảnh mặc định
           }
-  
+
           setValueSelect(String(response.data.user.grade));
           setLoading(false);
         }
@@ -139,9 +152,9 @@ export default function ProfileScreen({ navigation }) {
         console.error("Lỗi lấy thông tin người dùng:", error);
       }
     };
-  
+
     getData();
-  }, []);
+  }, [isFocused]);
   if (loading) {
     return (
       <DefaultLayout>
@@ -183,9 +196,14 @@ export default function ProfileScreen({ navigation }) {
               title="Xem lịch sử làm bài"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
               sxText="font-interRegular"
+              onClick={() => {
+                navigation.navigate("ProfileStack", { screen: "History" });
+                
+              }}
             >
               <IconHistoryProfile />
             </Button>
+            
             <Button
               title="Đổi mật khẩu"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
@@ -205,7 +223,9 @@ export default function ProfileScreen({ navigation }) {
         </View>
         {/* Các thẻ input hiển thị thông tin cá nhân */}
         <View>
-          <Text className="text-xl font-semibold mt-5 mx-auto">Thông tin cá nhân</Text>
+          <Text className="text-xl font-semibold mt-5 mx-auto">
+            Thông tin cá nhân
+          </Text>
           <Text>Tổng số điểm: {score}</Text>
           {/* Input Email */}
           <View className="mt-5">
@@ -230,13 +250,14 @@ export default function ProfileScreen({ navigation }) {
             setValue={setValueSelect}
           />
         </View>
-        {!editInp && <Button
-              title="Chỉnh sửa thông tin"
-              sxButton="mx-2 w-[160px] bg-pink flex flex-row justify-between items-center mx-auto"
-              sxText="font-interRegular"
-              onClick={handleEditProfile}
-            >
-            </Button>}
+        {!editInp && (
+          <Button
+            title="Chỉnh sửa thông tin"
+            sxButton="mx-2 w-[160px] bg-pink flex flex-row justify-between items-center mx-auto"
+            sxText="font-interRegular"
+            onClick={handleEditProfile}
+          ></Button>
+        )}
         {editInp && (
           <Button
             onClick={handleConfimEdit}

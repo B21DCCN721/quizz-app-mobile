@@ -57,7 +57,6 @@ function ForgotPassword({ navigation, route }) {
       <View>
         <Text className="text-2xl font-interSemiBold my-5 mx-auto">
           Quên mật khẩu
-          {role}
         </Text>
         <Text className="text-lg font-interSemiBold my-5">
           Nhập email của bạn:
