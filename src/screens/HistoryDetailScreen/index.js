@@ -1,45 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import HeaderLayout from "../../layouts/HeaderLayout";
-import IconTrue from "../../../assets/icons/true.svg";
-import IconFalse from "../../../assets/icons/false.svg";
 import axiosClient from "../../configs/axiosClient";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function HistoryDetailScreen({ route }) {
   const { examId, exerciseType } = route.params; // Nhận examId và exerciseType từ route.params
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("exerciseType:", exerciseType);
-  console.log("examId:", examId);
+
   useEffect(() => {
     const fetchHistoryDetail = async () => {
       try {
         setLoading(true);
         let apiUrl = "";
-  
+
         // Xác định API dựa trên exerciseType
         if (exerciseType === 1) {
           apiUrl = `/api/history/result/multiple-choice/${examId}`;
-        }else if (exerciseType === 2) {
+        } else if (exerciseType === 2) {
           apiUrl = `/api/history/result/counting/${examId}`;
         } else if (exerciseType === 3) {
           apiUrl = `/api/history/result/color/${examId}`;
-        } 
-  
-        // Lấy token từ AsyncStorage
-        const token = await AsyncStorage.getItem("token");
-        if (!token) {
-          throw new Error("Token không tồn tại. Vui lòng đăng nhập lại.");
         }
-  
-        // Gửi yêu cầu API với token
-        const response = await axiosClient.get(apiUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
-          },
-        });
-  
+
+        // Gửi yêu cầu API
+        const response = await axiosClient.get(apiUrl);
         setHistoryData(response.data.data); // Lưu dữ liệu từ API
       } catch (error) {
         console.error("Lỗi khi lấy chi tiết bài thi:", error);
@@ -47,9 +32,10 @@ function HistoryDetailScreen({ route }) {
         setLoading(false);
       }
     };
-  
+
     fetchHistoryDetail();
   }, [examId, exerciseType]);
+
   if (loading) {
     return (
       <HeaderLayout>
@@ -78,7 +64,7 @@ function HistoryDetailScreen({ route }) {
 
             {exerciseType === 2 && (
               <>
-              <Text style={styles.question}>Vật đếm: {item.objectName}</Text>
+                <Text style={styles.question}>Vật đếm: {item.objectName}</Text>
                 <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
                 <Text style={styles.userAnswer}>Đáp án của bạn: {item.userAnswer}</Text>
               </>
@@ -86,7 +72,6 @@ function HistoryDetailScreen({ route }) {
 
             {exerciseType === 3 && (
               <>
-                
                 <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
                 <Text style={styles.userAnswer}>Đáp án của bạn: {item.userAnswer}</Text>
               </>
@@ -105,16 +90,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 23,
     fontWeight: "bold",
-    color: "#E74C3C", 
+    color: "#E74C3C",
     textAlign: "left",
     marginBottom: 10,
-  },
-  examTitle: {
-    fontSize: 30, 
-    fontWeight: "bold",
-    color: "#9ED832", 
-    textAlign: "center",
-    marginBottom: 20,
   },
   questionItem: {
     backgroundColor: "#F9F9F9",
@@ -132,25 +110,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  answerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  answer: {
-    fontSize: 14,
-  },
   correctAnswer: {
     fontSize: 14,
     fontStyle: "italic",
     color: "#27AE60",
     marginTop: 5,
   },
-  correct: {
-    color: "#27AE60",
-  },
-  wrong: {
-    color: "#E74C3C",
+  userAnswer: {
+    fontSize: 14,
+    color: "#333",
+    marginTop: 5,
   },
 });
 

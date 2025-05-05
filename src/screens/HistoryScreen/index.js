@@ -1,41 +1,40 @@
-
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../configs/axiosClient";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import ArrowRight from "../../../assets/icons/arrowRight.svg";
 import PaginationTest from "../../components/Pagination/PaginationTest";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const HistoryScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("Trắc nghiệm");
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const fetchHistory = async () => {
     setLoading(true);
     try {
-      const token = await AsyncStorage.getItem("token"); // Lấy token từ AsyncStorage
       const response = await axiosClient.get("/api/history", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Thêm token vào header
-        },
         params: {
           page: currentPage,
           limit: 10,
           exercise_type: activeTab === "Trắc nghiệm" ? 1 : activeTab === "Đếm" ? 2 : 3,
         },
       });
-      setData(response.data.data);
+      setData(response.data.data); // Lưu dữ liệu lịch sử vào state
     } catch (error) {
       console.error("Error fetching history:", error);
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchHistory();
   }, [activeTab, currentPage]);
+
   const tabs = ["Trắc nghiệm", "Đếm", "Tô màu"];
+
   return (
     <HeaderLayout>
       <View style={styles.container}>
@@ -57,7 +56,7 @@ const HistoryScreen = ({ navigation }) => {
           ))}
         </View>
 
-        {/* Tiêu đề của bảng  */}
+        {/* Tiêu đề của bảng */}
         <View style={styles.headerRow}>
           <Text style={[styles.headerText, styles.headerName]}>Tên bài thi</Text>
           <Text style={[styles.headerText, styles.headerScore]}>Điểm</Text>
@@ -80,7 +79,14 @@ const HistoryScreen = ({ navigation }) => {
                   <Text style={styles.score}>{item.score}</Text>
                 </View>
                 <View style={[styles.cell, styles.cellRetry]}>
-                  <TouchableOpacity onPress={() => navigation.navigate("HistoryResult",{ examId: item.id,exerciseType: item.exercise_type })}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("HistoryResult", {
+                        examId: item.id,
+                        exerciseType: item.exercise_type,
+                      })
+                    }
+                  >
                     <ArrowRight width={24} height={24} />
                   </TouchableOpacity>
                 </View>
@@ -89,8 +95,8 @@ const HistoryScreen = ({ navigation }) => {
           />
         )}
 
-       {/* Phân trang */}
-       <PaginationTest totalScreen={10} onChangeScreen={setCurrentPage} />
+        {/* Phân trang */}
+        <PaginationTest totalScreen={10} onChangeScreen={setCurrentPage} />
       </View>
     </HeaderLayout>
   );
@@ -136,7 +142,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  /* Tiêu đề của bảng  */
+  /* Tiêu đề của bảng */
   headerRow: {
     flexDirection: "row",
     marginBottom: 5,
@@ -163,24 +169,24 @@ const styles = StyleSheet.create({
   },
 
   /* Dòng dữ liệu */
-row: {
-  flexDirection: "row",
-  marginBottom: 10,
-},
-cell: {
-  backgroundColor: "#b2f0f0",
-  padding: 10,
-  justifyContent: "center",
-  alignItems: "center",
-  marginHorizontal: 10, 
-  borderRadius: 10,
-  elevation: 4,
-},
+  row: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  cell: {
+    backgroundColor: "#b2f0f0",
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 10,
+    borderRadius: 10,
+    elevation: 4,
+  },
   cellName: {
     flex: 2,
   },
   cellScore: {
-    flex: 0.3,
+    flex: 0.5,
   },
   cellRetry: {
     flex: 0.3,

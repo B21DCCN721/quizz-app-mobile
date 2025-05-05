@@ -185,7 +185,7 @@ export default function ProfileScreen({ navigation }) {
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
               sxText="font-interRegular"
               onClick={() => {
-                  navigation.navigate("History");
+                navigation.navigate("ProfileStack", { screen: "History" });
                 
               }}
             >

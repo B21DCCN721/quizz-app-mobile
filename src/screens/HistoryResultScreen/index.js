@@ -8,28 +8,19 @@ import IconStar from "../../../assets/icons/star.svg";
 import IconDetail from "../../../assets/icons/detail.svg";
 import Button from "../../components/Button";
 import axiosClient from "../../configs/axiosClient";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 function HistoryResultScreen({ navigation, route }) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Lấy ID bài kiểm tra từ route params
-  const { examId,exerciseType } = route.params;
+  const { examId, exerciseType } = route.params;
 
   useEffect(() => {
     const fetchResult = async () => {
       setLoading(true);
       try {
-        const token = await AsyncStorage.getItem("token"); // Lấy token từ AsyncStorage
-        if (!token) {
-          throw new Error("Token không tồn tại. Vui lòng đăng nhập lại.");
-        }
-  
-        const response = await axiosClient.get(`/api/history/result/${examId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
-          },
-        });
+        const response = await axiosClient.get(`/api/history/result/${examId}`);
         setResult(response.data.data);
       } catch (error) {
         console.error("Error fetching result:", error);
@@ -43,9 +34,10 @@ function HistoryResultScreen({ navigation, route }) {
         setLoading(false);
       }
     };
-  
+
     fetchResult();
   }, [examId]);
+
   if (loading) {
     return (
       <HeaderLayout>
@@ -72,15 +64,15 @@ function HistoryResultScreen({ navigation, route }) {
           {result.examName}
         </Text>
         <TouchableOpacity
-  onPress={() =>
-    navigation.navigate("HistoryDetail", {
-      examId , // ID của bài kiểm tra
-      exerciseType  // Loại bài kiểm tra
-    })
-  }
->
-  <IconDetail width={50} height={50} style={{ marginLeft: 16 }} />
-</TouchableOpacity>
+          onPress={() =>
+            navigation.navigate("HistoryDetail", {
+              examId, // ID của bài kiểm tra
+              exerciseType, // Loại bài kiểm tra
+            })
+          }
+        >
+          <IconDetail width={50} height={50} style={{ marginLeft: 16 }} />
+        </TouchableOpacity>
       </View>
 
       {/* Kết quả */}
