@@ -7,8 +7,10 @@ import { CardNameGame } from "../../../components/Card";
 import IconCardGame1 from "../../../../assets/icons/cardGame1.svg";
 import IconCardGame2 from "../../../../assets/icons/cardGame2.svg";
 import IconCardGame3 from "../../../../assets/icons/cardGame3.svg";
+import { useSelector } from "react-redux";
 
 function HomeScreenTeacher({ navigation }) {
+  const user = useSelector((state) => state.auth.user);
   return (
     <DefaultLayout>
       <ScrollView>
@@ -21,10 +23,10 @@ function HomeScreenTeacher({ navigation }) {
           </View>
           <View className="flex flex-row items-center">
             <View>
-              <Text className="font-interSemiBold text-right">
-                ✋Xin chào, abc
+              <Text className="font-interSemiBold text-right mr-4">
+                ✋Xin chào, {user?.name}
               </Text>
-              <Text className="font-interLight text-right">
+              <Text className="font-interLight text-right mr-4">
                 Giáo viên
               </Text>
             </View>
