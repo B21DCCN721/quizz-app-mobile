@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, Alert } from "react-native";
+import { ScrollView, View, Text, Alert, ActivityIndicator, Image } from "react-native";
 import IconSetting from "../../../../assets/icons/setting.svg";
 import AvatarTeacher from "../../../../assets/imgs/avatarteacher.svg";
 import Button from "../../../components/Button";
@@ -10,16 +10,22 @@ import IconAbout from "../../../../assets/icons/about.svg";
 import IconHelp from "../../../../assets/icons/help.svg";
 import IconContact from "../../../../assets/icons/contact.svg";
 import IconThongKe from "../../../../assets/icons/thongKe.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DefaultLayout from "../../../layouts/DefaultLayout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logout } from "../../../store/slices/authSlice";
 import { useDispatch } from "react-redux";
+import axiosClient from "../../../configs/axiosClient";
 
 function ProfileScreenTeacher({ navigation }) {
   const [about, setAbout] = useState(false);
   const [help, setHelp] = useState(false);
   const [contact, setContact] = useState(false);
+  const [name, setName] = useState("VoCucThienTon");
+  const [loading, setLoading] = useState(true);
+  const [avatarUri, setAvatarUri] = useState(
+    require("../../../../assets/imgs/avatar.png")
+  );
   const dispatch = useDispatch();
   const handleLogout = () => {
     Alert.alert("Thông báo", "Xác nhận đăng xuất.", [
@@ -28,20 +34,51 @@ function ProfileScreenTeacher({ navigation }) {
         text: "ok",
         onPress: async () => {
           try {
-            await AsyncStorage.removeItem('token');
-            await AsyncStorage.removeItem('user');
-            await AsyncStorage.removeItem('role');
+            await AsyncStorage.removeItem("token");
+            await AsyncStorage.removeItem("user");
+            await AsyncStorage.removeItem("role");
             dispatch(logout());
           } catch (error) {
             console.error("Lỗi khi xoá dữ liệu async store:", error);
           }
-        }
+        },
       },
     ]);
   };
   const handleEditProfile = () => {
     navigation.navigate("EditProfileTeacher");
   };
+  // call api get profile
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axiosClient.get("/api/auth/profile");
+        if (response.status === 200) {
+          setName(response.data.user.name);
+          const avatarFromServer = response.data.user.avatar;
+          if (avatarFromServer !== null) {
+            setAvatarUri({ uri: avatarFromServer }); //  base64 URI từ backend
+          } else {
+            setAvatarUri(require("../../../../assets/imgs/avatar.png")); // fallback ảnh mặc định
+          }
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Lỗi lấy thông tin người dùng:", error);
+      }
+    };
+
+    getData();
+  }, []);
+  if (loading) {
+    return (
+      <DefaultLayout>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      </DefaultLayout>
+    );
+  }
   return (
     <DefaultLayout>
       <ScrollView
@@ -55,11 +92,14 @@ function ProfileScreenTeacher({ navigation }) {
           <IconSetting />
         </View>
         <View className="my-5 flex flex-row items-center">
-          <AvatarTeacher width="120px" height="120px" />
+          <Image
+            className="w-[120px] h-[120px] rounded-full "
+            source={avatarUri}
+          />
           <View className="ms-20">
-            <Text className="font-interSemiBold text-xl">Cơ vô Cực</Text>
+            <Text className="font-interSemiBold text-xl">{name}</Text>
             <Text className="font-interRegular text-sm text-gray-500">
-              Chu Tước Tử
+              Giáo viên
             </Text>
           </View>
         </View>

@@ -5,6 +5,7 @@ import HeaderLayout from "../../layouts/HeaderLayout";
 import Input from "../../components/Input";
 import Checkbox from "../../components/Checkbox";
 import IconHideEye from "../../../assets/icons/hideEye.svg";
+import IconEye from "../../../assets/icons/eye.svg";
 import NameApp from "../../../assets/imgs/nameapp.svg";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -36,13 +37,17 @@ export default function LoginScreen({ navigation, route }) {
       await AsyncStorage.setItem("token", response.data.token);
       await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
       // Cập nhật redux state
-      dispatch(
-        loginSuccess({
-          role,
-          token: response.data.token,
-          user: response.data.user,
-        })
-      );
+      if(response.data?.user?.role === role){
+        dispatch(
+          loginSuccess({
+            role,
+            token: response.data.token,
+            user: response.data.user,
+          })
+        );
+      }else{
+        Alert.alert("Thông báo", "Sai tài khoản hoặc mật khẩu.");
+      }
     } catch (error) {
       if (error.response && error.response.status === 400) {
         Alert.alert("Thông báo", error.response.data.message);
@@ -83,7 +88,7 @@ export default function LoginScreen({ navigation, route }) {
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Text>
                 {showPassword ? (
-                  "🙈"
+                  <IconEye width="16px" height="16px" />
                 ) : (
                   <IconHideEye width="16px" height="16px" />
                 )}

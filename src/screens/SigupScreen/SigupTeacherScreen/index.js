@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Alert } from "react-native";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import IconHideEye from "../../../../assets/icons/hideEye.svg";
+import IconEye from "../../../../assets/icons/eye.svg";
 import HeaderLayout from "../../../layouts/HeaderLayout";
 import axiosClient from "../../../configs/axiosClient";
 
@@ -13,8 +14,8 @@ function SigupTeacherScreen({ navigation, route }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handelResgister = async () => {
-    if (!email || !name || !password || email.length < 6) {
-      Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin.");
+    if (!email || !name || !password || password.length < 6) {
+      Alert.alert("Thông báo", "Vui lòng điền đầy đủ và đúng thông tin.");
       return;
     }
     try {
@@ -67,7 +68,7 @@ function SigupTeacherScreen({ navigation, route }) {
         {/* Input name */}
         <View className="mt-5">
           <Text className="font-interSemiBold my-2">Họ và tên</Text>
-          <Input value={name} onChange={setName} />
+          <Input value={name} onChange={setName} placeholder="Nguyễn Văn A" />
         </View>
         {/* Input password*/}
         <View className="my-5">
@@ -81,7 +82,7 @@ function SigupTeacherScreen({ navigation, route }) {
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Text>
                 {showPassword ? (
-                  "🙈"
+                  <IconEye width="16px" height="16px" />
                 ) : (
                   <IconHideEye width="16px" height="16px" />
                 )}
