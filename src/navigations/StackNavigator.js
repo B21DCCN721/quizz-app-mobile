@@ -14,7 +14,10 @@ import StartScreen from "../screens/StartScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 import BottomTabNavigatorTeacher from "./teacher/BottomTabNavigatorTeacher";
 import MultipleChoiceTestScreen from "../screens/MultipleChoiceTestScreen";
+import CountingTestScreen from "../screens/CountingTestScreen";
+import ColorTestScreen from "../screens/ColorTestScreen";
 import ResultScreen from "../screens/ResultScreen";
+import RankScreen from "../screens/RankScreen";
 /*
 main stack của app
 */

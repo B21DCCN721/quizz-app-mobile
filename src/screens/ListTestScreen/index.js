@@ -47,8 +47,10 @@ function ListTestScreen({ route, navigation }) {
         navigation.navigate("MultipleChoice", { mode: mode, id: id });
         break;
       case "2":
+        navigation.navigate("Counting", { mode: mode, id: id });
         break;
       case "3":
+        navigation.navigate("Color", { mode: mode, id: id });
         break;
       default:
         break;
