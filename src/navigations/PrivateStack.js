@@ -5,7 +5,6 @@ import BottomTabNavigator from "./BottomTabNavigator";
 import BottomTabNavigatorTeacher from "./teacher/BottomTabNavigatorTeacher";
 import MultipleChoiceTestScreen from "../screens/MultipleChoiceTestScreen";
 import ResultScreen from "../screens/ResultScreen";
-import ProfileStackNavigator from "./ProfileStackNavigator";
 const Stack = createStackNavigator();
 
 export default function PrivateStack() {
@@ -16,7 +15,6 @@ export default function PrivateStack() {
       <Stack.Screen name="MainTeacher" component={BottomTabNavigatorTeacher} />
       <Stack.Screen name="MultipleChoice" component={MultipleChoiceTestScreen} />
       <Stack.Screen name="Result" component={ResultScreen} />
-      <Stack.Screen name="ProfileStack" component={ProfileStackNavigator} />
     </Stack.Navigator>
   );
 }

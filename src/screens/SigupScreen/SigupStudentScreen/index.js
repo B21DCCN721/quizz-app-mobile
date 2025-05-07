@@ -23,8 +23,12 @@ function SigupStudenScreen({ navigation, route }) {
     { label: "5", value: "5" },
   ];
   const handelResgister = async () => {
-    if (!email || !name || !password || !valueSelect || password.length < 6) {
-      Alert.alert("Thông báo", "Vui lòng điền đầy đủ và đúng thông tin.");
+    if (!email || !name || !password || !valueSelect || !password) {
+      Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin.");
+      return;
+    }
+    if (password.length < 6) {
+      Alert.alert("Thông báo", "Mật khẩu phải có ít nhất 6 ký tự.");
       return;
     }
     try {

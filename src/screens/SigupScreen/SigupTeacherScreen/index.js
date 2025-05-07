@@ -14,8 +14,12 @@ function SigupTeacherScreen({ navigation, route }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handelResgister = async () => {
-    if (!email || !name || !password || password.length < 6) {
-      Alert.alert("Thông báo", "Vui lòng điền đầy đủ và đúng thông tin.");
+    if (!email || !name || !password || !password.length) {
+      Alert.alert("Thông báo", "Vui lòng điền đầy đủ thông tin.");
+      return;
+    }
+    if (password.length < 6) {
+      Alert.alert("Thông báo", "Mật khẩu phải có ít nhất 6 ký tự.");
       return;
     }
     try {

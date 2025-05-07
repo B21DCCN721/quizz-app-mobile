@@ -5,7 +5,7 @@ import HeaderLayout from "../../layouts/HeaderLayout";
 import axiosClient from "../../configs/axiosClient";
 
 
-function RankingScreen() {
+function RankScreen() {
   const [loading, setLoading] = useState(true);
   const [rankings, setRankings] = useState([]);
   const [error, setError] = useState(null);
@@ -35,19 +35,19 @@ function RankingScreen() {
     switch (rank) {
       case 1:
         return {
-          badge: require("D:/MobileApp_KidLearn/assets/imgs/goldmedal.svg"),
+          badge: require("../../../assets/imgs/goldmedal.svg"),
           color: '#FFD700',
           label: 'Hạng nhất'
         };
       case 2:
         return {
-          badge: require("D:/MobileApp_KidLearn/assets/imgs/silvermedal.svg"),
+          badge: require("../../../assets/imgs/silvermedal.svg"),
           color: '#C0C0C0',
           label: 'Hạng nhì'
         };
       case 3:
         return {
-          badge: require("D:/MobileApp_KidLearn/assets/imgs/bronzemedal.svg"),
+          badge: require("../../../assets/imgs/bronzemedal.svg"),
           color: '#CD7F32',
           label: 'Hạng ba'
         };

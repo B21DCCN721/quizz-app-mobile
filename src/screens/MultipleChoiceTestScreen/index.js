@@ -146,7 +146,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
   }
   return (
     <HeaderLayout>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
         <Text className="font-interBold text-2xl my-5">{infoTest.title}</Text>
         <PaginationTest
           onChangeScreen={(screen) => {

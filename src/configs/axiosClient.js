@@ -3,7 +3,7 @@ import { IP_ADDRESS, PORT_API } from "@env";
 import store from "../store"; // đường dẫn tới file store của bạn
 
 const axiosClient = axios.create({
-  baseURL: `http://192.168.43.22:${PORT_API}`,
+  baseURL: `http://${IP_ADDRESS}:${PORT_API}`,
   headers: {
     "content-Type": "application/json",
   },

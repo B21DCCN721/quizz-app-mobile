@@ -20,16 +20,14 @@ import IconHistoryProfile from "../../../assets/icons/historyProfile.svg";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import axiosClient from "../../configs/axiosClient";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/slices/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
 
 export default function ProfileScreen({ navigation }) {
-
   const [email, setEmail] = useState("abc@gmail.com");
   const [name, setName] = useState("VoCucThienTon");
-  const [score, setScore] = useState(0);
   const [avatarUri, setAvatarUri] = useState(
     require("../../../assets/imgs/avatar.png")
   );
@@ -37,6 +35,7 @@ export default function ProfileScreen({ navigation }) {
   const [editInp, setEditInp] = useState(false);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const { isMemoAccount } = useSelector((state) => state.auth);
   const isFocused = useIsFocused();
 
   //xử lý dropdow
@@ -86,9 +85,11 @@ export default function ProfileScreen({ navigation }) {
         text: "ok",
         onPress: async () => {
           try {
-            await AsyncStorage.removeItem("token");
-            await AsyncStorage.removeItem("user");
-            await AsyncStorage.removeItem("role");
+            if (isMemoAccount) {
+              await AsyncStorage.removeItem("token");
+              await AsyncStorage.removeItem("user");
+              await AsyncStorage.removeItem("role");
+            }
             dispatch(logout());
           } catch (error) {
             console.error("Lỗi khi xoá token:", error);
@@ -137,7 +138,6 @@ export default function ProfileScreen({ navigation }) {
         if (response.status === 200) {
           setEmail(response.data.user.email);
           setName(response.data.user.name);
-          setScore(response.data.user.score);
           const avatarFromServer = response.data.user.avatar;
           if (avatarFromServer !== null) {
             setAvatarUri({ uri: avatarFromServer }); // 👉 base64 URI từ backend
@@ -197,17 +197,19 @@ export default function ProfileScreen({ navigation }) {
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
               sxText="font-interRegular"
               onClick={() => {
-                navigation.navigate("ProfileStack", { screen: "History" });
-                
+                navigation.navigate("History", { screen: "History" });
               }}
             >
               <IconHistoryProfile />
             </Button>
-            
+
             <Button
               title="Đổi mật khẩu"
               sxButton="mx-2 bg-pink flex flex-row justify-between items-center"
               sxText="font-interRegular"
+              onClick={() => {
+                navigation.navigate("ChangePassword");
+              }}
             >
               <IconEditInfo />
             </Button>
@@ -226,7 +228,6 @@ export default function ProfileScreen({ navigation }) {
           <Text className="text-xl font-semibold mt-5 mx-auto">
             Thông tin cá nhân
           </Text>
-          <Text>Tổng số điểm: {score}</Text>
           {/* Input Email */}
           <View className="mt-5">
             <Text className="text-bold font-semibold my-2">Email</Text>
@@ -253,7 +254,7 @@ export default function ProfileScreen({ navigation }) {
         {!editInp && (
           <Button
             title="Chỉnh sửa thông tin"
-            sxButton="mx-2 w-[160px] bg-pink flex flex-row justify-between items-center mx-auto"
+            sxButton="mb-5 w-[160px] bg-pink flex flex-row justify-between items-center mx-auto"
             sxText="font-interRegular"
             onClick={handleEditProfile}
           ></Button>
@@ -262,7 +263,7 @@ export default function ProfileScreen({ navigation }) {
           <Button
             onClick={handleConfimEdit}
             title="Xác nhận"
-            sxButton="bg-pink w-[120px] m-auto"
+            sxButton="bg-pink w-[120px] m-auto mb-5"
           />
         )}
       </ScrollView>

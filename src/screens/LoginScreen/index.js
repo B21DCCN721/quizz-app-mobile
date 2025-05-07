@@ -18,7 +18,7 @@ export default function LoginScreen({ navigation, route }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isMemoAccount, setIsMemoAccount] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -33,9 +33,11 @@ export default function LoginScreen({ navigation, route }) {
         password,
       });
       // Lưu roll, user vào AsyncStorage
-      await AsyncStorage.setItem("role", role);
-      await AsyncStorage.setItem("token", response.data.token);
-      await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+      if(isMemoAccount){
+        await AsyncStorage.setItem("token", response.data.token);
+        await AsyncStorage.setItem("role", role);
+        await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+      }
       // Cập nhật redux state
       if(response.data?.user?.role === role){
         dispatch(
@@ -43,6 +45,7 @@ export default function LoginScreen({ navigation, route }) {
             role,
             token: response.data.token,
             user: response.data.user,
+            isMemoAccount,
           })
         );
       }else{
@@ -66,7 +69,7 @@ export default function LoginScreen({ navigation, route }) {
         </View>
         {/* Input Email */}
         <View className="mt-5">
-          <Text className="text-bold font-semibold my-2">Email</Text>
+        <Text className="text-bold font-semibold my-2">Email</Text>
           <Input
             value={email}
             placeholder="abc@gmail.com"
@@ -74,7 +77,7 @@ export default function LoginScreen({ navigation, route }) {
             keyboardType="email-address"
           />
         </View>
-
+        
         {/* Input password*/}
         <View className="my-5">
           <Text className="text-bold font-semibold my-2">Mật khẩu</Text>
@@ -98,8 +101,8 @@ export default function LoginScreen({ navigation, route }) {
         </View>
         <View className="flex flex-row justify-between items-center">
           <Checkbox
-            checked={isChecked}
-            onToggle={() => setIsChecked(!isChecked)}
+            checked={isMemoAccount}
+            onToggle={() => setIsMemoAccount(!isMemoAccount)}
             size={24}
             color="black"
             label="Ghi nhớ"

@@ -26,7 +26,7 @@ function CardDetail({info, onClickEnterExam}) {
       className="h-[207px] bg-yellow-2 rounded-10 border border-amber-300 mt-5 flex justify-between p-5"
     >
         <Text className="font-interRegular">Tên: {info.title}</Text>
-        <Text className="font-interRegular">Mã bài: {generateCodeTest(info.id)}</Text>
+        <Text className="font-interRegular">Mã bài: {info.id}</Text>
         <Text className="font-interRegular">Số câu: {info[category].length}</Text>
         <Text className="font-interRegular">Thể loại: {type}</Text>
         <Text className="font-interRegular">Lớp: {info.grade}</Text>
