@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreenTeacher from "../../screens/teacher/HomeScreenTeacher";
-import ListTestScreenTeacher from "../../screens/teacher/ListTestScreenTeacher";
 
 const Stack = createStackNavigator();
 function HomeStackNavigatorTeacher() {
