@@ -29,6 +29,12 @@ function DetailTestScreen({ route, navigation }) {
     if (mode === "1") {
       navigation.navigate("MultipleChoice", { mode, id });
     }
+    if (mode === "2") {
+      navigation.navigate("Counting", { mode, id });
+    }
+    if (mode === "3") {
+      navigation.navigate("Color", { mode, id });
+    }
   };
 
   const buildTree = (list) => {
