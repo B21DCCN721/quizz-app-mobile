@@ -25,6 +25,10 @@ function ResultScreen({ navigation }) {
           <Text className="flex-1 font-interBold text-3xl">Điểm: {dataResult?.submissionScore}</Text>
           <IconStar />
         </View>
+        <View className="flex-row items-center">
+          <Text className="flex-1 font-interBold text-3xl">Điểm cộng thêm: {dataResult?.pointsAdded}</Text>
+          <IconStar />
+        </View>
       </View>
       <Button
         title="Hoàn tất"
