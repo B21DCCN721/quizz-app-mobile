@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Alert, ScrollView, View, ActivityIndicator, TextInput } from "react-native";
+import { Alert, ScrollView, View, ActivityIndicator, TextInput, Image } from "react-native";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import { Text } from "react-native";
 import Button from "../../components/Button";
@@ -7,6 +7,7 @@ import { PaginationTest } from "../../components/Pagination";
 import axiosClient from "../../configs/axiosClient";
 import { setDataResult } from "../../store/slices/dataResultTestSlice";
 import { useDispatch } from "react-redux";
+
 
 function ColorTestScreen({ route, navigation }) {
   const { id, mode } = route.params || {};
@@ -88,10 +89,13 @@ function ColorTestScreen({ route, navigation }) {
           `/api/exercises/${id}?type=${mode}`
         );
         if (response.status === 200) {
+          console.log('API Response:', response.data.exercise);
+          console.log('Current Item:', response.data.exercise.ColorQuestions?.[0]);
           setInfoTest(response.data.exercise);
           setLoading(false);
         }
       } catch (error) {
+        console.error('API Error:', error);
         setError(
           err.response
             ? err.response.data
@@ -168,6 +172,18 @@ function ColorTestScreen({ route, navigation }) {
           <Text className="font-interSemiBold text-xl">
             Câu hỏi: {currentItem[0]?.question}
           </Text>
+          {currentItem[0]?.image_url && (
+            <>
+              <Text>Image URL: {currentItem[0].image_url}</Text>
+              <Image 
+                source={{ uri: currentItem[0].image_url }}
+                style={{ width: '100%', height: 200, marginVertical: 10, borderRadius: 8 }}
+                resizeMode="contain"
+                onError={(error) => console.error('Image loading error:', error.nativeEvent)}
+                onLoad={() => console.log('Image loaded successfully')}
+              />
+            </>
+          )}
           <TextInput
             className="border-2 border-gray-300 rounded-lg p-2 mt-4"
             placeholder="Nhập đáp án của bạn"
