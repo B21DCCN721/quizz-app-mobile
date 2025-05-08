@@ -182,7 +182,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[0]?.id
-                ? "bg-yellow/40"
+                ? "bg-yellow/40 border border-red"
                 : "bg-yellow"
             }`}
             sxText="text-2xl"
@@ -196,7 +196,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[1]?.id
-                ? "bg-pink/40"
+                ? "bg-pink/40 border border-red"
                 : "bg-pink"
             }`}
             sxText="text-2xl"
@@ -212,7 +212,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[2]?.id
-                ? "bg-blue/40"
+                ? "bg-blue/40 border border-red"
                 : "bg-blue"
             }`}
             sxText="text-2xl"
@@ -226,7 +226,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
               answers.find((a) => a.questionId === currentItem[0]?.id)
                 ?.selectedAnswer ===
               currentItem[0]?.MultipleChoiceAnswers[3]?.id
-                ? "bg-yellow/40"
+                ? "bg-yellow/40 border border-red"
                 : "bg-yellow"
             }`}
             sxText="text-2xl"
@@ -239,7 +239,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
         {endTest ? (
           <Button
             title="Kết thúc"
-            sxButton="bg-pink w-[140px] rounded-20 mx-auto"
+            sxButton="bg-pink w-[140px] rounded-20 mx-auto mb-5"
             sxText="text-2xl"
             onClick={handleEndTest}
           />
@@ -247,7 +247,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
           <View className="flex-row justify-around mt-5">
             <Button
               title="Câu trước"
-              sxButton="w-[120px] border border-grayBorder"
+              sxButton="w-[120px] border border-grayBorder mb-5"
               sxText="text-[#343B6E]"
               onClick={() => {
                 setChangeQuestion(true);
@@ -256,7 +256,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
             />
             <Button
               title="Câu tiếp theo"
-              sxButton="w-[120px] border border-grayBorder"
+              sxButton="w-[120px] border border-grayBorder mb-5"
               sxText="text-[#343B6E]"
               onClick={() => {
                 setChangeQuestion(true);
