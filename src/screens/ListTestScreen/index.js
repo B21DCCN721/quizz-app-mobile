@@ -3,6 +3,7 @@ import HeaderLayout from "../../layouts/HeaderLayout";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import Search from "../../components/Search";
 import { useEffect, useState } from "react";
+import extractIdFromInput from "../../helpers/extractIdFromInput";
 import axiosClient from "../../configs/axiosClient";
 
 /*
@@ -58,7 +59,7 @@ function ListTestScreen({ route, navigation }) {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosClient.get(`/api/exercises?type=${mode}&grade=${valueSelect}&search=${valueInput}`);
+        const response = await axiosClient.get(`/api/exercises?type=${mode}&grade=${valueSelect}&search=${valueInput}&id=${extractIdFromInput(valueInput)}`);
         if (response.status === 200) {
           setListTest(response.data.exercises);
           setLoading(false);

@@ -4,6 +4,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import History from "../screens/HistoryScreen";
 import HistoryResult from "../screens/HistoryResultScreen"
 import HistoryDetail from "../screens/HistoryDetailScreen";
+import ChangePasswordScreen from "../screens/ChangePasswordScreen";
 /*
 stack ứng với tab profile
 */
@@ -16,6 +17,7 @@ export default function ProfileStackNavigator() {
       <Stack.Screen name="History" component={History} options={{ headerShown: false }} />
       <Stack.Screen name="HistoryResult" component={HistoryResult} options={{ headerShown: false }}/>
       <Stack.Screen name="HistoryDetail" component={HistoryDetail} options={{ headerShown: false }}/>
+      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

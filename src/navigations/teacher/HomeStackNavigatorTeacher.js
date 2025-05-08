@@ -11,11 +11,6 @@ function HomeStackNavigatorTeacher() {
         component={HomeScreenTeacher}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="ListTestTeacher"
-        component={ListTestScreenTeacher}
-        options={{ headerShown: false }}
-      />
     </Stack.Navigator>
   );
 }

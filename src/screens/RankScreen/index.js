@@ -5,7 +5,7 @@ import HeaderLayout from "../../layouts/HeaderLayout";
 import axiosClient from "../../configs/axiosClient";
 
 
-function RankingScreen() {
+function RankScreen() {
   const [loading, setLoading] = useState(true);
   const [rankings, setRankings] = useState([]);
   const [error, setError] = useState(null);

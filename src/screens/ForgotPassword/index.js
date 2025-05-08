@@ -1,16 +1,22 @@
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import IconHideEye from "../../../assets/icons/hideEye.svg";
+import IconEye from "../../../assets/icons/eye.svg";
 import axiosClient from "../../configs/axiosClient";
+import { ScrollView } from "react-native-gesture-handler";
 
 function ForgotPassword({ navigation, route }) {
   const { role } = route.params || {};
   const [email, setEmail] = useState("");
   const [OTP, setOTP] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showBtnGetOTP, setShowBtnGetOTP] = useState(true);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const handleGetOTP = async () => {
     try {
       const response = await axiosClient.post("/api/auth/forgot-password", {
@@ -27,6 +33,14 @@ function ForgotPassword({ navigation, route }) {
   const handleResetPassword = async () => {
     if (!email || !OTP || !newPassword) {
       Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      Alert.alert("Thông báo", "Mật khẩu mới không khớp, vui lòng kiểm tra lại.");
+      return;
+    }
+    if (newPassword.length < 6) {
+      Alert.alert("Thông báo", "Mật khẩu mới phải có ít nhất 6 ký tự.");
       return;
     }
     try {
@@ -54,7 +68,7 @@ function ForgotPassword({ navigation, route }) {
   };
   return (
     <HeaderLayout>
-      <View>
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
         <Text className="text-2xl font-interSemiBold my-5 mx-auto">
           Quên mật khẩu
         </Text>
@@ -80,15 +94,55 @@ function ForgotPassword({ navigation, route }) {
         )}
         {!showBtnGetOTP && (
           <Input
+            placeholder="Ít nhất 6 ký tự"
             value={newPassword}
-            placeholder="Nhập mật khẩu mới"
             onChange={setNewPassword}
-          />
+            hide={!showNewPassword}
+            secureTextEntry={true}
+          >
+            <TouchableOpacity
+              onPress={() => setShowNewPassword(!showNewPassword)}
+            >
+              <Text>
+                {showNewPassword ? (
+                  <IconEye width="16px" height="16px" />
+                ) : (
+                  <IconHideEye width="16px" height="16px" />
+                )}
+              </Text>
+            </TouchableOpacity>
+          </Input>
+        )}
+        {!showBtnGetOTP && (
+          <Text className="text-lg font-interSemiBold my-5">
+            Nhập lại mật khẩu mới:
+          </Text>
+        )}
+        {!showBtnGetOTP && (
+          <Input
+            placeholder="Ít nhất 6 ký tự"
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            hide={!showConfirmPassword}
+            secureTextEntry={true}
+          >
+            <TouchableOpacity
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              <Text>
+                {showConfirmPassword ? (
+                  <IconEye width="16px" height="16px" />
+                ) : (
+                  <IconHideEye width="16px" height="16px" />
+                )}
+              </Text>
+            </TouchableOpacity>
+          </Input>
         )}
         {showBtnGetOTP && (
           <Button
             title="Nhận mã OTP"
-            sxButton="bg-red mt-5 border border-red-500"
+            sxButton="bg-red mt-5 border "
             sxText="text-white font-interBold"
             onClick={handleGetOTP}
           />
@@ -96,12 +150,12 @@ function ForgotPassword({ navigation, route }) {
         {!showBtnGetOTP && (
           <Button
             title="Xác nhận"
-            sxButton="bg-red mt-5 border border-red-500"
+            sxButton="bg-red mt-5 border mb-5"
             sxText="text-white font-interBold"
             onClick={handleResetPassword}
           />
         )}
-      </View>
+      </ScrollView>
     </HeaderLayout>
   );
 }
