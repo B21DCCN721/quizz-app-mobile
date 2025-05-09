@@ -14,6 +14,8 @@ import ImgDetailTest from "../../../assets/imgs/imgdetailtest.svg";
 import { CardDetail } from "../../components/Card";
 import axiosClient from "../../configs/axiosClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ChatPopup from "../../components/ChatPopup";
+import ChatBot from "../../../assets/imgs/chatBot.svg";
 
 function DetailTestScreen({ route, navigation }) {
   const { mode, id } = route.params || {};
@@ -24,6 +26,7 @@ function DetailTestScreen({ route, navigation }) {
   const [loadingComment, setLoadingComment] = useState(false);
   const [replyTo, setReplyTo] = useState(null);
   const inputRef = useRef(null);
+  const [showChat, setShowChat] = useState(false);
 
   const handleStartTest = () => {
     if (mode === "1") {
@@ -39,9 +42,11 @@ function DetailTestScreen({ route, navigation }) {
 
   const buildTree = (list) => {
     const map = {};
-    list.forEach(c => { map[c.id] = { ...c, replies: [] }; });
+    list.forEach((c) => {
+      map[c.id] = { ...c, replies: [] };
+    });
     const roots = [];
-    list.forEach(c => {
+    list.forEach((c) => {
       if (c.parent_id && map[c.parent_id]) {
         map[c.parent_id].replies.push(map[c.id]);
       } else if (!c.parent_id) {
@@ -106,13 +111,15 @@ function DetailTestScreen({ route, navigation }) {
   }, [id]);
 
   const renderComments = (list, level = 0) => {
-    return list.map(c => (
+    return list.map((c) => (
       <View
         key={c.id}
-        className={`p-3 mb-2 border-b border-gray-300 ${level > 0 ? `pl-${level * 4}` : ''}`}
+        className={`p-3 mb-2 border-b border-gray-300 ${
+          level > 0 ? `pl-${level * 4}` : ""
+        }`}
       >
         <Text style={{ color: "#FF6347", fontWeight: "bold" }}>
-        {c.User?.name || `User ${c.user_id}`}
+          {c.User?.name || `User ${c.user_id}`}
         </Text>
         <Text className="mb-2">{c.content}</Text>
         <TouchableOpacity
@@ -186,6 +193,16 @@ function DetailTestScreen({ route, navigation }) {
             </View>
           </View>
         </ScrollView>
+        {!showChat && (
+          <TouchableOpacity
+            className="absolute bottom-6 right-2 w-14 h-14 bg-blue-600 border rounded-full justify-center items-center shadow-lg z-50"
+            onPress={() => setShowChat(true)}
+          >
+            <ChatBot width="50px" height="50px" />
+          </TouchableOpacity>
+        )}
+
+        {showChat && <ChatPopup onClose={() => setShowChat(false)} />}
       </KeyboardAvoidingView>
     </HeaderLayout>
   );
