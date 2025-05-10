@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import ImgResult from "../../../assets/imgs/imgresult.svg";
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import IconTrue from "../../../assets/icons/true.svg";
 import IconFalse from "../../../assets/icons/false.svg";
 import IconStar from "../../../assets/icons/star.svg";
@@ -36,85 +36,161 @@ function HistoryResultScreen({ navigation, route }) {
     };
 
     fetchResult();
-  }, [examId]);
+  },  [ examId]);
 
   if (loading) {
     return (
-      <HeaderLayout>
-        <Text>Đang tải dữ liệu...</Text>
+      <HeaderLayout style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.centered}>
+          <Text style={styles.loadingText}>Đang tải dữ liệu...</Text>
+        </ScrollView>
       </HeaderLayout>
     );
   }
 
   if (!result) {
     return (
-      <HeaderLayout>
-        <Text>Không tìm thấy kết quả bài thi.</Text>
+      <HeaderLayout style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.centered}>
+          <Text style={styles.errorText}>Không tìm thấy kết quả bài thi.</Text>
+        </ScrollView>
       </HeaderLayout>
     );
   }
 
   return (
-    <HeaderLayout>
-      <ImgResult width="100%" height="36%" />
+    <HeaderLayout >
+      <ScrollView contentContainerStyle={styles.container}>
+       
+        <View style={{ alignItems: "center" }}>
+          <ImgResult width={500} height={350}  />
+        </View>
 
-      {/* Tiêu đề + IconDetail */}
-      <View className="flex-row items-center justify-center my-5">
-        <Text className="font-interBold text-[#9ED832] text-6xl text-center">
-          {result.examName}
-        </Text>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("HistoryDetail", {
-              examId, // ID của bài kiểm tra
-              exerciseType, // Loại bài kiểm tra
-            })
+        {/* Tiêu đề + IconDetail */}
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{result.examName}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("HistoryDetail", {
+                examId, // ID của bài kiểm tra
+                exerciseType, // Loại bài kiểm tra
+              })
+            }
+          >
+            <IconDetail width={40} height={40} style={styles.iconDetail} />
+          </TouchableOpacity>
+        </View>
+
+        {/* Kết quả */}
+        <View style={styles.resultContainer}>
+          <View style={styles.resultRow}>
+            <Text style={styles.resultText}>Số câu đúng: {result.correctAnswers}</Text>
+            <IconTrue marginRight={10} />
+          </View>
+          <View style={styles.resultRow}>
+            <Text style={styles.resultText}>Số câu sai: {result.wrongAnswers}</Text>
+            <IconFalse marginRight={10} />
+          </View>
+          <View style={styles.resultRow}>
+            <Text style={styles.resultText}>Điểm: {result.score}</Text>
+            <IconStar  />
+          </View>
+        </View>
+
+        {/* Nút Làm Lại */}
+        <Button
+          title="Làm lại"
+          sxButton="mb-5 bg-red border border-b-[4px] border-b-[#343B6E] mt-auto"
+          sxText="text-white text-2xl font-interBold"
+          onClick={() =>
+            Alert.alert(
+              "Xác nhận",
+              "Bạn có muốn làm lại không?",
+              [
+                {
+                  text: "Hủy",
+                  style: "cancel",
+                },
+                {
+                  text: "Làm lại",
+                  onPress: () => {
+                    switch (exerciseType) {
+                      case 1:
+                        navigation.navigate("MultipleChoice", { id: result.exerciseId, mode: exerciseType });
+                        break;
+                      case 2:
+                        navigation.navigate("Counting", { id: result.exerciseId, mode: exerciseType });
+                        break;
+                      case 3:
+                        navigation.navigate("Color", { id: result.exerciseId, mode: exerciseType });
+                        break;
+                      default:
+                        Alert.alert("Lỗi", "Loại bài kiểm tra không hợp lệ.");
+                    }
+                  },
+                },
+              ]
+            )
           }
-        >
-          <IconDetail width={50} height={50} style={{ marginLeft: 16 }} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Kết quả */}
-      <View className="rounded-40 bg-[#FFF2E4] p-5 rounded-10">
-        <View className="flex-row items-center">
-          <Text className="flex-1 font-interBold text-3xl">Số câu đúng: {result.correctAnswers}</Text>
-          <IconTrue />
-        </View>
-        <View className="flex-row items-center">
-          <Text className="flex-1 font-interBold text-3xl">Số câu sai: {result.wrongAnswers}</Text>
-          <IconFalse />
-        </View>
-        <View className="flex-row items-center">
-          <Text className="flex-1 font-interBold text-3xl">Điểm: {result.score}</Text>
-          <IconStar />
-        </View>
-      </View>
-
-      {/* Nút Làm Lại */}
-      <Button
-        title="Làm lại"
-        sxButton="mb-5 bg-red border border-b-[4px] border-b-[#343B6E] mt-auto"
-        sxText="text-white text-2xl font-interBold"
-        onClick={() =>
-          Alert.alert(
-            "Xác nhận",
-            "Bạn có muốn làm lại không?",
-            [
-              {
-                text: "Hủy",
-                style: "cancel",
-              },
-              {
-                text: "Làm lại",
-                onPress: () => navigation.navigate("MultipleChoice"),
-              },
-            ]
-          )
-        }
-      />
+/>
+      </ScrollView>
     </HeaderLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    padding: 20,
+    justifyContent: "space-between",
+  },
+  centered: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 18,
+    color: "#555",
+  },
+  errorText: {
+    fontSize: 18,
+    color: "#E74C3C",
+  },
+ 
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  title: {
+    fontFamily: "Inter-Bold",
+    color: "#9ED832",
+    fontSize: 28,
+    textAlign: "center",
+  },
+  iconDetail: {
+    marginLeft: 16,
+  },
+  resultContainer: {
+    backgroundColor: "#FFF2E4",
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  resultRow: {
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    marginBottom: 10,
+  },
+  resultText: {
+    flex: 1, 
+    fontFamily: "Inter-Bold",
+    fontSize: 23,
+  },
+  
+});
 
 export default HistoryResultScreen;

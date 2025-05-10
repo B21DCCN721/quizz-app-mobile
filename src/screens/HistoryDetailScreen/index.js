@@ -64,7 +64,7 @@ function HistoryDetailScreen({ route }) {
 
             {exerciseType === 2 && (
               <>
-                <Text style={styles.question}>Vật đếm: {item.objectName}</Text>
+                <Text style={styles.question}>Câu hỏi: {item.questionText}</Text>
                 <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
                 <Text style={styles.userAnswer}>Đáp án của bạn: {item.userAnswer}</Text>
               </>
@@ -72,6 +72,7 @@ function HistoryDetailScreen({ route }) {
 
             {exerciseType === 3 && (
               <>
+                <Text style={styles.question}>Câu hỏi: {item.questionText}</Text>
                 <Text style={styles.correctAnswer}>Đáp án đúng: {item.correctAnswer}</Text>
                 <Text style={styles.userAnswer}>Đáp án của bạn: {item.userAnswer}</Text>
               </>
