@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import MultipleChoiceQuestion from '../MultipleChoiceQuestionCard';
 import ColorQuestion from '../ColorQuestionCard';
+import CountingQuestion from '../CountingQuestionCard';
 
 const QuestionCard = ({ question, index }) => {
   const renderQuestionByType = () => {
@@ -11,7 +12,7 @@ const QuestionCard = ({ question, index }) => {
       case 3: // Màu sắc
         return <ColorQuestion question={question} index={index} />;
       default:
-        return <Text>Loại câu hỏi không được hỗ trợ</Text>;
+        return <CountingQuestion question={question} index={index} />;
     }
   };
 

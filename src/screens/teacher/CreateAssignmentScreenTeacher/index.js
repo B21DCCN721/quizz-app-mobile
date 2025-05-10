@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
 import {Alert, View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import HeaderLayout from '../../../layouts/HeaderLayout';
-import { MaterialIcons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 
 function CreateAssignmentScreenTeacher({ navigation }) {
     const [assignmentName, setAssignmentName] = useState('');
+    const [assignmentDes, setassignmentDes] = useState('');
     const [selectedType, setSelectedType] = useState(null);
     const [selectedGrade, setSelectedGrade] = useState(null);
 
     const types = [
-        { label: 'Câu hỏi trắc nghiệm', value: 'quiz' },
-        { label: 'Trò chơi đoán màu', value: 'color_game' },
-        { label: 'Trò chơi đếm số', value: 'number_game' },
+        { label: 'Câu hỏi trắc nghiệm', value: 1},
+        { label: 'Trò chơi đoán màu', value: 3},
+        { label: 'Trò chơi đếm số', value: 2 },
     ];
 
     const grades = [
-        { label: 'Lớp 1', value: '1' },
-        { label: 'Lớp 2', value: '2' },
-        { label: 'Lớp 3', value: '3' },
-        { label: 'Lớp 4', value: '4' },
-        { label: 'Lớp 5', value: '5' },
+        { label: 'Lớp 1', value: 1 },
+        { label: 'Lớp 2', value: 2 },
+        { label: 'Lớp 3', value: 3 },
+        { label: 'Lớp 4', value: 4 },
+        { label: 'Lớp 5', value: 5 },
     ];
-
-    // Function to generate assignment code from assignment name (simple example)
-    const generateAssignmentCode = (name) => {
-        return name.trim().toUpperCase().replace(/\s+/g, '_');
-    };
 
     const handleNext = () => {
         if (!assignmentName) {
@@ -44,23 +39,21 @@ function CreateAssignmentScreenTeacher({ navigation }) {
             return;
         }
 
-        const assignmentCode = generateAssignmentCode(assignmentName);
-
         const assignmentData = {
             name: assignmentName,
+            description: assignmentDes,
             type: selectedType,
             grade: selectedGrade,
-            code: assignmentCode,
         };
 
         switch(selectedType) {
-            case 'quiz':
+            case 1:
                 navigation.navigate('CreateQuiz', { assignmentData });
                 break;
-            case 'color_game':
+            case 3:
                 navigation.navigate('CreateColorGame', { assignmentData });
                 break;
-            case 'number_game':
+            case 2:
                 navigation.navigate('CreateNumberGame', { assignmentData });
                 break;
         }
@@ -81,6 +74,16 @@ function CreateAssignmentScreenTeacher({ navigation }) {
                     placeholder="Nhập tên bài tập"
                     value={assignmentName}
                     onChangeText={setAssignmentName}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Text style={styles.label}>Giới thiệu</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nhập mô tả bài tập"
+                    value={assignmentDes}
+                    onChangeText={setassignmentDes}
+                    multiline
                 />
             </View>
             <View style={styles.inputContainer}>

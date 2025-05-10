@@ -2,15 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const MultipleChoiceQuestion = ({ question, index }) => {
-  const studentAnswerObj = question.correct_answers.find(
-    answer => answer.id === question.student_answer
-  );
-  
+  const studentAnswerObj = question.student_answer;
+
   const correctAnswerObj = question.correct_answers.find(
     answer => answer.is_correct
   );
-  
-  const isCorrect = question.student_answer === correctAnswerObj?.id;
+
+  const isCorrect = question.student_answer === correctAnswerObj?.answer_text;
 
   return (
     <View style={[styles.container, isCorrect ? styles.correct : styles.incorrect]}>
@@ -19,7 +17,7 @@ const MultipleChoiceQuestion = ({ question, index }) => {
       </Text>
       
       <Text style={styles.answerText}>
-        Câu trả lời của học sinh: {studentAnswerObj?.answer_text || 'Không có'}
+        Câu trả lời của học sinh: {studentAnswerObj || "Chưa trả lời"}
       </Text>
       
       <Text style={styles.answerText}>

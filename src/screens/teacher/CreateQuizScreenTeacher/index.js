@@ -4,15 +4,23 @@ import { Picker } from '@react-native-picker/picker';
 import { PaginationTest } from '../../../components/Pagination';
 import { useNavigation } from '@react-navigation/native';
 import HeaderLayout from '../../../layouts/HeaderLayout';
+import axiosClient from '../../../configs/axiosClient';
+import { useRoute } from '@react-navigation/native';
 
-const CreateQuizScreenTeacher = () => {
+const CreateQuizScreenTeacher = ({ route }) => {
+  const { name, des ,type, grade } = route.params.assignmentData;
   const navigation = useNavigation();
   const [currentPage, setCurrentPage] = useState(1);
   const [questions, setQuestions] = useState(
     Array(10).fill({
       question: '',
-      answers: ['', '', '', ''],
-      correctAnswer: '1'
+      answers:[ 
+        {'text': '', 'is_correct': false}, 
+        {'text': '', 'is_correct': false}, 
+        {'text': '', 'is_correct': false}, 
+        {'text': '', 'is_correct': false}
+      ],
+      correctAnswer: '',
     })
   );
 
@@ -30,36 +38,77 @@ const CreateQuizScreenTeacher = () => {
   };
 
   const handleAnswerChange = (index, text) => {
-    const updatedQuestions = [...questions];
-    const updatedAnswers = [...updatedQuestions[currentPage - 1].answers];
-    updatedAnswers[index] = text;
-    updatedQuestions[currentPage - 1] = {
-      ...updatedQuestions[currentPage - 1],
-      answers: updatedAnswers
-    };
-    setQuestions(updatedQuestions);
+  const updatedQuestions = [...questions];
+  const updatedAnswers = [...updatedQuestions[currentPage - 1].answers];
+  updatedAnswers[index] = {
+    ...updatedAnswers[index],
+    text,
   };
+  updatedQuestions[currentPage - 1] = {
+    ...updatedQuestions[currentPage - 1],
+    answers: updatedAnswers,
+  };
+  setQuestions(updatedQuestions);
+};
+
 
   const handleCorrectAnswerChange = (value) => {
-    const updatedQuestions = [...questions];
-    updatedQuestions[currentPage - 1] = {
-      ...updatedQuestions[currentPage - 1],
-      correctAnswer: value
-    };
-    setQuestions(updatedQuestions);
-  };
+  const updatedQuestions = [...questions];
+  const correctIndex = parseInt(value) - 1;
+  const updatedAnswers = updatedQuestions[currentPage - 1].answers.map((ans, idx) => ({
+    ...ans,
+    is_correct: idx === correctIndex,
+  }));
 
-  const handleSave = () => {
-    if (questions.some(q => !q.question || q.answers.some(a => !a))) {
-      Alert.alert('Cảnh báo','Không được để trống câu hỏi hoặc đáp án');
-      return;
+  updatedQuestions[currentPage - 1] = {
+    ...updatedQuestions[currentPage - 1],
+    answers: updatedAnswers,
+    correctAnswer: value,
+  };
+  setQuestions(updatedQuestions);
+};
+
+
+  const handleSave = async () => {
+    try {
+      if (questions.some(q => !q.question || q.answers.some(a => !a))) {
+        Alert.alert('Cảnh báo','Không được để trống câu hỏi hoặc đáp án');
+        return;
+      }
+      if (questions.some(q => q.correctAnswer === '')) {
+        Alert.alert('Cảnh báo','Bạn chưa chọn đáp án đúng cho câu hỏi');
+        return;
+      }
+
+      console.log('Saved questions:', JSON.stringify(questions, null, 2));
+
+      const payload = {
+        title: name,
+        description: des,
+        grade: grade, 
+        type: type,
+        questions: questions.map(q => ({
+          question: q.question,
+          answers: q.answers.map(a => ({
+            text: a.text,
+            is_correct: a.is_correct
+          }))
+        }))
+      };
+
+      // Gửi request tạo bài tập
+      const response = await axiosClient.post('/api/teacher/exercises/create/multiple-choice', payload);
+
+      if (response.data.code === 1) {
+        Alert.alert('Thành công', 'Đã tạo bài tập thành công');
+        navigation.navigate('Assignments', { refresh: true });
+      } else {
+        Alert.alert('Thất bại', response.data.message || 'Không thể tạo bài tập');
+      }
+    } catch (error) {
+      console.error('Lỗi tạo bài tập:', error);
+      Alert.alert('Lỗi', 'Đã xảy ra lỗi khi lưu bài tập');
     }
-    if (questions.some(q => q.correctAnswer === '')) {
-      Alert.alert('Cảnh báo','Bạn chưa chọn đáp án đúng cho câu hỏi');
-      return;
-    }
-    // Save logic here
-    navigation.goBack();
   };
 
   return (
@@ -80,7 +129,7 @@ const CreateQuizScreenTeacher = () => {
           key={i}
           className="border p-5 mb-5 rounded text-lg"
           placeholder={`Nhập đáp án số ${i + 1}`}
-          value={questions[currentPage - 1].answers[i]}
+          value={questions[currentPage - 1].answers[i].text}
           onChangeText={(text) => handleAnswerChange(i, text)}
           multiline
           style={{ minHeight: 60, textAlignVertical: 'top' }}
@@ -118,6 +167,11 @@ const CreateQuizScreenTeacher = () => {
         <TouchableOpacity
           className="bg-gray-300 p-3 rounded"
           onPress={() => {
+            const currentQ = questions[currentPage - 1];
+            if (!currentQ.question || currentQ.answers.some(a => !a.text) || currentQ.correctAnswer === '') {
+              Alert.alert('Cảnh báo', 'Vui lòng nhập đầy đủ dữ liệu trước khi tiếp tục');
+              return;
+            }
             if (currentPage < 10) {
               handlePageChange(currentPage + 1);
             } else {

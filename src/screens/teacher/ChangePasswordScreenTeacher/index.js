@@ -5,6 +5,11 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import DefaultLayout from '../../../layouts/DefaultLayout';
 import IconHideEye from '../../../../assets/icons/hideEye.svg'; // Assuming you have an icon for showing/hiding password
 import HeaderLayout from '../../../layouts/HeaderLayout';
+import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../store/slices/authSlice';
+import axiosClient from '../../../configs/axiosClient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ChangePasswordScreenTeacher({ navigation }) {
   const [oldPassword, setOldPassword] = useState('');
@@ -13,9 +18,54 @@ function ChangePasswordScreenTeacher({ navigation }) {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleSave = () => {
-    navigation.goBack();
+  const handleSave =async() => {
+    try {
+      if (oldPassword === "" || newPassword === "" || confirmPassword === "") {
+        alert("Vui lòng điền đầy đủ thông tin.");
+        return;
+      }
+      if (newPassword.length < 8) {
+        alert("Mật khẩu mới phải có ít nhất 8 ký tự.");
+        return;
+      }
+      if (oldPassword === newPassword) {
+        alert("Mật khẩu mới không được trùng với mật khẩu cũ.");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
+        return;
+      }
+
+      const respone = await axiosClient.post("api/auth/change-password", {
+        oldPassword,
+        newPassword
+      })
+
+      if (respone.status === 200) {
+        alert("Đổi mật khẩu thành công");
+      } else {
+        alert("Đổi mật khẩu thất bại");
+      }
+
+        try {
+        await AsyncStorage.removeItem("token");
+        await AsyncStorage.removeItem("user");
+        await AsyncStorage.removeItem("role");
+        dispatch(logout());
+      } catch (error) {
+        console.error("Lỗi khi xoá token:", error);
+      }
+    } catch (error) {
+      console.error("Lỗi khi đổi mật khẩu:", error);
+      if (error.response && error.response.status === 401) {
+        alert("Mật khẩu cũ không đúng.");
+      } else {
+        alert("Đã xảy ra lỗi khi đổi mật khẩu.");
+      }
+    }
   }
 
   const handleCancel = () => {

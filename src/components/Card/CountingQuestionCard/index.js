@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 const ColorQuestion = ({ question, index }) => {
-  const correctPosition = question.correct_answers[0]?.correct_position;
-  const isCorrect = question.student_answer === String(correctPosition);
+  const correct_count = question.correct_answers[0]?.correct_count;
+  const isCorrect = question.student_answer === String(correct_count);
 
   return (
     <View style={[styles.container, isCorrect ? styles.correct : styles.incorrect]}>
@@ -16,11 +16,11 @@ const ColorQuestion = ({ question, index }) => {
       />
       
       <Text style={styles.answerText}>
-        Học sinh chọn: {"Vị trí" + question.student_answer || "Chưa trả lời"}
+        Đáp án của học sinh: {question.student_answer || "Chưa trả lời"} 
       </Text>
       
       <Text style={styles.answerText}>
-        Đáp án đúng: Vị trí {correctPosition}
+        Đáp án đúng: {correct_count}
       </Text>
     </View>
   );
