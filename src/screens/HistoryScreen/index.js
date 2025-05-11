@@ -3,11 +3,9 @@ import axiosClient from "../../configs/axiosClient";
 import HeaderLayout from "../../layouts/HeaderLayout";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import ArrowRight from "../../../assets/icons/arrowRight.svg";
-import PaginationTest from "../../components/Pagination/PaginationTest";
 
 const HistoryScreen = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("Trắc nghiệm");
-  const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -16,12 +14,10 @@ const HistoryScreen = ({ navigation }) => {
     try {
       const response = await axiosClient.get("/api/history", {
         params: {
-          page: currentPage,
-          limit: 10,
           exercise_type: activeTab === "Trắc nghiệm" ? 1 : activeTab === "Đếm" ? 2 : 3,
         },
       });
-      setData(response.data.data); // Lưu dữ liệu lịch sử vào state
+      setData(response.data.data); // Lấy toàn bộ dữ liệu và lưu vào state
     } catch (error) {
       console.error("Error fetching history:", error);
     } finally {
@@ -30,8 +26,8 @@ const HistoryScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    fetchHistory();
-  }, [activeTab, currentPage]);
+    fetchHistory(); // Gọi API khi chuyển tab
+  }, [activeTab]);
 
   const tabs = ["Trắc nghiệm", "Đếm", "Tô màu"];
 
@@ -94,9 +90,6 @@ const HistoryScreen = ({ navigation }) => {
             )}
           />
         )}
-
-        {/* Phân trang */}
-        <PaginationTest totalScreen={10} onChangeScreen={setCurrentPage} />
       </View>
     </HeaderLayout>
   );
