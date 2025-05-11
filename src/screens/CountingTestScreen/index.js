@@ -170,11 +170,11 @@ function CountingTestScreen({ route, navigation }) {
         />
         <View className="min-h-[270px] rounded-20 border-b-2 border-grayBorder p-5">
           <Text className="font-interSemiBold text-xl">
-            Câu hỏi: {currentItem[0]?.question}
+            Câu hỏi: {currentItem[0]?.question_text}
           </Text>
           {currentItem[0]?.image_url && (
             <>
-              <Text>Image URL: {currentItem[0].image_url}</Text>
+              
               <Image 
                 source={{ uri: currentItem[0].image_url }}
                 style={{ width: '100%', height: 200, marginVertical: 10, borderRadius: 8 }}

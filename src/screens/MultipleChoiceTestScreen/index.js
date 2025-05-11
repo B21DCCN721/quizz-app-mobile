@@ -16,6 +16,7 @@ function MultipleChoiceTestScreen({ route, navigation }) {
   const beforeRemoveListener = useRef(null);
   const [infoTest, setInfoTest] = useState({});
   const [loading, setLoading] = useState(true);
+  const [answers, setAnswers] = useState([]);
   const dispatch = useDispatch();
   // phân trang
   const PageSize = 1;
@@ -27,7 +28,6 @@ function MultipleChoiceTestScreen({ route, navigation }) {
   const totalPages =
     Math.ceil(infoTest?.MultipleChoiceQuestions?.length / PageSize) || 0;
   // state lưu trả lời câu hỏi
-  const [answers, setAnswers] = useState([]);
   const handleSelectAnswer = (answerId) => {
     const currentQuestionId = currentItem[0]?.id;
     setAnswers((prevAnswers) => {
