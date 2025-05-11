@@ -57,7 +57,7 @@ function AssignmentsScreenTeacher({ navigation }) {
 
     return (
         <DefaultLayout>
-            <Text style={styles.header}>Bài tập</Text>
+            <Text style={styles.header}>Bài tập của tôi</Text>
             <View style={styles.searchContainer}>
                 <MaterialIcons name="search" size={24} color="#999" style={styles.searchIcon} />
                 <TextInput
@@ -137,7 +137,7 @@ function AssignmentsScreenTeacher({ navigation }) {
                     <AssignmentCard
                         key={assignment.id}
                         assignment={assignment}
-                        onPress={() => navigation.navigate('AssignmentDetail', { assignment })}
+                        onPress={() => navigation.navigate('AssignmentOverview', { assignment })}
                     />
                 ))}
             </ScrollView>

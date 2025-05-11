@@ -5,9 +5,13 @@ import CreateAssignmentScreenTeacher from "../../screens/teacher/CreateAssignmen
 import CreateColorGameScreenTeacher from "../../screens/teacher/CreateColorGameScreenTeacher";
 import CreateNumberGameScreenTeacher from "../../screens/teacher/CreateNumberGameScreenTeacher";
 import CreateQuizScreenTeacher from "../../screens/teacher/CreateQuizScreenTeacher";
-import AssignmentDetailScreenTeacher from "../../screens/teacher/AssignmentDetailScreenTeacher";
+import AssignmentOverviewScreenTeacher from "../../screens/teacher/AssignmentOverviewScreenTeacher";
 import SubmissionScreenTeacher from "../../screens/teacher/SubmissionScreenTeacher";
-import SubmissionDetailScreenTeacher from "../../screens/teacher/SubmissionDetailScreenTeacer";
+import SubmissionDetailScreenTeacher from "../../screens/teacher/SubmissionDetailScreenTeacher";
+import EditQuizScreenTeacher from "../../screens/teacher/EditQuizTeacher";
+import EditCountingScreenTeacher from "../../screens/teacher/EditCountingTeacher";
+import EditColorGameScreenTeacher from "../../screens/teacher/EditColorTeacher";
+import AssigntmentDetailScreenTeacher from "../../screens/teacher/AssigmentDetailScreenTeacer";
 
 const Stack = createStackNavigator();
 
@@ -40,8 +44,13 @@ function AssignmentStackNavigatorTeacher() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="AssignmentDetail"
-        component={AssignmentDetailScreenTeacher}
+        name="AssignmentOverview"
+        component={AssignmentOverviewScreenTeacher}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AssignmentDetailScreen"
+        component={AssigntmentDetailScreenTeacher}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -49,9 +58,24 @@ function AssignmentStackNavigatorTeacher() {
         component={SubmissionScreenTeacher}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="SubmissionDetailScreen"
         component={SubmissionDetailScreenTeacher}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditQuizScreen"
+        component={EditQuizScreenTeacher}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditNumberScreen"
+        component={EditCountingScreenTeacher}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EditColorScreen"
+        component={EditColorGameScreenTeacher}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

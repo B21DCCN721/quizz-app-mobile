@@ -2,25 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 const ColorQuestion = ({ question, index }) => {
-  const correctPosition = question.correct_answers[0]?.correct_position;
-  const isCorrect = question.student_answer === String(correctPosition);
-
   return (
-    <View style={[styles.container, isCorrect ? styles.correct : styles.incorrect]}>
+    <View style={styles.container}>
       <Text style={styles.questionNumber}>Câu {index + 1}</Text>
       <Text style={styles.questionNumber}>{question.question_text}</Text>
       <Image 
-        source={{ uri: question.image_url }} 
+        source={{ uri: question.image }} 
         style={styles.image}
         resizeMode="contain"
       />
       
       <Text style={styles.answerText}>
-        Học sinh chọn: {"Vị trí" + question.student_answer || "Chưa trả lời"}
-      </Text>
-      
-      <Text style={styles.answerText}>
-        Đáp án đúng: Vị trí {correctPosition}
+        Đáp án đúng: Vị trí chính xác là {question.correct_position}
       </Text>
     </View>
   );

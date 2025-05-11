@@ -1,19 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-const CountingQuestion = ({ question, index }) => {
+const ColorQuestionResult = ({ question, index }) => {
+  const correctPosition = question.correct_answers[0]?.correct_position;
+  const isCorrect = question.student_answer === String(correctPosition);
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isCorrect ? styles.correct : styles.incorrect]}>
       <Text style={styles.questionNumber}>Câu {index + 1}</Text>
-      <Text style={styles.questionNumber}>{question.question}</Text>
+      <Text style={styles.questionNumber}>{question.question_text}</Text>
       <Image 
-        source={{ uri: question.image }} 
+        source={{ uri: question.image_url }} 
         style={styles.image}
         resizeMode="contain"
       />
       
       <Text style={styles.answerText}>
-        Đáp án đúng: Có {question.item.quantity} {question.item.name} .
+        Học sinh chọn: {"Vị trí" + question.student_answer || "Chưa trả lời"}
+      </Text>
+      
+      <Text style={styles.answerText}>
+        Đáp án đúng: Vị trí {correctPosition}
       </Text>
     </View>
   );
@@ -51,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CountingQuestion;
+export default ColorQuestionResult;

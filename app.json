@@ -24,6 +24,10 @@
         "package": "com.btlmad.quizzappmobile"
       }
     },
+    "notification": {
+      "androidMode": "default",
+      "androidCollapsedTitle": "Thông báo mới"
+    },
     "web": {
       "bundler": "metro"
     }

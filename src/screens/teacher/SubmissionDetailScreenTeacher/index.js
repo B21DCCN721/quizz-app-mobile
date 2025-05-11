@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import HeaderLayout from '../../../layouts/HeaderLayout';
 import axiosClient from '../../../configs/axiosClient';
-import QuestionCard from '../../../components/Card/QuestionCard';
+import QuestionResultCard from '../../../components/Card/QuestionResultCard';
 
 export default function SubmissionDetailScreenTeacher({ route, navigation }) {
   const submissionId = route.params.item.id || '';
@@ -90,7 +90,7 @@ export default function SubmissionDetailScreenTeacher({ route, navigation }) {
             <Text style={styles.noQuestionsText}>Không có câu hỏi</Text>
           ) : (
             submissionData.questions.map((question, index) => (
-              <QuestionCard 
+              <QuestionResultCard 
                 key={question.id} 
                 question={question} 
                 index={index} 

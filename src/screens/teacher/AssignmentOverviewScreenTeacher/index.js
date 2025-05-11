@@ -12,7 +12,7 @@
   import HeaderLayout from '../../../layouts/HeaderLayout';
   import axiosClient from '../../../configs/axiosClient';
 
-  export default function AssignmentDetailScreenTeacher({ route, navigation }) {
+  export default function AssignmentOverviewScreenTeacher({ route, navigation }) {
     const { assignment } = route.params || {};
     const assignmentCode = assignment?.id || '';
 
@@ -78,8 +78,29 @@
   };
 
     const handleSeeAllSubmissions = () => {
-      navigation.navigate('SubmissionScreen', { formattedSubmissions })
+      navigation.navigate('SubmissionScreen', { formattedSubmissions });
     };
+
+    const handleEditExercise = () => {
+      let screen = "";
+      if (assignment.exercise_type === 1) {
+        screen = "EditQuizScreen";
+      } else if (assignment.exercise_type === 3) {
+        screen = "EditColorScreen";
+      } else if (assignment.exercise_type === 2) {
+        screen = "EditNumberScreen";
+      }
+     
+      navigation.navigate(screen, {
+        assignment: {
+          id: assignmentCode,
+          name: exerciseTitle,
+          des: exerciseDescription,
+          type: assignment.exercise_type,
+          grade: assignment.grade,
+        },
+      });
+    }
 
     const handleDeleteExercise = async () => {
         const confirmDelete = await Alert.alert('Xoá bài tập', 'Bạn có chắc chắn muốn xoá bài tập này?', [
@@ -180,8 +201,15 @@
           </View>
         </View>
         <View style={[styles.section, styles.actionsRow]}>
+           <TouchableOpacity
+            onPress={() => navigation.navigate('AssignmentDetailScreen', { assignment })}
+            style={styles.actionButtonMain}
+            accessibilityLabel="Chỉnh sửa"
+          >
+            <Text style={styles.actionButtonTextMain}>Chi tiết</Text>
+          </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => Alert.alert('Edit Exercise')}
+            onPress={handleEditExercise}
             style={styles.actionButtonMain}
             accessibilityLabel="Chỉnh sửa"
           >

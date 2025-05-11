@@ -13,7 +13,7 @@ const AssignmentCard = ({ assignment, onPress }) => {
       case 1:
         return { IconComponent: CardGame1, color: '#3ad6ce', exercise_type: "Câu hỏi trắc nghiệm" }; // green-2
       case 3:
-        return { IconComponent: CardGame2, color: '#FFA5B8', exercise_type: "Trò chơi tô màu" }; // pink-2
+        return { IconComponent: CardGame2, color: '#FFA5B8', exercise_type: "Trò chơi màu sắc" }; // pink-2
       case 2:
         return { IconComponent: CardGame3, color: '#FCA832', exercise_type: "Trò chơi đếm số" }; // orange-3
       default:
