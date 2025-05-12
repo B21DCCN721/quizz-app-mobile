@@ -89,6 +89,7 @@ module.exports = {
           300: "#f9a0A0",   // pink (custom base)
           400: "#f472b6",
           500: "#ec4899",
+          DEFAULT: "#F9A0A0",
           "2": "#FFA5B8",   // pink-2 (custom)
         },
 
@@ -104,15 +105,10 @@ module.exports = {
           700: "#374151",
           800: "#1f2937",
           900: "#111827",
-          input: "#F1F1F1", // grayInput (custom)
-          border: "#DFDFDF", // grayBorder (custom)
         },
-
-        // Màu cam (custom)
-        orange: {
-          DEFAULT: "#E7784C", // orange base
-          "2": "#FFCB8F",     // orange-2
-        },
+        
+        grayInput: "#F1F1F1",
+        grayBorder: "#DFDFDF",
       },
       fontFamily: {
         interRegular: ["InterRegular"],

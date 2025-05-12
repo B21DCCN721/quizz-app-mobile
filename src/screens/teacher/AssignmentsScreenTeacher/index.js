@@ -39,6 +39,7 @@ function AssignmentsScreenTeacher({ navigation }) {
                 const data = Array.isArray(response.data.exercises) ? response.data.exercises : [];
                 const filteredData = data.filter(assignment => assignment.User.id === userId);
                 setAssignments(filteredData);
+                console.log('Assignments:', data);
             } catch (error) {
                 console.error('Lỗi khi lấy danh sách bài tập:', error);
                 setAssignments([]);
@@ -137,6 +138,12 @@ function AssignmentsScreenTeacher({ navigation }) {
                     </View>
                 </View>
             </Modal>
+            {(filteredAssignments.length === 0 ) ? (
+                <View style={{ padding: 20, alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16, color: '#999' }}>Không có bài tập nào</Text>
+                </View>
+            )
+            : (
             <ScrollView style={styles.assignmentsList}>
                 {filteredAssignments.map((assignment) => (
                     <AssignmentCard
@@ -146,6 +153,7 @@ function AssignmentsScreenTeacher({ navigation }) {
                     />
                 ))}
             </ScrollView>
+            )}
             <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('CreateAssignment') }}>
                 <MaterialIcons name="add" size={24} color="white" />
             </TouchableOpacity>

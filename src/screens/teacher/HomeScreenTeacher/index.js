@@ -14,6 +14,7 @@ import DailyAttemptsChart from "../../../components/Chart/BarChart";
 function HomeScreenTeacher({ navigation }) {
   const user = useSelector((state) => state.auth.user);
   const userId = useSelector((state) => state.auth.user.id);
+  console.log("userId", userId);
   const [assignments, setAssignments] = useState([]);
   const [exerciseStats, setExerciseStats] = useState({
     totalExercises: 0,
