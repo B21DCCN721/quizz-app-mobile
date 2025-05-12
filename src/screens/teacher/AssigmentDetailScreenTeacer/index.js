@@ -283,7 +283,7 @@ export default function AssigntmentDetailScreenTeacher({ route, navigation }) {
             onPress={handleSubmit}
             disabled={loadingComment}
           >
-            <Text className="text-black font">
+            <Text className="text-white font text-center text-base">
               {loadingComment ? "Đang gửi..." : "Gửi"}
             </Text>
           </TouchableOpacity>

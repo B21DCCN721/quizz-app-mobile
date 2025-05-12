@@ -8,6 +8,7 @@ import {
     Image,
     Alert,
     ActivityIndicator,
+    ScrollView,
 } from "react-native";
 import HeaderLayout from "../../../layouts/HeaderLayout";
 import * as ImagePicker from "expo-image-picker";
@@ -120,95 +121,97 @@ function CreateColorGameScreenTeacher({ navigation, route }) {
 
     return (
         <HeaderLayout>
-            <Text style={styles.header}>Thêm câu hỏi - Câu ({currentPage}/10)</Text>
-            <Text style={styles.subHeader}>Bài: {assignmentData.name}</Text>
-            <Text style={styles.label}>Chọn hình ảnh</Text>
-            <TouchableOpacity
-                style={styles.uploadContainer}
-                onPress={pickImage}
-                disabled={isLoading}
-            >
-                {questions[currentPage - 1].image ? (
-                    <Image
-                        source={{ uri: questions[currentPage - 1].image }}
-                        style={styles.image}
+            <ScrollView>
+                <Text style={styles.header}>Thêm câu hỏi - Câu ({currentPage}/10)</Text>
+                <Text style={styles.subHeader}>Bài: {assignmentData.name}</Text>
+                <Text style={styles.label}>Chọn hình ảnh</Text>
+                <TouchableOpacity
+                    style={styles.uploadContainer}
+                    onPress={pickImage}
+                    disabled={isLoading}
+                >
+                    {questions[currentPage - 1].image ? (
+                        <Image
+                            source={{ uri: questions[currentPage - 1].image }}
+                            style={styles.image}
+                        />
+                    ) : (
+                        <View style={styles.uploadContent}>
+                            <FileUpload width={60} height={60} />
+                            <Text style={styles.uploadText}>Tải lên hình ảnh</Text>
+                        </View>
+                    )}
+                </TouchableOpacity>
+
+                <View style={styles.answersContainer}>
+                    <Text style={styles.label}>Câu hỏi</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nhập câu hỏi"
+                        value={questions[currentPage - 1].question}
+                        onChangeText={handleQuestionChange}
+                        editable={!isLoading}
                     />
-                ) : (
-                    <View style={styles.uploadContent}>
-                        <FileUpload width={60} height={60} />
-                        <Text style={styles.uploadText}>Tải lên hình ảnh</Text>
+                    <Text style={styles.label}>Vị trí đúng</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nhập vị trí chính xác (số)"
+                        keyboardType="numeric"
+                        value={questions[currentPage - 1].correct_position}
+                        onChangeText={handleAnswerChange}
+                        editable={!isLoading}
+                    />
+                </View>
+
+                <PaginationTest currentScreen={currentPage} onChangeScreen={handlePageChange} />
+
+                {isLoading && (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#4CAF50" />
+                        <Text style={{ marginTop: 10 }}>Đang lưu bài tập...</Text>
                     </View>
                 )}
-            </TouchableOpacity>
 
-            <View style={styles.answersContainer}>
-                <Text style={styles.label}>Câu hỏi</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Nhập câu hỏi"
-                    value={questions[currentPage - 1].question}
-                    onChangeText={handleQuestionChange}
-                    editable={!isLoading}
-                />
-                <Text style={styles.label}>Vị trí đúng</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Nhập vị trí chính xác (số)"
-                    keyboardType="numeric"
-                    value={questions[currentPage - 1].correct_position}
-                    onChangeText={handleAnswerChange}
-                    editable={!isLoading}
-                />
-            </View>
-
-            <PaginationTest currentScreen={currentPage} onChangeScreen={handlePageChange} />
-
-            {isLoading && (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#4CAF50" />
-                    <Text style={{ marginTop: 10 }}>Đang lưu bài tập...</Text>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={[styles.button, styles.cancelButton]}
+                        onPress={() => {
+                            if (currentPage > 1) {
+                                handlePageChange(currentPage - 1);
+                            } else {
+                                navigation.goBack();
+                            }
+                        }}
+                        disabled={isLoading}
+                    >
+                        <Text style={styles.buttonText}>Trở về</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.button, styles.saveButton]}
+                        onPress={() => {
+                            const currentQ = questions[currentPage - 1];
+                            if (!currentQ.image || !currentQ.question || !currentQ.correct_position) {
+                                Alert.alert("Cảnh báo", "Vui lòng nhập đầy đủ dữ liệu trước khi tiếp tục");
+                                return;
+                            }
+                            if (currentQ.correct_position < 1 || currentQ.correct_position > 9) {
+                                Alert.alert("Cảnh báo", "Vị trí chính xác phải từ 1 đến 9");
+                                return;
+                            }
+                            if (currentPage < 10) {
+                                handlePageChange(currentPage + 1);
+                            } else {
+                                handleSave();
+                            }
+                        }}
+                        disabled={isLoading}
+                    >
+                        <Text style={styles.buttonText}>
+                            {currentPage === 10 ? "Lưu bài tập" : "Câu tiếp theo"}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
-            )}
-
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={[styles.button, styles.cancelButton]}
-                    onPress={() => {
-                        if (currentPage > 1) {
-                            handlePageChange(currentPage - 1);
-                        } else {
-                            navigation.goBack();
-                        }
-                    }}
-                    disabled={isLoading}
-                >
-                    <Text style={styles.buttonText}>Trở về</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.button, styles.saveButton]}
-                    onPress={() => {
-                        const currentQ = questions[currentPage - 1];
-                        if (!currentQ.image || !currentQ.question || !currentQ.correct_position) {
-                            Alert.alert("Cảnh báo", "Vui lòng nhập đầy đủ dữ liệu trước khi tiếp tục");
-                            return;
-                        }
-                        if (currentQ.correct_position < 1 || currentQ.correct_position > 9) {
-                            Alert.alert("Cảnh báo", "Vị trí chính xác phải từ 1 đến 9");
-                            return;
-                        }
-                        if (currentPage < 10) {
-                            handlePageChange(currentPage + 1);
-                        } else {
-                            handleSave();
-                        }
-                    }}
-                    disabled={isLoading}
-                >
-                    <Text style={styles.buttonText}>
-                        {currentPage === 10 ? "Lưu bài tập" : "Câu tiếp theo"}
-                    </Text>
-                </TouchableOpacity>
-            </View>
+            </ScrollView>
         </HeaderLayout>
     );
 }

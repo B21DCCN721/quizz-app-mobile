@@ -16,7 +16,7 @@ const ColorQuestionResult = ({ question, index }) => {
       />
       
       <Text style={styles.answerText}>
-        Học sinh chọn: {"Vị trí" + question.student_answer || "Chưa trả lời"}
+        Học sinh chọn: {"Vị trí " + question.student_answer || "Chưa trả lời"}
       </Text>
       
       <Text style={styles.answerText}>

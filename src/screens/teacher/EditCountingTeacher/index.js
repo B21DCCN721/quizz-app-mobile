@@ -8,6 +8,7 @@ import {
     Image,
     Alert,
     ActivityIndicator,
+    ScrollView,
 } from "react-native";
 import HeaderLayout from "../../../layouts/HeaderLayout";
 import * as ImagePicker from "expo-image-picker";
@@ -181,6 +182,7 @@ function EditNumberGameScreenTeacher({ navigation, route }) {
 
     return (
         <HeaderLayout>
+            <ScrollView>
             <Text style={styles.header}>Thêm câu hỏi - Câu ({currentPage}/10)</Text>
             <Text style={styles.subHeader}>Bài: {name}</Text>
             <Text style={styles.label}>Chọn hình ảnh</Text>
@@ -279,6 +281,7 @@ function EditNumberGameScreenTeacher({ navigation, route }) {
                     </Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         </HeaderLayout>
     );
 }
