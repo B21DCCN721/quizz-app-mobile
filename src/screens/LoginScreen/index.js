@@ -7,7 +7,6 @@ import Checkbox from "../../components/Checkbox";
 import IconHideEye from "../../../assets/icons/hideEye.svg";
 import IconEye from "../../../assets/icons/eye.svg";
 import NameApp from "../../../assets/imgs/nameapp.svg";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
 import axiosClient from "../../configs/axiosClient";

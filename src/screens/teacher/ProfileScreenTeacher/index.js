@@ -10,7 +10,7 @@ import IconAbout from "../../../../assets/icons/about.svg";
 import IconHelp from "../../../../assets/icons/help.svg";
 import IconContact from "../../../../assets/icons/contact.svg";
 import IconPassword from "../../../../assets/icons/password.svg";
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import { Image } from "react-native";
 import DefaultLayout from "../../../layouts/DefaultLayout";
 import { useSelector } from "react-redux";
@@ -19,13 +19,14 @@ import { logout } from '../../../store/slices/authSlice'; // Import action logou
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ProfileScreenTeacher({ navigation }) {
-  const user = useSelector((state) => state.auth.user);
+  const [user, setUser] = useState(useSelector((state) => state.auth.user)); // Lấy thông tin người dùng từ Redux store
   const [image, setImage] = useState(user.avatar || ""); // Đường dẫn đến ảnh đại diện
   console.log("user", user);
   const [about, setAbout] = useState(false);
   const [help, setHelp] = useState(false);
   const [contact, setContact] = useState(false);
   const dispatch = useDispatch(); // Khởi tạo dispatch từ useDispatch
+
 
   const handleLogout = () => {
     Alert.alert("Thông báo", "Xác nhận đăng xuất.", [

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -16,8 +16,10 @@ import FileUpload from "../../../../assets/icons/fileUpload.svg";
 import PaginationTest from "../../../components/Pagination/PaginationTest";
 import axiosClient from "../../../configs/axiosClient";
 
-function CreateColorGameScreenTeacher({ navigation, route }) {
-    const { assignmentData } = route.params;
+function EditColorGameScreenTeacher({ navigation, route }) {
+    const { assignment } = route.params;
+    const { id, name, des, type, grade } = assignment;
+    console.log("assignment", assignment);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [questions, setQuestions] = useState(
@@ -29,6 +31,50 @@ function CreateColorGameScreenTeacher({ navigation, route }) {
                 correct_position: "",
             }))
     );
+
+    useEffect(() => {
+        const fetchExerciseDetail = async () => {
+            try {
+                const res = await axiosClient.get(`/api/exercises/${id}?type=${type}`);
+                if (res.data.code === 1) {
+                    console.log('Exercise detail:', res.data);
+
+                    const rawQuestions = res.data.exercise.ColorQuestions || [];
+
+                    console.log("rawQuestions", rawQuestions);
+
+                    const mappedQuestions = rawQuestions.map((q) => ({
+                        question: q.question_text || "",
+                        image: q.image_url || null,
+                        correct_position: q.ColorAnswers[0].correct_position || "",
+                    }));
+
+                    // Đảm bảo có đủ 10 câu hỏi
+                    setQuestions(
+                        mappedQuestions.length === 10
+                            ? mappedQuestions
+                            : [
+                                ...mappedQuestions,
+                                ...Array(10 - mappedQuestions.length).fill({
+                                    question: "",
+                                    image: null,
+                                    correct_position: "",
+                                }),
+                            ]
+                    );
+                } else {
+                    Alert.alert("Lỗi", "Không lấy được dữ liệu bài tập");
+                }
+            } catch (error) {
+                console.error("Lỗi khi fetch bài tập:", error);
+                Alert.alert("Lỗi", "Không thể tải bài tập");
+            }
+        };
+
+        fetchExerciseDetail();
+    }, [id]);
+
+    console.log("question", questions);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -88,9 +134,9 @@ function CreateColorGameScreenTeacher({ navigation, route }) {
             });
 
             const data = {
-                title: assignmentData.name,
-                description: assignmentData.description || "",
-                grade: assignmentData.grade || 1,
+                title: name,
+                description: des || "",
+                grade: grade || 1,
                 questions: questions.map((q) => ({
                     question_text: q.question,
                     correct_position: parseInt(q.correct_position),
@@ -99,8 +145,8 @@ function CreateColorGameScreenTeacher({ navigation, route }) {
 
             formData.append("data", JSON.stringify(data));
 
-            const response = await axiosClient.post(
-                "/api/teacher/exercises/create/color",
+            const response = await axiosClient.put(
+                "/api/teacher/exercises/update/color/" + id,
                 formData,
                 {
                     headers: {
@@ -123,7 +169,7 @@ function CreateColorGameScreenTeacher({ navigation, route }) {
         <HeaderLayout>
             <ScrollView>
                 <Text style={styles.header}>Thêm câu hỏi - Câu ({currentPage}/10)</Text>
-                <Text style={styles.subHeader}>Bài: {assignmentData.name}</Text>
+                <Text style={styles.subHeader}>Bài: {name}</Text>
                 <Text style={styles.label}>Chọn hình ảnh</Text>
                 <TouchableOpacity
                     style={styles.uploadContainer}
@@ -279,4 +325,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateColorGameScreenTeacher;
+export default EditColorGameScreenTeacher;

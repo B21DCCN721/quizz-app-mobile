@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-const ColorQuestion = ({ question, index }) => {
+const CountingQuestion = ({ question, index }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.questionNumber}>Câu {index + 1}</Text>
-      <Text style={styles.questionNumber}>{question.question_text}</Text>
+      <Text style={styles.questionNumber}>{question.question}</Text>
       <Image 
         source={{ uri: question.image }} 
         style={styles.image}
@@ -13,7 +13,7 @@ const ColorQuestion = ({ question, index }) => {
       />
       
       <Text style={styles.answerText}>
-        Đáp án đúng: Vị trí chính xác là {question.correct_position}
+        Đáp án đúng: Có {question.item.quantity} {question.item.name} .
       </Text>
     </View>
   );
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ColorQuestion;
+export default CountingQuestion;

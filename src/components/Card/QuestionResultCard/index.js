@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import MultipleChoiceQuestion from '../MultipleChoiceQuestionCard';
-import ColorQuestion from '../ColorQuestionCard';
-import CountingQuestion from '../CountingQuestionCard';
+import MultipleChoiceQuestionResult from '../MultipleChoiceQuestionResultCard';
+import ColorQuestionResult from '../ColorQuestionResultCard';
+import CountingQuestionResultCard from '../CountingQuestionResultCard';
 
-const QuestionCard = ({ question, index, type }) => {
+const QuestionResultCard = ({ question, index }) => {
   const renderQuestionByType = () => {
-    switch (type) {
+    switch (question.type) {
       case 1: // Trắc nghiệm
-        return <MultipleChoiceQuestion question={question} index={index} />;
+        return <MultipleChoiceQuestionResult question={question} index={index} />;
       case 3: // Màu sắc
-        return <ColorQuestion question={question} index={index} />;
+        return <ColorQuestionResult question={question} index={index} />;
       default:
-        return <CountingQuestion question={question} index={index} />;
+        return <CountingQuestionResultCard question={question} index={index} />;
     }
   };
 
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionCard;
+export default QuestionResultCard;

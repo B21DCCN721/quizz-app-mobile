@@ -4,8 +4,12 @@ import DefaultLayout from '../../../layouts/DefaultLayout';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AssignmentCard } from '../../../components/Card';
 import axiosClient from "../../../configs/axiosClient";
+import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AssignmentsScreenTeacher({ navigation }) {
+    const user = useSelector((state) => state.auth.user);
+    const userId = useSelector((state) => state.auth.user.id);
     const [searchText, setSearchText] = useState('');
     const [selectedGrade, setSelectedGrade] = useState(null); // null = tất cả
     const [selectedType, setSelectedType] = useState(null);    
@@ -33,7 +37,8 @@ function AssignmentsScreenTeacher({ navigation }) {
             try {
                 const response = await axiosClient.get('/api/exercises');
                 const data = Array.isArray(response.data.exercises) ? response.data.exercises : [];
-                setAssignments(data);
+                const filteredData = data.filter(assignment => assignment.User.id === userId);
+                setAssignments(filteredData);
             } catch (error) {
                 console.error('Lỗi khi lấy danh sách bài tập:', error);
                 setAssignments([]);
@@ -57,7 +62,7 @@ function AssignmentsScreenTeacher({ navigation }) {
 
     return (
         <DefaultLayout>
-            <Text style={styles.header}>Bài tập</Text>
+            <Text style={styles.header}>Bài tập của tôi</Text>
             <View style={styles.searchContainer}>
                 <MaterialIcons name="search" size={24} color="#999" style={styles.searchIcon} />
                 <TextInput
@@ -137,7 +142,7 @@ function AssignmentsScreenTeacher({ navigation }) {
                     <AssignmentCard
                         key={assignment.id}
                         assignment={assignment}
-                        onPress={() => navigation.navigate('AssignmentDetail', { assignment })}
+                        onPress={() => navigation.navigate('AssignmentOverview', { assignment })}
                     />
                 ))}
             </ScrollView>
