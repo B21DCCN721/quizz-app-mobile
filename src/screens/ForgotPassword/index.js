@@ -63,7 +63,12 @@ function ForgotPassword({ navigation, route }) {
         ]);
       }
     } catch (error) {
-      console.error(error);
+      if(error.response && error.response.status === 400) {
+        Alert.alert("Thông báo", error.response.data.message);
+      }else {
+        Alert.alert("Lỗi", "Có lỗi xảy ra, vui lòng thử lại.");
+      }
+      // console.error(error);
     }
   };
   return (

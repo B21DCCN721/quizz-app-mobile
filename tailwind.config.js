@@ -113,6 +113,17 @@ module.exports = {
           DEFAULT: "#E7784C", // orange base
           "2": "#FFCB8F",     // orange-2
         },
+        red: "#F15D41",
+        yellow: "#FFCB7C",
+        "yellow-2": "#FFEDC4",
+        "yellow-3": "#FEF3AF",
+        blue: "#73DBD5",
+        pink: "#F9A0A0",
+        "pink-2": "#FFA5B8",
+        grayInput: "#F1F1F1",
+        grayBorder: "#DFDFDF",
+        orange: "#E7784C",
+        "orange-2": "#FFCB8F",
       },
       fontFamily: {
         interRegular: ["InterRegular"],

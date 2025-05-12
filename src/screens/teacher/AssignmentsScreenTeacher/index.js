@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AssignmentsScreenTeacher({ navigation }) {
     const user = useSelector((state) => state.auth.user);
-    const userId = useSelector((state) => state.auth.user.id);
+    const userId = user.id;
     const [searchText, setSearchText] = useState('');
     const [selectedGrade, setSelectedGrade] = useState(null); // null = tất cả
     const [selectedType, setSelectedType] = useState(null);    

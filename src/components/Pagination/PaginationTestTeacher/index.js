@@ -1,26 +1,13 @@
-import { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import PropTypes from "prop-types";
 
-const PaginationTest = ({ totalScreen = 10, onChangeScreen=() =>{}, prevScreen, nextScreen, changeQuestion }) => {
-  const [currentScreen, setCurrentScreen] = useState(1);
+const PaginationTestTeacher = ({ totalScreen = 10, currentScreen = 1, onChangeScreen=() =>{} }) => {
   const handleChangeScreen = (screen) => {
     if (screen >= 1 && screen <= totalScreen) {
-        setCurrentScreen(screen);
-        onChangeScreen(screen);
-      }
-  }
-  useEffect(() => {
-    if (changeQuestion) {
-      handleChangeScreen(currentScreen - 1);
+      onChangeScreen(screen);
     }
-  }, [prevScreen]);
+  };
 
-  useEffect(() => {
-    if (changeQuestion) {
-      handleChangeScreen(currentScreen + 1);
-    }
-  }, [nextScreen]);
   const renderScreenNumbers = () => {
     const screens = [];
     for (let i = 1; i <= totalScreen; i++) {
@@ -44,12 +31,10 @@ const PaginationTest = ({ totalScreen = 10, onChangeScreen=() =>{}, prevScreen, 
   );
 };
 
-PaginationTest.propTypes = {
-    totalScreen: PropTypes.number,
-    onChangeScreen: PropTypes.func,
-    prevScreen: PropTypes.bool,
-    nextScreen: PropTypes.bool,
-    changeQuestion: PropTypes.bool,
-}
+PaginationTestTeacher.propTypes = {
+  totalScreen: PropTypes.number,
+  currentScreen: PropTypes.number,
+  onChangeScreen: PropTypes.func,
+};
 
-export default PaginationTest;
+export default PaginationTestTeacher;

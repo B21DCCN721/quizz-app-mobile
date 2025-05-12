@@ -12,7 +12,7 @@ children thêm children cho thẻ input để thể input có thể bọc thêm 
 
 function Input({ value = '', placeholder = '', hide = false, edit = true, keyboardType = 'default', onChange, children }) {
   return (
-    <View className='flex flex-row items-center bg-grayInput  border border-grayBorder rounded-10 px-4 h-[48px]'>
+    <View className='flex flex-row items-center bg-gray-input  border border-gray-border rounded-10 px-4 h-[48px]'>
       <TextInput
         className="flex-1 placeholder:text-semibold placeholder:text-base"
         placeholder={placeholder}

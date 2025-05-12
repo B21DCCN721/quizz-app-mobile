@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 //title tên của card 
 function CardNameGame({title = '', children, onClick}) {
     return ( 
-        <Pressable className="h-[108px] mt-2 flex justify-center rounded-10 border-4 border-b-8 border-grayBorder relative" onPress={onClick}>
+        <Pressable className="h-[108px] mt-2 flex justify-center rounded-10 border-4 border-b-8 border-gray-border relative" onPress={onClick}>
             <Text className="ml-5 font-interBold text-xl text-[#343B6E]">
                 {title}
             </Text>

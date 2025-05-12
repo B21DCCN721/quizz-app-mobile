@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { PaginationTest } from '../../../components/Pagination';
+import { PaginationTestTeacher } from '../../../components/Pagination';
 import { useNavigation } from '@react-navigation/native';
 import HeaderLayout from '../../../layouts/HeaderLayout';
 import axiosClient from '../../../configs/axiosClient';
@@ -148,7 +148,7 @@ const CreateQuizScreenTeacher = ({ route }) => {
             <Picker.Item label="Đáp án 4" value="4" />
           </Picker>
         </View>
-        <PaginationTest
+        <PaginationTestTeacher
           currentScreen={currentPage}
           onChangeScreen={handlePageChange}
         />

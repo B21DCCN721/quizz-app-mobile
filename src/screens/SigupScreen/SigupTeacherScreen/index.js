@@ -59,7 +59,6 @@ function SigupTeacherScreen({ navigation, route }) {
         <Text className="text-2xl font-interSemiBold my-5">
           Đăng ký tài khoản
         </Text>
-        <Text>{role}</Text>
         {/* Input Email */}
         <View className="mt-5">
           <Text className="font-interSemiBold my-2">Email</Text>

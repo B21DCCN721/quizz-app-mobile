@@ -1,3 +1,4 @@
 import PaginationTest from "./PaginationTest";
+import PaginationTestTeacher from "./PaginationTestTeacher";
 
-export { PaginationTest };
+export { PaginationTest, PaginationTestTeacher };

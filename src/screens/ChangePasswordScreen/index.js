@@ -17,15 +17,15 @@ function ChangePasswordScreen() {
   // call api
   const handleChangePassword = async () => {
     if(newPassword !== confirmPassword) {
-      Alert.alert("Mật khẩu mới không khớp vui lòng kiểm tra lại");
+      Alert.alert("Thông báo","Mật khẩu mới không khớp vui lòng kiểm tra lại");
       return;
     }
     if(oldPassword.length < 6 || newPassword.length < 6) {
-      Alert.alert("Mật khẩu phải có ít nhất 6 ký tự");
+      Alert.alert("Thông báo","Mật khẩu phải có ít nhất 6 ký tự");
       return;
     }
     if(oldPassword === newPassword) {
-      Alert.alert("Mật khẩu mới không được giống mật khẩu cũ");
+      Alert.alert("Thông báo","Mật khẩu mới không được giống mật khẩu cũ");
       return;
     }
     try {

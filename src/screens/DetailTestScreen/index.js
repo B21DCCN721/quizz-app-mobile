@@ -16,6 +16,7 @@ import axiosClient from "../../configs/axiosClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ChatPopup from "../../components/ChatPopup";
 import ChatBot from "../../../assets/imgs/chatBot.svg";
+import { useSelector } from "react-redux";
 
 function DetailTestScreen({ route, navigation }) {
   const { mode, id } = route.params || {};
@@ -27,6 +28,7 @@ function DetailTestScreen({ route, navigation }) {
   const [replyTo, setReplyTo] = useState(null);
   const inputRef = useRef(null);
   const [showChat, setShowChat] = useState(false);
+  const userId = useSelector((state) => state.auth.user.id);
 
   const handleStartTest = () => {
     if (mode === "1") {
@@ -76,8 +78,6 @@ function DetailTestScreen({ route, navigation }) {
           content: commentInput,
         });
       } else {
-        const userData = await AsyncStorage.getItem("user");
-        const userId = userData ? JSON.parse(userData).id : null;
         if (!userId) throw new Error("Không tìm thấy user ID");
         await axiosClient.post("/api/comments", {
           user_id: userId,
@@ -195,7 +195,7 @@ function DetailTestScreen({ route, navigation }) {
         </ScrollView>
         {!showChat && (
           <TouchableOpacity
-            className="absolute bottom-6 right-2 w-14 h-14 bg-blue-600 border rounded-full justify-center items-center shadow-lg z-50"
+            className="absolute bottom-[70px] right-2 w-14 h-14 bg-blue-600 border rounded-full justify-center items-center shadow-lg z-50"
             onPress={() => setShowChat(true)}
           >
             <ChatBot width="50px" height="50px" />

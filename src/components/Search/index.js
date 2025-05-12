@@ -7,7 +7,7 @@ function Search({ valueInput = "", onChange, valueSelect, itemsSelect, setValueS
 
   return (
     <View>
-      <View className="flex flex-row items-center bg-grayInput  border border-grayBorder rounded-10 px-4 h-[48px]">
+      <View className="flex flex-row items-center bg-grayInput  border border-gray-border rounded-10 px-4 h-[48px]">
         <IconSearch />
         <TextInput
           className="flex-1 placeholder:text-semibold placeholder:text-base"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Alert, View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import {Alert, View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import HeaderLayout from '../../../layouts/HeaderLayout';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -66,52 +66,54 @@ function CreateAssignmentScreenTeacher({ navigation }) {
 
     return (
         <HeaderLayout>
-            <Text style={styles.header}>Tạo bài tập mới</Text>
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Tên bài</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Nhập tên bài tập"
-                    value={assignmentName}
-                    onChangeText={setAssignmentName}
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Giới thiệu</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Nhập mô tả bài tập"
-                    value={assignmentDes}
-                    onChangeText={setassignmentDes}
-                    multiline
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Loại bài tập</Text>
-                <RNPickerSelect
-                    onValueChange={(value) => setSelectedType(value)}
-                    items={types}
-                    style={pickerSelectStyles}
-                    placeholder={{ label: 'Chọn loại bài tập', value: null }}
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Lớp</Text>
-                <RNPickerSelect
-                    onValueChange={(value) => setSelectedGrade(value)}
-                    items={grades}
-                    style={pickerSelectStyles}
-                    placeholder={{ label: 'Chọn lớp', value: null }}
-                />
-            </View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleCancel}>
-                <Text style={styles.buttonText}>Hủy</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleNext}>
-                <Text style={styles.buttonText}>Tiếp tục</Text>
-                </TouchableOpacity>
-            </View>
+            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                <Text style={styles.header}>Tạo bài tập mới</Text>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Tên bài</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nhập tên bài tập"
+                        value={assignmentName}
+                        onChangeText={setAssignmentName}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Giới thiệu</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nhập mô tả bài tập"
+                        value={assignmentDes}
+                        onChangeText={setassignmentDes}
+                        multiline
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Loại bài tập</Text>
+                    <RNPickerSelect
+                        onValueChange={(value) => setSelectedType(value)}
+                        items={types}
+                        style={pickerSelectStyles}
+                        placeholder={{ label: 'Chọn loại bài tập', value: null }}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Lớp</Text>
+                    <RNPickerSelect
+                        onValueChange={(value) => setSelectedGrade(value)}
+                        items={grades}
+                        style={pickerSelectStyles}
+                        placeholder={{ label: 'Chọn lớp', value: null }}
+                    />
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleCancel}>
+                    <Text style={styles.buttonText}>Hủy</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleNext}>
+                    <Text style={styles.buttonText}>Tiếp tục</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </HeaderLayout>
     );
 }

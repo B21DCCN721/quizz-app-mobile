@@ -13,7 +13,7 @@ import {
 import HeaderLayout from "../../../layouts/HeaderLayout";
 import * as ImagePicker from "expo-image-picker";
 import FileUpload from "../../../../assets/icons/fileUpload.svg";
-import PaginationTest from "../../../components/Pagination/PaginationTest";
+import PaginationTestTeacher from "../../../components/Pagination/PaginationTestTeacher";
 import axiosClient from "../../../configs/axiosClient";
 
 function EditColorGameScreenTeacher({ navigation, route }) {
@@ -209,7 +209,7 @@ function EditColorGameScreenTeacher({ navigation, route }) {
                     />
                 </View>
 
-                <PaginationTest currentScreen={currentPage} onChangeScreen={handlePageChange} />
+                <PaginationTestTeacher currentScreen={currentPage} onChangeScreen={handlePageChange} />
 
                 {isLoading && (
                     <View style={styles.loadingContainer}>
