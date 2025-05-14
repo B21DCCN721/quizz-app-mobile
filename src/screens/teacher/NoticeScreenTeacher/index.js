@@ -1,108 +1,70 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import axiosClient from '../../../configs/axiosClient';
 
-const notifications = [
-  {
-    id: '1',
-    title: 'New message',
-    message: 'You have received a new message from John',
-    time: '2 hours ago',
-    icon: '✉️',
-  },
-  {
-    id: '2',
-    title: 'Payment received',
-    message: 'Your payment of $20 has been processed',
-    time: '5 hours ago',
-    icon: '💰',
-  },
-  {
-    id: '3',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-  {
-    id: '4',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-  {
-    id: '5',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-  {
-    id: '6',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-  {
-    id: '7',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-  {
-    id: '8',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-  {
-    id: '9',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-  {
-    id: '10',
-    title: 'Event reminder',
-    message: 'Your meeting starts in 30 minutes',
-    time: '1 day ago',
-    icon: '📅',
-  },
-];
-
-const NotificationItem = ({ title, message, time, icon }) => (
+const NotificationItem = ({ content, time, type, exerciseTitle }) => (
   <View style={styles.notificationItem}>
-    <Text style={styles.icon}>{icon}</Text>
+    <Text style={styles.icon}>{type === 'comment' ? '💬' : '🔔'}</Text>
     <View style={styles.textContainer}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.message}>{message}</Text>
+      <Text style={styles.title}>{exerciseTitle || 'Thông báo'}</Text>
+      <Text style={styles.message}>{content}</Text>
       <Text style={styles.time}>{time}</Text>
     </View>
   </View>
 );
 
 export default function NotificationScreen() {
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await axiosClient.get('/api/notifications');
+      setNotifications(response.data.data || []);
+    } catch (error) {
+      console.error('Lỗi khi tải thông báo:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Mỗi lần màn hình được focus, fetch lại data
+  useFocusEffect(
+    useCallback(() => {
+      fetchNotifications();
+    }, [])
+  );
+
+  const formatTime = (isoTime) => {
+    const date = new Date(isoTime);
+    return date.toLocaleString('vi-VN');
+  };
+
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={styles.header}>Thông báo</Text>
-      <FlatList
-        data={notifications}
-        renderItem={({ item }) => (
-          <NotificationItem
-            title={item.title}
-            message={item.message}
-            time={item.time}
-            icon={item.icon}
-          />
-        )}
-        keyExtractor={item => item.id}
-        scrollEnabled={false}
-      />
-    </ScrollView>
+      {loading ? (
+        <ActivityIndicator size="large" color="#E7784C" />
+      ) : notifications.length === 0 ? (
+        <Text style={{ textAlign: 'center', fontSize: 16, color: '#999' }}>
+          Không có thông báo nào
+        </Text>
+      ) : (
+        <FlatList
+          data={notifications}
+          renderItem={({ item }) => (
+            <NotificationItem
+              content={item.content}
+              time={formatTime(item.sentTime)}
+              type={item.notificationType}
+              exerciseTitle={item.Exercise?.title}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      )}
+    </View>
   );
 }
 
